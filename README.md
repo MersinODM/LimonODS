@@ -2,7 +2,7 @@
 
 # Başlangıç
 
-Bu yazılım ölçme değerlendirme merkezlerinin işlerini kolaylaştırmak amacıyla PHP/Laravel framework'ü kullanılarak web tabanlı ve açık kaynak olarak geliştirilmektedir. Yazılım içerisinde kullanıcı yönetimi, sınav yönetimi, soru yönetimi, e-sınav gibi moduller bulunmaktadır. Bütün modüller dokümantasyon kısmında açıklanacaktır.
+Bu yazılım ölçme değerlendirme işlemlerini kolaylaştırmak amacıyla PHP/Laravel framework'ü kullanılarak web tabanlı ve açık kaynak olarak geliştirilmektedir. Yazılım içerisinde kullanıcı yönetimi, sınav yönetimi(sınav oluşturma vs.), soru yönetimi(soru havuzu oluşturma vs.), e-sınav gibi moduller bulunmaktadır. Bütün modüller dokümantasyon kısmında açıklanacaktır.
 
 ## Nasıl katkıda bulunurum?
 
