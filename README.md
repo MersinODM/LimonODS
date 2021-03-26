@@ -6,7 +6,7 @@ Bu yazılım ölçme değerlendirme merkezlerinin işlerini kolaylaştırmak ama
 
 ## Nasıl katkıda bulunurum?
 
-Öncelikler yazılım geliştirme sürecinin bir organizmaya benzediği düşünülmelidir. Program yaşam döngüsü içinde hatalar ve eksikliler elbette olasıdır. Yardımlarınızla bunları lehimize çevirebiliriz. Tekrardan yardım etmeyi düşündüğünüz için teşekkür ederiz. Herhangi bir geliştirme isteği ya da sorun bildirimini [Yeni Sorun \(New Issue\)](https://github.com/MersinODM/LimonODS/issues/new) bağlantısından yazarak ekleyebilir geliştirme isteğinde bulunabilir ya da projeyi fork ederek kendinize özel geliştirmeye devam edebilirsiniz.
+Yazılım geliştirme yaşam döngüsü içinde hatalar ve/veya eksikliler elbette olasıdır ancak yardımlarınızla bunları lehimize çevirebiliriz. Herhangi bir geliştirme isteği ya da sorun bildirimini [Yeni Sorun \(New Issue\)](https://github.com/MersinODM/LimonODS/issues/new) bağlantısından yazarak ekleyebilir geliştirme isteğinde bulunabilir ya da projeyi fork ederek kendinize özel geliştirmeye devam edebilirsiniz.
 
 ## Lisans
 
