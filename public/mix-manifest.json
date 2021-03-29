@@ -1,5 +1,13 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/js/manifest.js": "/js/manifest.js",
-    "/js/vendor.js": "/js/vendor.js"
+    "/js/app/app.js": "/js/app/app.js",
+    "/js/app/manifest.js": "/js/app/manifest.js",
+    "/js/app/vendor.js": "/js/app/vendor.js",
+    "/fonts/materialdesignicons-webfont.eot": "/fonts/materialdesignicons-webfont.eot",
+    "/fonts/materialdesignicons-webfont.ttf": "/fonts/materialdesignicons-webfont.ttf",
+    "/fonts/materialdesignicons-webfont.woff": "/fonts/materialdesignicons-webfont.woff",
+    "/fonts/materialdesignicons-webfont.woff2": "/fonts/materialdesignicons-webfont.woff2",
+    "/js/exam/exam.js": "/js/exam/exam.js",
+    "/js/exam/manifest.js": "/js/exam/manifest.js",
+    "/css/app.css": "/css/app.css",
+    "/js/exam/vendor.js": "/js/exam/vendor.js"
 }
