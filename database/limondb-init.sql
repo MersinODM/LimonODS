@@ -316,6 +316,13 @@ alter table `students`
     add created_at timestamp null,
     add updated_at timestamp null;
 
+alter table exams
+    add creator_id bigint unsigned null after id;
+
+alter table exams
+    add start_date datetime null after code,
+    add end_date datetime null after start_date;
+
 
 /* Create Primary Keys, Indexes, Uniques, Checks */
 
