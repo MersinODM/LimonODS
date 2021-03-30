@@ -30,4 +30,12 @@ class Question extends Model
         "parent_id",
         "creator_id"
     ];
+
+    public function choices() {
+        return $this->hasMany(Choice::class, "q_id");
+    }
+
+    public function choicesForApi() {
+        return $this->hasMany(Choice::class, "q_id")->select("id", "content", "is_correct");
+    }
 }

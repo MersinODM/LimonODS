@@ -19,4 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get("v1/questions/{id}", [QuestionController::class, "get"]);
 Route::post("v1/questions", [QuestionController::class, "save"]);

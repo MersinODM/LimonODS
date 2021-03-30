@@ -28,4 +28,8 @@ class Choice extends Model
         "is_correct",
         "q_id"
     ];
+
+    public function question() {
+        return $this->belongsTo(question::class, 'q_id');
+    }
 }

@@ -30,6 +30,23 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionController extends ApiController
 {
+
+    public function get($id) {
+//        $question = DB::table('questions')
+//            ->where('id', $id)
+//            ->select("id", "type", "body", "context", "parent_id", "creator_id")
+//            ->get();
+//        $choices = DB::table('choices')
+//            ->where('q_id', $id)
+//            ->select("id","content", "is_correct")
+//            ->get();
+
+//        $question["choices"] = $choices;
+
+        $question = Question::with('choices')->where("id", $id)->first();
+        return response()->json($question);
+    }
+
     public function save(Request $request) {
         $validationResult = $this->apiValidator($request, [
             'type' => 'required',
@@ -69,7 +86,42 @@ class QuestionController extends ApiController
     }
 
     public function update($id, Request $request) {
+        $validationResult = $this->apiValidator($request, [
+            'type' => 'required',
+            'body' => 'required',
+            'level' => 'required|integer',
+            'choices' => 'required|array|min:3|max:5',
+            'choices.*.id' => 'required|integer',
+            'choices.*.content' => 'required',
+            'choices.*.is_correct' => 'required'
+        ]);
 
+        if ($validationResult) {
+            return response()->json($validationResult, 422);
+        }
+
+        $choices = $request->input('choices');
+
+        try {
+            DB::beginTransaction();
+            $question = Question::find($id);
+            $question->fill($request->all(["body", "context", "level"]));
+            $question->save();
+
+            foreach ($choices as $choice) {
+                $choicesModel = Choice::find($choice->id);
+                $choicesModel->fill($choice);
+                $choicesModel->save();
+            }
+            DB::commit();
+            return response()->json([
+                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+                ResponseKeys::MESSAGE => "Soru güncelleme başarılı"
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->apiException($e);
+        }
     }
 
     public function delete(Request $request) {
