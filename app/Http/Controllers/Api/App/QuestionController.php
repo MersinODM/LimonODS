@@ -35,15 +35,16 @@ class QuestionController extends ApiController
 //        $question = DB::table('questions')
 //            ->where('id', $id)
 //            ->select("id", "type", "body", "context", "parent_id", "creator_id")
-//            ->get();
+//            ->first();
 //        $choices = DB::table('choices')
 //            ->where('q_id', $id)
-//            ->select("id","content", "is_correct")
+//            ->select("id", "content", "is_correct")
 //            ->get();
+//        $question->choices = $choices;
 
-//        $question["choices"] = $choices;
-
-        $question = Question::with('choices')->where("id", $id)->first();
+        $question = Question::with('choices')
+            ->where("id", $id)
+            ->first();
         return response()->json($question);
     }
 
@@ -109,7 +110,7 @@ class QuestionController extends ApiController
             $question->save();
 
             foreach ($choices as $choice) {
-                $choicesModel = Choice::find($choice->id);
+                $choicesModel = Choice::find($choice["id"]);
                 $choicesModel->fill($choice);
                 $choicesModel->save();
             }
@@ -124,7 +125,11 @@ class QuestionController extends ApiController
         }
     }
 
-    public function delete(Request $request) {
-
+    public function delete($id) {
+        Question::destroy($id);
+        return response()->json([
+            ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+            ResponseKeys::MESSAGE => "Soru silme başarılı"
+        ]);
     }
 }
