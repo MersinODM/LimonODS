@@ -20,8 +20,33 @@ namespace App\Http\Controllers\Api\App;
 
 
 use App\Http\Controllers\ApiController;
+use Illuminate\Http\Request;
 
 class ExamController extends ApiController
 {
+    public function save(Request $request) {
+        $validationResult = $this->apiValidator($request, [
+            'title' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'level' => 'required|integer',
+            'type_id' => 'required|integer',
+            'description' => 'required',
+            'lessons' => 'required|array|min:1',
+            'lessons.*.question_count' => 'required|integer|min:1',
+            'lessons.*.id' => 'required|integer',
+        ]);
 
+        if ($validationResult) {
+            return response()->json($validationResult, 422);
+        }
+    }
+
+    public function update($id, Request $request) {
+
+    }
+
+    public function delete(Request $request) {
+
+    }
 }
