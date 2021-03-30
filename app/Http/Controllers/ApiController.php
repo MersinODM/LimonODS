@@ -18,6 +18,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Utils\ResponseCodes;
+use App\Http\Controllers\Utils\ResponseContents;
+use App\Http\Controllers\Utils\ResponseKeys;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
