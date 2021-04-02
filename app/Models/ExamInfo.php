@@ -21,19 +21,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Exam extends Model
+class ExamInfo extends Model
 {
-    protected $fillable = [
-        "type_id",
-        "creator_id",
-        "title",
-        "code",
-        "start_date",
-        "end_date",
-        "description"
-    ];
-    public function lessons() {
-        return $this->hasMany(ExamInfo::class, "exam_id");
-    }
+    protected $table="eq_infos";
 
+    protected $fillable = [
+        "lesson_id",
+        "exam_id",
+        "count"
+        ];
 }
