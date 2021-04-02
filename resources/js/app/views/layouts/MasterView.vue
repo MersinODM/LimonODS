@@ -18,7 +18,7 @@
 <template>
   <div class="wrapper">
     <n-header />
-    <!--    <n-sidebar />-->
+    <n-sidebar />
     <div
       class="content-wrapper"
       style="min-height: 225.546px;"
@@ -35,13 +35,13 @@
 
 <script>
 import NHeader from './HeaderView'
-// import NSidebar from './MainSidebar'
+import NSidebar from './MainSidebar'
 import NFooter from './FooterView'
-import SkinHelper from '../../helpers/SkinHelper'
+import SkinHelper from '../../../commons/utils/SkinHelper'
 
 export default {
   name: 'DashBoard',
-  components: { NFooter, NHeader },
+  components: { NFooter, NHeader, NSidebar },
   setup () {
     SkinHelper.MainSkin()
   }

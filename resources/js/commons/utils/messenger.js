@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import Swal from '~admin-lte/plugins/sweetalert2/sweetalert2.all.min'
+import Swal from 'admin-lte/plugins/sweetalert2/sweetalert2.min'
 
 const Messenger = {
   showError (message, callback = null) {

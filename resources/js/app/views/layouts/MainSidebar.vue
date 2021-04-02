@@ -216,12 +216,6 @@ export default {
   data: () => ({
     // userImg: img
   }),
-  computed: {
-    // ...mapGetters('app', {
-    //   user: 'currentUser',
-    //   generalInfo: 'generalInfo'
-    // })
-  },
   mounted () {
     $('body').Layout('fixLayoutHeight')
     $('ul').Treeview('init')

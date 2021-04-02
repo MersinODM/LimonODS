@@ -1,4 +1,4 @@
-import dayjs from '../helpers/dayjs'
+import dayjs from '../utils/dayjs'
 const dateFormat = {
   beforeMount (el, binding, vnode, prevVnode) {
     const value = dayjs(vnode.el.innerText)

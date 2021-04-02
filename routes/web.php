@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Web\App\AuthController as AppWebAuthController;
+use App\Http\Controllers\Web\App\AppController as AppWebController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::post('app/auth/login', [AppWebAuthController::class, "login"]);
+//Route::post('exam/auth/login', [ExamWebAuthController::class, "login"]);
+Route::get('app/{any?}', [AppWebController::class, "app"])
+    ->where('any', '^(?!api|password\/reset).*$')
+    ->name("management");

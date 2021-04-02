@@ -14,7 +14,7 @@
         <a
           href="#"
           class="h1"
-        ><b>Yalçın</b>Soğutma</a>
+        ><b>Limon</b>ÖDS</a>
       </div>
       <div class="card-body">
         <p class="login-box-msg">
@@ -75,7 +75,7 @@
           </div>
         </form>
         <router-link
-          :to="{ name: 'forgotMyPassword' }"
+          :to="{ name: 'underConstruction' }"
           class="mb-2"
         >
           Şifremi unuttum
@@ -90,9 +90,10 @@
 <script>
 
 import LicenceInfo from '../../../commons/components/LicenceInfo'
-import SkinHelper from '../../helpers/SkinHelper'
+import SkinHelper from '../../../commons/utils/SkinHelper'
 import { ref } from 'vue'
 import AuthService from '../../services/AuthService'
+import router from "../../router";
 
 export default {
   name: 'Login',
@@ -109,7 +110,7 @@ export default {
       await AuthService.getCsrfToken()
     }
 
-    getCsrfToken()
+    // getCsrfToken()
     return {
       loginToSys,
       email,

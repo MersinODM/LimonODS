@@ -47,7 +47,8 @@ mix.webpackConfig({
   externals: {
     jquery: 'jQuery',
     'jquery.dataTables': 'jquery.dataTables',
-    bootstrap: 'bootstrap'
+    bootstrap: 'bootstrap',
+    ckeditor: 'ckeditor'
   }
 })
 
@@ -60,6 +61,7 @@ mix.webpackConfig({
 mix.copyDirectory('resources/images', 'public/images')
 // mix.copy('node_modules/bootstrap/dist/css/bootstrap.min.css', 'public/css/bootstrap.min.css')
 mix.copyDirectory('node_modules/@mdi/font/fonts', 'public/fonts')
+mix.copyDirectory('./resources/js/external', 'public/js/app')
 
 mix.js('resources/js/app/app.js', 'public/js/app')
   .vue({ version: 3 })

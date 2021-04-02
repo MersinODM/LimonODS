@@ -17,16 +17,12 @@
 
 const SkinHelper = {
   LoginSkin () {
-    document.body.classList.remove('layout-top-nav', 'sidebar-mini', 'layout-fixed', 'layout-navbar-fixed', 'register-page')
-    document.body.style.removeProperty('height')
-    document.body.style.minHeight = '512.58px'
+    document.body.classList.remove('sidebar-mini', 'layout-fixed', 'layout-navbar-fixed', 'register-page')
     document.body.classList.add('login-page')
   },
   MainSkin () {
     document.body.classList.remove('login-page', 'register-page')
-    document.body.style.removeProperty('min-height')
-    document.body.style.height = 'auto'
-    document.body.classList.add('layout-top-nav', 'layout-navbar-fixed')
+    document.body.classList.add('sidebar-mini', 'layout-fixed', 'layout-navbar-fixed')
   }
 }
 
