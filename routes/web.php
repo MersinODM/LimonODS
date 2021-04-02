@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('app/auth/login', [AppWebAuthController::class, "login"]);
+Route::post('app/auth/login', [AppWebAuthController::class, "login"])->name('login');
 //Route::post('exam/auth/login', [ExamWebAuthController::class, "login"]);
 Route::get('app/{any?}', [AppWebController::class, "app"])
     ->where('any', '^(?!api|password\/reset).*$')

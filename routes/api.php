@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\App\AuthController as AppApiAuthController;
 use App\Http\Controllers\Api\App\ExamController;
 use App\Http\Controllers\Api\App\QuestionController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+//Route::group(['prefix' => 'app'], static function () {
+//});
+
+Route::post('app/auth/login', [AppApiAuthController::class, 'login']);
+
 
 
 /*
