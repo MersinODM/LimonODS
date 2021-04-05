@@ -22,9 +22,9 @@
     </template>
     <template #content>
       <div class="row">
-        <div class="col-md-12">
-          
+        <div class="col-md-4">
         </div>
+        <div class="col-md-8" />
       </div>
     </template>
   </page>
@@ -32,12 +32,65 @@
 
 <script>
 import Page from '../../../commons/components/Page'
-
+import Multiselect from '@vueform/multiselect'
+import { number, object, string, array } from 'yup'
+import { useField, useForm } from 'vee-validate'
+import { ref } from 'vue'
 export default {
   name: 'NewQuestion',
-  components: { Page },
+  components: { Page, Multiselect },
   setup () {
+    const lessons = ref([])
+    const levels = ref([]) // Bu lessons tan gelebilir
+    const units = ref([])
+    const topics = ref([])
+    const learningOutcomes = ref([])
+    const context = ref('')
+    const body = ref('')
 
+    const schema = object({
+      lesson: number().typeError(() => 'Ders seçimi yapılmaldır!')
+        .required(() => 'Ders seçimi yapılmaldır!'),
+      level: number().typeError(() => 'Seviye seçimi yapılmaldır!')
+        .required(() => 'Seviye seçimi yapılmaldır!'),
+      learningOutcomeList: array(
+        number().typeError(() => 'Kazanım bilgisi kazanım id\'si olmalıdır!')
+      ).min(1, () => 'En az bir kazanım seçimi yapılmaldır!'),
+      body: string().typeError('Soru kökü yazı veri tipinde olmalıdır')
+        .required(() => 'Soru kökü gereklidir'),
+      choices: array(string().required(() => 'Seçenek içeriği gereklidir!'))
+        .min(3, () => 'En az 3 seçenek eklenmelidir!')
+        .max(5, () => 'En fazla 5 seçenek eklenmelidir!')
+    })
+
+    const { handleSubmit } = useForm({
+      validationSchema: schema
+    })
+
+    const { value: selectedLesson, errorMessage: lessonEM } = useField('lesson')
+    const { value: selectedLevel, errorMessage: levelEM } = useField('level')
+    const { value: selectedLearningOutcomes, errorMessage: learningOutcomesEM } = useField('learningOutcomeList')
+
+    const save = handleSubmit(async values => {
+      await console.log(values)
+    })
+
+    return {
+      selectedLesson,
+      lessonEM,
+      lessons,
+      selectedLevel,
+      levelEM,
+      levels,
+      units,
+      topics,
+      selectedLearningOutcomes,
+      learningOutcomesEM,
+      learningOutcomes,
+      context,
+      body,
+      save
+    }
   }
 }
 </script>
