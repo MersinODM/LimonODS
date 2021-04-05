@@ -15,3 +15,51 @@
  *
  */
 
+import {createRouter, createWebHistory} from "vue-router";
+import Login from "../views/auth/Login";
+import MasterView from "../views/layouts/MasterView";
+import Start from "../views/home/Start";
+import UnderConstruction from "../../commons/views/utils/UnderConstruction";
+import NotFound from "../../commons/views/utils/NotFound";
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/exam/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/exam',
+      component: MasterView,
+      children: [
+        {
+          path: '',
+          name: 'start',
+          component: Start
+        },
+        {
+          path: 'under-construction',
+          name: 'underConstruction',
+          component: UnderConstruction
+        }
+      ]
+    },
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound }
+  ]
+})
+
+const checkAuth = (to, next) => {
+  if (to.name === 'login' || to.name === 'forgotMyPassword') {
+    next()
+  } else {
+    // TODO burada login kontrlolü yapılsın
+    next()
+  }
+}
+
+// TODO Burada role denetimi yapılacak
+router.beforeEach((to, from, next) => checkAuth(to, next))
+
+export default router

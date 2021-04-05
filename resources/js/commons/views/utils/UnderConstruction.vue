@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import Page from '../../../commons/components/Page'
+import Page from '../../components/Page'
 export default {
   name: 'UnderConstruction',
   components: { Page }

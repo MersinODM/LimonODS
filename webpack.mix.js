@@ -1,3 +1,5 @@
+// const mix = require('laravel-mix')
+
 if (['app', 'exam'].includes(process.env.npm_config_section)) {
     require(`${__dirname}/webpack.${process.env.npm_config_section}.mix.js`)
 } else {

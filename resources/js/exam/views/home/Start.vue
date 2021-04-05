@@ -16,29 +16,12 @@
   -->
 
 <template>
-  <page>
-    <template #header>
-      <h4>Yeni Soru</h4>
-    </template>
-    <template #content>
-      <div class="row">
-        <div class="col-md-12">
-          
-        </div>
-      </div>
-    </template>
-  </page>
+başlama
 </template>
 
 <script>
-import Page from '../../../commons/components/Page'
-
 export default {
-  name: 'NewQuestion',
-  components: { Page },
-  setup () {
-
-  }
+name: "Start"
 }
 </script>
 

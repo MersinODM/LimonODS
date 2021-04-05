@@ -20,8 +20,16 @@ namespace App\Http\Controllers\Api\App;
 
 
 use App\Http\Controllers\ApiController;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends ApiController
 {
-
+    public function me(): JsonResponse
+    {
+        $user = User::find(Auth::id())->with('roles')->first();
+        $user->getAllPermissions();
+        return response()->json($user);
+    }
 }

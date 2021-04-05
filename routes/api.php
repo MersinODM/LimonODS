@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\App\AuthController as AppApiAuthController;
 use App\Http\Controllers\Api\App\ExamController;
 use App\Http\Controllers\Api\App\QuestionController;
+use App\Http\Controllers\Api\App\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,9 @@ Route::post('app/auth/login', [AppApiAuthController::class, 'login']);
  * Uygulama v1 REST API HTTP rota tanımlamaları
  */
 Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'app/v1'], static function () {
+
+    // Kullanıcı adı, rolleri ve izinleri geri döncecek
+    Route::get("me", [UserController::class, "me"]);
 
     // Sorular ile ilgili rota tanımlamaları
     Route::get("questions/{id}", [QuestionController::class, "get"]);

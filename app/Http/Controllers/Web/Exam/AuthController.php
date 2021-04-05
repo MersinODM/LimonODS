@@ -18,13 +18,30 @@
 
 namespace App\Http\Controllers\Web\Exam;
 
-
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Utils\ResponseCodes;
+use App\Http\Controllers\Utils\ResponseKeys;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ExamController extends Controller
+class AuthController extends Controller
 {
-    public function exam()
+    public function login(Request $request)
     {
-        return view('exam');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            session()->regenerate();
+            return response()->json([
+                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+                ResponseKeys::MESSAGE => "Oturum açma başarılı"
+            ]);
+        }
+
+        return response()->json([
+            ResponseKeys::CODE => ResponseCodes::CODE_WARNING,
+            ResponseKeys::MESSAGE => "Oturum açılamadı!!!"
+        ]);
     }
 }

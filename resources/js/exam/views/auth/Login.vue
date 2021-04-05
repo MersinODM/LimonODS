@@ -90,9 +90,9 @@
 <script>
 
 import LicenceInfo from '../../../commons/components/LicenceInfo'
-import SkinHelper from '../../../commons/utils/SkinHelper'
+import SkinHelper from '../../utils/SkinHelper'
 import { ref } from 'vue'
-import AuthService from '../../services/AuthService'
+// import AuthService from '../../services/AuthService'
 // import router from "../../router";
 
 export default {
@@ -103,7 +103,7 @@ export default {
     const email = ref()
     const password = ref()
     const loginToSys = async () => {
-      await AuthService.login({ email: email.value, password: password.value })
+      // await AuthService.login({ email: email.value, password: password.value })
     }
 
     // const getCsrfToken = async () => {

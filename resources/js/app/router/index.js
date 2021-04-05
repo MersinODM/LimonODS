@@ -19,8 +19,8 @@ import {createRouter, createWebHistory} from "vue-router";
 import Login from "../views/auth/Login";
 import MasterView from "../views/layouts/MasterView";
 import Start from "../views/home/Start";
-import UnderConstruction from "../views/utils/UnderConstruction";
-import NotFound from "../views/utils/NotFound";
+import UnderConstruction from "../../commons/views/utils/UnderConstruction";
+import NotFound from "../../commons/views/utils/NotFound";
 
 const router = createRouter({
   history: createWebHistory(),
