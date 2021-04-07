@@ -24,6 +24,7 @@ use App\Http\Controllers\Utils\ResponseCodes;
 use App\Http\Controllers\Utils\ResponseKeys;
 use App\Models\Exam;
 use App\Models\ExamInfo;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -103,14 +104,19 @@ class ExamController extends ApiController
         try {
             DB::beginTransaction();
             $exam=Exam::find($id);
-            $exam->fill($request->all(["title", "start_date", "end_date","level","type_id","description"]));
+            $exam->fill($request->all(["title", "start_date", "end_date", "level", "type_id", "description"]));
             $exam->save();
-            $exam_id=$id; // veritabanı alanı ile aynı ismi vermek için.
+
+            $exam_id=$id;
+
+            $lessons_delete = ExamInfo::where('exam_id',$exam_id);
+            $lessons_delete->delete();
 
             foreach ($lessons as $lesson) {
-                $lessonModel = ExamInfo::find($exam_id);
-                $lessonModel->where("lesson_id", $lesson["id"]);
-                $lessonModel->fill($lesson);
+                $lessonModel = new ExamInfo();
+                $lessonModel->exam_id = $id;
+                $lessonModel->lesson_id = $lesson["lesson_id"];
+                $lessonModel->count = $lesson["count"];
                 $lessonModel->save();
             }
 
@@ -125,8 +131,12 @@ class ExamController extends ApiController
         }
     }
 
-    public function delete(Request $request) {
-
+    public function delete($id) {
+        Exam::destroy($id);
+        return response()->json([
+            ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+            ResponseKeys::MESSAGE => "Sınav silme başarılı"
+        ]);
     }
 
 
