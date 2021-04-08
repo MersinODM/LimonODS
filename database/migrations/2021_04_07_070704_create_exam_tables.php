@@ -61,15 +61,15 @@ class CreateExamTables extends Migration
 
         //Buna katılımcılar demek daha uygun olabilirdi belki ama neyse
         Schema::create('students', function (Blueprint $table) {
-            $table->unsignedInteger('id')->primary();
-            $table->unsignedInteger('inst_id');
+            $table->id()->startingValue(10000);
+            $table->unsignedInteger('institution_id');
             $table->string('full_name', 500);
             $table->unsignedTinyInteger('level');
             $table->string('branch', 200)->nullable();
             $table->unsignedTinyInteger('no');
             $table->timestamps();
 
-            $table->foreign("inst_id")
+            $table->foreign("institution_id")
                 ->references("id")
                 ->on("institutions");
         });
@@ -90,23 +90,23 @@ class CreateExamTables extends Migration
         //Kurum gruplama birleştime tablosu
         Schema::create('institution_group_infos', function (Blueprint $table) {
            $table->unsignedBigInteger("group_id");
-           $table->unsignedInteger("inst_id");
+           $table->unsignedInteger("institution_id");
            $table->timestamps();
 
-          $table->primary(['group_id', 'inst_id']);
+          $table->primary(['group_id', 'institution_id']);
 
             $table->foreign("group_id")
                 ->references("id")
                 ->on("groups");
 
-            $table->foreign("inst_id")
+            $table->foreign("institution_id")
                 ->references("id")
                 ->on("institutions");
         });
 
         //Dersler
         Schema::create('lessons', function (Blueprint $table) {
-            $table->id();
+            $table->id()->startingValue(100);
             $table->string('code', 50)->nullable();
             $table->string('name', 1000);
             $table->timestamps();
@@ -115,13 +115,13 @@ class CreateExamTables extends Migration
 
         //Kazanım/Konu/Ünite daha doğrusu tüm müfredat
         Schema::create('curriculums', function (Blueprint $table) {
-            $table->id();
+            $table->id()->startingValue(1000);
             $table->unsignedBigInteger("lesson_id");
             $table->unsignedBigInteger("parent_id");
             $table->string('code', 50)->nullable();
             $table->string('name', 1000);
-            $table->tinyInteger('level');
-            $table->tinyInteger('type');
+            $table->tinyInteger('level')->comment("Sınıf seviyesi");
+            $table->tinyInteger('type')->comment("Ünite:0, Konu:1, Kazanım, 2");
             $table->string('content', 4000);
             $table->timestamps();
             $table->softDeletes();
@@ -153,6 +153,7 @@ class CreateExamTables extends Migration
            $table->string('title', 1000);
            $table->dateTime('start_date');
            $table->dateTime('end_date');
+           $table->unsignedTinyInteger('level');
            $table->string('description', 4000);
            $table->timestamps();
            $table->softDeletes();
@@ -163,19 +164,19 @@ class CreateExamTables extends Migration
         });
 
         //Kurum sınav birleştirme tablosu
-        Schema::create('institution_exam_infos', function (Blueprint $table) {
+        Schema::create('exam_institution_infos', function (Blueprint $table) {
             $table->unsignedBigInteger("exam_id");
-            $table->unsignedInteger("inst_id");
+            $table->unsignedInteger("institution_id");
             $table->timestamps();
 
-            $table->primary(['exam_id', 'inst_id']);
+            $table->primary(['exam_id', 'institution_id']);
 
 
             $table->foreign("exam_id")
                 ->references("id")
                 ->on("exams");
 
-            $table->foreign("inst_id")
+            $table->foreign("institution_id")
                 ->references("id")
                 ->on("institutions");
         });
@@ -201,9 +202,11 @@ class CreateExamTables extends Migration
         Schema::create('questions', function (Blueprint $table) {
            $table->id()->startingValue(10000);
             $table->unsignedBigInteger("parent_id")->nullable();
-            $table->unsignedInteger("creator_id");
-            $table->unsignedInteger("lesson_id");
-            $table->tinyInteger("type");
+            $table->unsignedBigInteger("creator_id");
+            $table->unsignedBigInteger("lesson_id");
+            $table->tinyInteger("type")->comment("Çoktan Seçmeli:0, Açık uçlu:1, D/Y: 2, Boşluk dolduma:3, Eşleştirme: 4");
+            $table->tinyInteger("level")->comment("Sınıf seviyesi");
+            $table->tinyInteger("difficulty")->comment("1-3 arası bir değer");
             $table->string('context', 4000)->nullable();
             $table->string('body', 4000);
             $table->string('description', 4000)->nullable(); //Bu alan ihtimal dahilinmde konuldu
@@ -212,6 +215,11 @@ class CreateExamTables extends Migration
             $table->foreign("parent_id")
                 ->references("id")
                 ->on("questions");
+
+
+            $table->foreign("lesson_id")
+                ->references("id")
+                ->on("lessons");
 
         });
 
@@ -222,6 +230,25 @@ class CreateExamTables extends Migration
             $table->string('content', 4000);
             $table->boolean('is_correct');
             $table->timestamps();
+
+            $table->foreign("question_id")
+                ->references("id")
+                ->on("questions");
+        });
+
+        //Kurum sınav birleştirme tablosu
+        Schema::create('exam_question_infos', function (Blueprint $table) {
+            $table->unsignedBigInteger("exam_id");
+            $table->unsignedBigInteger("question_id");
+            $table->unsignedTinyInteger("count");
+            $table->timestamps();
+
+            $table->primary(['exam_id', 'question_id']);
+
+
+            $table->foreign("exam_id")
+                ->references("id")
+                ->on("exams");
 
             $table->foreign("question_id")
                 ->references("id")
@@ -251,7 +278,7 @@ class CreateExamTables extends Migration
            $table->unsignedBigInteger("choice_id")->nullable();
            $table->unsignedBigInteger("exam_id");
            $table->unsignedBigInteger("question_id");
-           $table->primary(['student_id', 'question_id', 'choice_id', 'exam_id']);
+           $table->primary(['student_id', 'question_id', 'choice_id', 'exam_id'], "PK_multiple_choice");
         });
 
         Schema::enableForeignKeyConstraints();
@@ -265,12 +292,13 @@ class CreateExamTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_answers');
+        Schema::dropIfExists('multi_choice_answers');
         Schema::dropIfExists('curriculum_question_infos');
+        Schema::dropIfExists('exam_question_infos');
         Schema::dropIfExists('choices');
         Schema::dropIfExists('questions');
         Schema::dropIfExists('exam_lesson_infos');
-        Schema::dropIfExists('institution_exam_infos');
+        Schema::dropIfExists('exam_institution_infos');
         Schema::dropIfExists('exams');
         Schema::dropIfExists('exam_types');
         Schema::dropIfExists('curriculums');

@@ -16,19 +16,32 @@
  *
  */
 
-namespace App\Models;
+namespace App\Traits;
 
 
-use Illuminate\Database\Eloquent\Model;
-
-class Circullum extends Model
+trait SelfReferencing
 {
-    protected $fillable=[
-      "lesson_id",
-      "parent_id",
-      "code",
-      "level",
-      "type",
-      "content"
-    ];
+    protected $parentColumn = 'parent_id';
+
+    public function parent()
+    {
+        return $this->belongsTo(static::class);
+    }
+
+    public function children()
+    {
+        return $this->hasMany(static::class, $this->parentColumn);
+    }
+
+    public function allChildren()
+    {
+        return $this->children()->with('allChildren');
+    }
+
+    public function root()
+    {
+        return $this->parent
+            ? $this->parent->root()
+            : $this;
+    }
 }

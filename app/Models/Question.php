@@ -19,12 +19,13 @@
 namespace App\Models;
 
 
+use App\Traits\SelfReferencing;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, SelfReferencing;
 
     protected $fillable=[
         "type",
@@ -35,10 +36,10 @@ class Question extends Model
     ];
 
     public function choices() {
-        return $this->hasMany(Choice::class, "q_id");
+        return $this->hasMany(Choice::class);
     }
 
     public function choicesForApi() {
-        return $this->hasMany(Choice::class, "q_id")->select("id", "content", "is_correct");
+        return $this->hasMany(Choice::class)->select("id", "content", "is_correct");
     }
 }

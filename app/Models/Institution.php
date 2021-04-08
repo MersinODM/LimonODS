@@ -19,13 +19,17 @@
 namespace App\Models;
 
 
+use App\Traits\SelfReferencing;
 use Illuminate\Database\Eloquent\Model;
 
 class Institution extends Model
 {
+    use SelfReferencing;
+
     protected $fillable=[
         "parent_id",
         "district_id",
+        "type",
         "name",
         "phone",
         "address",

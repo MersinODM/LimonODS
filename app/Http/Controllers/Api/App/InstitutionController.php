@@ -19,7 +19,9 @@
 namespace App\Http\Controllers\Api\App;
 
 
-class InstitutionController
+use App\Http\Controllers\ApiController;
+
+class InstitutionController extends ApiController
 {
 
 }
