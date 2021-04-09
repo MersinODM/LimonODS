@@ -76,24 +76,40 @@ class CreateExamTables extends Migration
 
         //Kurum gruplama tablosu
         Schema::create('groups', function (Blueprint $table) {
-           $table->id()->startingValue(1000);
-           $table->unsignedInteger("owner_id")->nullable(); //Gruplamayı yapan ödm ya da kurumun kurum kodu
-           $table->string('code')->nullable();
-           $table->string('title')->nullable();
-           $table->timestamps();
+            $table->id()->startingValue(1000);
+            $table->unsignedInteger("owner_id")->nullable(); //Gruplamayı yapan ödm ya da kurumun kurum kodu
+            $table->string('code')->nullable();
+            $table->string('title')->nullable();
+            $table->timestamps();
 
-           $table->foreign("owner_id")
+            $table->foreign("owner_id")
                 ->references("id")
                 ->on("institutions");
         });
 
+        Schema::create('user_institution_infos', function (Blueprint $table) {
+            $table->unsignedBigInteger("user_id");
+            $table->unsignedInteger("institution_id");
+            $table->timestamps();
+            $table->primary(['user_id', 'institution_id']);
+
+            $table->foreign("user_id")
+                ->references("id")
+                ->on("users");
+
+            $table->foreign("institution_id")
+                ->references("id")
+                ->on("institutions");
+        });
+
+
         //Kurum gruplama birleştime tablosu
         Schema::create('institution_group_infos', function (Blueprint $table) {
-           $table->unsignedBigInteger("group_id");
-           $table->unsignedInteger("institution_id");
-           $table->timestamps();
+            $table->unsignedBigInteger("group_id");
+            $table->unsignedInteger("institution_id");
+            $table->timestamps();
 
-          $table->primary(['group_id', 'institution_id']);
+            $table->primary(['group_id', 'institution_id']);
 
             $table->foreign("group_id")
                 ->references("id")
@@ -109,8 +125,26 @@ class CreateExamTables extends Migration
             $table->id()->startingValue(100);
             $table->string('code', 50)->nullable();
             $table->string('name', 1000);
+            $table->string('levels', 100)
+                ->comment("Dersin okutulduğu sınıf virgülle ayrılmış seviyeleri. Örn: 9,10,11 ");
             $table->timestamps();
             $table->softDeletes();
+        });
+
+
+        Schema::create('user_lesson_infos', function (Blueprint $table) {
+            $table->unsignedBigInteger("user_id");
+            $table->unsignedBigInteger("lesson_id");
+            $table->timestamps();
+            $table->primary(['lesson_id', 'user_id']);
+
+            $table->foreign("user_id")
+                ->references("id")
+                ->on("users");
+
+            $table->foreign("lesson_id")
+                ->references("id")
+                ->on("lessons");
         });
 
         //Kazanım/Konu/Ünite daha doğrusu tüm müfredat
@@ -146,17 +180,17 @@ class CreateExamTables extends Migration
 
         //Sınavlar
         Schema::create('exams', function (Blueprint $table) {
-           $table->id()->startingValue(1000);
-           $table->unsignedBigInteger("type_id")->nullable();
-           $table->unsignedBigInteger("creator_id")->nullable();
-           $table->string('code', 50)->nullable();
-           $table->string('title', 1000);
-           $table->dateTime('start_date');
-           $table->dateTime('end_date');
-           $table->unsignedTinyInteger('level');
-           $table->string('description', 4000);
-           $table->timestamps();
-           $table->softDeletes();
+            $table->id()->startingValue(1000);
+            $table->unsignedBigInteger("type_id")->nullable();
+            $table->unsignedBigInteger("creator_id")->nullable();
+            $table->string('code', 50)->nullable();
+            $table->string('title', 1000);
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
+            $table->unsignedTinyInteger('level');
+            $table->string('description', 4000);
+            $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign("type_id")
                 ->references("id")
@@ -183,11 +217,11 @@ class CreateExamTables extends Migration
 
         //Sınav ders birleştirme tablosu
         Schema::create('exam_lesson_infos', function (Blueprint $table) {
-           $table->unsignedBigInteger("exam_id");
-           $table->unsignedBigInteger("lesson_id");
-           $table->tinyInteger("count");
-           $table->timestamps();
-           $table->primary(['exam_id', 'lesson_id']);
+            $table->unsignedBigInteger("exam_id");
+            $table->unsignedBigInteger("lesson_id");
+            $table->tinyInteger("count");
+            $table->timestamps();
+            $table->primary(['exam_id', 'lesson_id']);
 
             $table->foreign("exam_id")
                 ->references("id")
@@ -200,7 +234,7 @@ class CreateExamTables extends Migration
 
         //Sorular tablosu
         Schema::create('questions', function (Blueprint $table) {
-           $table->id()->startingValue(10000);
+            $table->id()->startingValue(10000);
             $table->unsignedBigInteger("parent_id")->nullable();
             $table->unsignedBigInteger("creator_id");
             $table->unsignedBigInteger("lesson_id");
@@ -257,10 +291,10 @@ class CreateExamTables extends Migration
 
         //Kazanım soru birleştirme tablosu
         Schema::create('curriculum_question_infos', function (Blueprint $table) {
-           $table->unsignedBigInteger("curriculum_id");
-           $table->unsignedBigInteger("question_id");
-           $table->timestamps();
-           $table->primary(['curriculum_id', 'question_id']);
+            $table->unsignedBigInteger("curriculum_id");
+            $table->unsignedBigInteger("question_id");
+            $table->timestamps();
+            $table->primary(['curriculum_id', 'question_id']);
 
 
             $table->foreign("curriculum_id")
@@ -274,11 +308,11 @@ class CreateExamTables extends Migration
 
         //Bu tabloiçin her hangi bir ilişki eklenmeyecek yazılımsal kontrol edilecek
         Schema::create("multi_choice_answers", function (Blueprint $table) {
-           $table->unsignedBigInteger("student_id");
-           $table->unsignedBigInteger("choice_id")->nullable();
-           $table->unsignedBigInteger("exam_id");
-           $table->unsignedBigInteger("question_id");
-           $table->primary(['student_id', 'question_id', 'choice_id', 'exam_id'], "PK_multiple_choice");
+            $table->unsignedBigInteger("student_id");
+            $table->unsignedBigInteger("choice_id")->nullable();
+            $table->unsignedBigInteger("exam_id");
+            $table->unsignedBigInteger("question_id");
+            $table->primary(['student_id', 'question_id', 'choice_id', 'exam_id'], "PK_multiple_choice");
         });
 
         Schema::enableForeignKeyConstraints();
@@ -293,6 +327,8 @@ class CreateExamTables extends Migration
     public function down()
     {
         Schema::dropIfExists('multi_choice_answers');
+        Schema::dropIfExists('user_lesson_infos');
+        Schema::dropIfExists('user_institution_infos');
         Schema::dropIfExists('curriculum_question_infos');
         Schema::dropIfExists('exam_question_infos');
         Schema::dropIfExists('choices');
