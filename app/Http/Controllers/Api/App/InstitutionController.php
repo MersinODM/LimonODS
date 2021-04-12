@@ -19,7 +19,87 @@
 namespace App\Http\Controllers\Api\App;
 
 
-class InstitutionController
-{
+use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Utils\ResponseCodes;
+use App\Http\Controllers\Utils\ResponseKeys;
+use App\Models\Institution;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
+class InstitutionController extends ApiController
+{
+    public function get($id){
+        $institutions=Institution::find($id);
+        $institutions->first();
+        return response()->json($institutions);
+
+    }
+    public function save(Request $request){
+        $validationResult = $this->apiValidator($request, [
+            'id'=>'required|integer',
+            'district_id' => 'required',
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'e_mail' => 'required'
+        ]);
+
+        if ($validationResult) {
+            return response()->json($validationResult, 422);
+        }
+
+        try{
+            DB::BeginTransaction();
+
+            $institutions=new Institution($request->all(["id","parent_id","district_id","name","phone","address","e_mail"]));
+            $institutions->save();
+
+            DB::commit();
+            return response()->json([
+                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+                ResponseKeys::MESSAGE => "Kurum kaydı başarılı"
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->apiException($e);
+        }
+    }
+    public function update($id, Request $request) {
+        $validationResult = $this->apiValidator($request, [
+            'id'=>'required|integer',
+            'district_id' => 'required',
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'e_mail' => 'required'
+        ]);
+
+        if ($validationResult) {
+            return response()->json($validationResult, 422);
+        }
+
+        try{
+            DB::BeginTransaction();
+
+            $institutions=Institution::find($id);
+            $institutions->fill($request->all(["id","parent_id","district_id","name","phone","address","e_mail"]));
+            $institutions->save();
+
+            DB::commit();
+            return response()->json([
+                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+                ResponseKeys::MESSAGE => "Kurum kaydı güncellendi"
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->apiException($e);
+        }
+    }
+    public function delete($id) {
+        Institution::destroy($id);
+        return response()->json([
+            ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+            ResponseKeys::MESSAGE => "Kurum silme başarılı"
+        ]);
+    }
 }
