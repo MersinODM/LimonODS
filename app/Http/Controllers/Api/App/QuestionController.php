@@ -72,7 +72,7 @@ class QuestionController extends ApiController
 
             foreach ($choices as $choice) {
                 $choicesModel = new Choice($choice);
-                $choicesModel->q_id = $question->id;
+                $choicesModel->question_id = $question->id;
                 $choicesModel->save();
             }
             DB::commit();

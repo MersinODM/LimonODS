@@ -43,6 +43,18 @@ class PermissionRoleSeeder extends Seeder
         Permission::create(['name' => 'update-exam', 'display_name' => "Sınav güncelleyebilme"]);
         Permission::create(['name' => 'delete-exam', 'display_name' => "Sınav silebilme"]);
 
+
+        Permission::create(['name' => 'level-*', 'display_name' => "Tüm seviyelerde çalışabilme"]);
+        Permission::create(['name' => 'level-4', 'display_name' => "4. sınıf seviyesinde çalışabilme"]);
+        Permission::create(['name' => 'level-5', 'display_name' => "5. sınıf seviyesinde çalışabilme"]);
+        Permission::create(['name' => 'level-6', 'display_name' => "6. sınıf seviyesinde çalışabilme"]);
+        Permission::create(['name' => 'level-7', 'display_name' => "7. sınıf seviyesinde çalışabilme"]);
+        Permission::create(['name' => 'level-8', 'display_name' => "8. sınıf seviyesinde çalışabilme"]);
+        Permission::create(['name' => 'level-9', 'display_name' => "9. sınıf seviyesinde çalışabilme"]);
+        Permission::create(['name' => 'level-10', 'display_name' => "10. sınıf seviyesinde çalışabilme"]);
+        Permission::create(['name' => 'level-11', 'display_name' => "11. sınıf seviyesinde çalışabilme"]);
+        Permission::create(['name' => 'level-12', 'display_name' => "12. sınıf seviyesinde çalışabilme"]);
+
         // create roles and assign created permissions
 
         // this can be done as separate statements

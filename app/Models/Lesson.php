@@ -27,4 +27,8 @@ class Lesson extends Model
         "name",
         "code"
     ];
+
+    public function curriculums() {
+        return $this->hasMany(Curriculum::class);
+    }
 }

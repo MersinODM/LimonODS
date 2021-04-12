@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\App\AuthController as AppApiAuthController;
 use App\Http\Controllers\Api\App\ExamController;
-use App\Http\Controllers\Api\App\InstitutionController;
+use App\Http\Controllers\Api\App\LessonController;
 use App\Http\Controllers\Api\App\QuestionController;
 use App\Http\Controllers\Api\App\UserController;
 use Illuminate\Support\Facades\Route;
@@ -46,11 +46,8 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'app/v1'], static func
     Route::put("exams/{id}", [ExamController::class, "update"]);
     Route::delete("exams/{id}", [ExamController::class, "delete"]);
 
-    // Okullar ile ilgili rota tanımlamaları
-    Route::get("institutions/{id}", [InstitutionController::class, "get"]);
-    Route::post("institutions", [InstitutionController::class, "save"]);
-    Route::put("institutions/{id}", [InstitutionController::class, "update"]);
-    Route::delete("institutions/{id}", [InstitutionController::class, "delete"]);
+    //Dersler ilgili rota tanımlamaları
+    Route::get("lessons", [LessonController::class, "getAllLessons"]);
 });
 
 /*

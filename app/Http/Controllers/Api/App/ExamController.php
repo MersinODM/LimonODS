@@ -131,12 +131,17 @@ class ExamController extends ApiController
     }
 
     public function delete($id) {
-        Exam::destroy($id);
-        return response()->json([
-            ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
-            ResponseKeys::MESSAGE => "Sınav silme başarılı"
-        ]);
+        try {
+            DB::beginTransaction();
+            Exam::destroy($id);
+            DB::commit();
+            return response()->json([
+                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+                ResponseKeys::MESSAGE => "Sınav silme başarılı"
+            ]);
+        }catch (\Exception $e) {
+            DB::rollBack();
+            return $this->apiException($e);
+        }
     }
-
-
 }

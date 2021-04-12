@@ -19,7 +19,9 @@
 namespace App\Http\Controllers\Api\App;
 
 
-class PermissionController
+use App\Http\Controllers\ApiController;
+
+class PermissionController extends ApiController
 {
 
 }

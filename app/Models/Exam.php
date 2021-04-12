@@ -36,8 +36,19 @@ class Exam extends Model
         "end_date",
         "description"
     ];
+
+    public function questions() {
+        return $this->belongsToMany(Question::class, 'exam_question_infos');
+    }
+
     public function lessons() {
-        return $this->hasMany(ExamInfo::class, "exam_id");
+        return $this->belongsToMany(Lesson::class, 'exam_lesson_infos')
+            ->withPivot('count');
+    }
+
+    public function institutions () {
+        return $this->belongsToMany(Institution::class, 'exam_institution_infos');
+
     }
 
 }

@@ -19,18 +19,17 @@
 namespace App\Models;
 
 
+use App\Traits\SelfReferencing;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Institution extends Model
 {
-
-    use SoftDeletes;
+    use SelfReferencing;
 
     protected $fillable=[
-        "id",
         "parent_id",
         "district_id",
+        "type",
         "name",
         "phone",
         "address",

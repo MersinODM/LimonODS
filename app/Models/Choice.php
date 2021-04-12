@@ -20,16 +20,18 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Choice extends Model
 {
     protected $fillable = [
         "content",
         "is_correct",
-        "q_id"
+        "question_id"
     ];
 
-    public function question() {
-        return $this->belongsTo(question::class, 'q_id');
+    public function question(): BelongsTo
+    {
+        return $this->belongsTo(question::class, 'question_id');
     }
 }

@@ -19,17 +19,19 @@
 namespace App\Models;
 
 
+use App\Traits\SelfReferencing;
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+class Curriculum extends Model
 {
+    use SelfReferencing;
+
     protected $fillable=[
-        "name",
-        "code"
+      "lesson_id",
+      "parent_id",
+      "code",
+      "level",
+      "type",
+      "content"
     ];
-
-    public function institutions() {
-        return $this->belongsToMany(Institution::class, "institution_group_infos");
-    }
-
 }
