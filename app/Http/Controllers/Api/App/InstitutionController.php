@@ -38,6 +38,7 @@ class InstitutionController extends ApiController
         $validationResult = $this->apiValidator($request, [
             'id'=>'required|integer',
             'district_id' => 'required',
+            'type' => 'required',
             'name' => 'required',
             'phone' => 'required',
             'address' => 'required',
@@ -51,7 +52,7 @@ class InstitutionController extends ApiController
         try{
             DB::BeginTransaction();
 
-            $institutions=new Institution($request->all(["id","parent_id","district_id","name","phone","address","e_mail"]));
+            $institutions=new Institution($request->all(["id","parent_id","district_id","type","name","phone","address","e_mail"]));
             $institutions->save();
 
             DB::commit();
@@ -68,6 +69,7 @@ class InstitutionController extends ApiController
         $validationResult = $this->apiValidator($request, [
             'id'=>'required|integer',
             'district_id' => 'required',
+            'type' => 'required',
             'name' => 'required',
             'phone' => 'required',
             'address' => 'required',
@@ -82,7 +84,7 @@ class InstitutionController extends ApiController
             DB::BeginTransaction();
 
             $institutions=Institution::find($id);
-            $institutions->fill($request->all(["id","parent_id","district_id","name","phone","address","e_mail"]));
+            $institutions->fill($request->all(["id","parent_id","district_id","type","name","phone","address","e_mail"]));
             $institutions->save();
 
             DB::commit();
