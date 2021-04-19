@@ -27,6 +27,7 @@ class Institution extends Model
     use SelfReferencing;
 
     protected $fillable=[
+        "id",
         "parent_id",
         "district_id",
         "type",
