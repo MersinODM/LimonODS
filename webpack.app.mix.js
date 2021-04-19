@@ -48,7 +48,7 @@ mix.webpackConfig({
     jquery: 'jQuery',
     'jquery.dataTables': 'jquery.dataTables',
     bootstrap: 'bootstrap',
-    ckeditor: 'ckeditor'
+    // ckeditor: 'ckeditor'
   }
 })
 

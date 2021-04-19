@@ -23,8 +23,49 @@
     <template #content>
       <div class="row">
         <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Ders Seçimi</label>
+                <multiselect
+                  v-model="selectedLesson"
+                  name="room"
+                  label="name"
+                  value-prop="id"
+                  :options="lessons"
+                  :class="{ 'select-error': lessonEM }"
+                />
+                <div
+                  v-if="lessonEM"
+                  role="alert"
+                  class="invalid-feedback order-last"
+                  style="display: inline-block;"
+                >
+                  {{ lessonEM }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Sınıf Seçimi</label>
+                <multiselect
+                  v-model="selectedLevel"
+                  :options="levels"
+                  :class="{ 'select-error': lessonEM }"
+                />
+                <div
+                  v-if="lessonEM"
+                  role="alert"
+                  class="invalid-feedback order-last"
+                  style="display: inline-block;"
+                >
+                  {{ lessonEM }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-8" />
+        <div class="col-md-8">
+          <custom-editor />
+        </div>
       </div>
     </template>
   </page>
@@ -35,10 +76,12 @@ import Page from '../../../commons/components/Page'
 import Multiselect from '@vueform/multiselect'
 import { number, object, string, array } from 'yup'
 import { useField, useForm } from 'vee-validate'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import LessonService from '../../services/LessonService'
+import CustomEditor from '../../../commons/components/CustomEditor'
 export default {
   name: 'NewQuestion',
-  components: { Page, Multiselect },
+  components: { CustomEditor, Page, Multiselect },
   setup () {
     const lessons = ref([])
     const levels = ref([]) // Bu lessons tan gelebilir
@@ -74,6 +117,27 @@ export default {
     const save = handleSubmit(async values => {
       await console.log(values)
     })
+
+    // this.branches = this.tempBranchesClassLevels
+    //     .filter(value => {
+    //       return value.class_levels.split(',')
+    //           .map(Number)
+    //           .includes(this.selectedClassLevel)
+
+    const getLessons = async () => {
+      lessons.value = await LessonService.getLessons()
+    }
+
+    watch(selectedLesson, (newVal, oldVal) => {
+      selectedLevel.value = null
+      levels.value = lessons.value
+        .find((l) => l?.id === newVal)
+        ?.levels
+        .split(',')
+        .map(Number)
+    })
+
+    getLessons()
 
     return {
       selectedLesson,

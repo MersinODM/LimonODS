@@ -1,0 +1,103 @@
+/*
+ *     Copyright 2021 Mersin İl Milli Eğitim Müdürlüğü Ölçme Değerlendirme Merkezi
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ */
+:root {
+    --ck-sample-base-spacing: 2em;
+    --ck-sample-color-white: #fff;
+    --ck-sample-color-green: #279863;
+    --ck-sample-color-blue: #1a9aef;
+    --ck-sample-container-width: 1285px;
+    --ck-sample-sidebar-width: 350px;
+    --ck-sample-editor-min-height: 200px;
+    --ck-sample-editor-z-index: 10;
+}
+
+/* --------- EDITOR STYLES  ---------------------------------------------------------------------------------------- */
+
+.editor__editable,
+    /* Classic build. */
+main .ck-editor[role='application'] .ck.ck-content,
+    /* Decoupled document build. */
+.ck.editor__editable[role='textbox'],
+.ck.ck-editor__editable[role='textbox'],
+    /* Inline & Balloon build. */
+.ck.editor[role='textbox'] {
+    width: 100%;
+    background: #fff;
+    font-size: 1em;
+    line-height: 1.6em;
+    min-height: var(--ck-sample-editor-min-height);
+    padding: 1.5em 2em;
+}
+
+.ck.ck-editor__editable {
+    background: #fff;
+    border: 1px solid hsl(0, 0%, 70%);
+    width: 100%;
+}
+
+.ck.ck-editor {
+    /* To enable toolbar wrapping. */
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Because of sidebar `position: relative`, Edge is overriding the outline of a focused editor. */
+.ck.ck-editor__editable {
+    position: relative;
+    z-index: var(--ck-sample-editor-z-index);
+}
+
+/* --------- DECOUPLED (DOCUMENT) BUILD. ---------------------------------------------*/
+body[data-editor='DecoupledDocumentEditor'] .document-editor__toolbar {
+    width: 100%;
+}
+
+body[ data-editor='DecoupledDocumentEditor'] .collaboration-demo__editable,
+body[ data-editor='DecoupledDocumentEditor'] .row-editor .editor {
+    width: 18.5cm;
+    height: 100%;
+    min-height: 26.25cm;
+    padding: 1.75cm 1.5cm;
+    margin: 2.5rem;
+    border: 1px hsl( 0, 0%, 82.7% ) solid;
+    background-color: var(--ck-sample-color-white);
+    box-shadow: 0 0 5px hsla( 0, 0%, 0%, .1 );
+}
+
+body[ data-editor='DecoupledDocumentEditor'] .row-editor {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    overflow-y: auto;
+    background-color: #f2f2f2;
+    border: 1px solid hsl(0, 0%, 77%);
+}
+
+body[data-editor='DecoupledDocumentEditor'] .sidebar {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+.ck.ck-math-form {
+    padding: 0.5em !important;
+}
+
+.ck-math-form input.ck.ck-input.ck-input-text {
+    min-width: 16em;
+    width:auto;
+}

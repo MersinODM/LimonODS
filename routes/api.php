@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Api\App\AuthController as AppApiAuthController;
 use App\Http\Controllers\Api\App\ExamController;
+use App\Http\Controllers\Api\App\ImageController;
 use App\Http\Controllers\Api\App\InstitutionController;
 use App\Http\Controllers\Api\App\LessonController;
 use App\Http\Controllers\Api\App\QuestionController;
 use App\Http\Controllers\Api\App\UserController;
+use App\Http\Controllers\Common\ImageQueryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::post('app/auth/login', [AppApiAuthController::class, 'login']);
+Route::get('v1/storage', [ImageQueryController::class, 'get'])->name("getImage");
+Route::post('v1/storage', [ImageController::class, 'save']);
 
 
 
@@ -34,6 +38,7 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'app/v1'], static func
 
     // Kullanıcı adı, rolleri ve izinleri geri döncecek
     Route::get("me", [UserController::class, "me"]);
+//    Route::get("me", [UserController::class, "me"]);
 
     // Sorular ile ilgili rota tanımlamaları
     Route::get("questions/{id}", [QuestionController::class, "get"]);

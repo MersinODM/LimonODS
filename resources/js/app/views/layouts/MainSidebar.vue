@@ -80,7 +80,7 @@
               </li>
               <li class="nav-item">
                 <router-link
-                  :to="{name: '' }"
+                  :to="{name: 'newQuestion' }"
                   class="nav-link"
                 >
                   <i class="mdi mdi-book-plus" />

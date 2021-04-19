@@ -1,19 +1,20 @@
 <template>
-  <div class="card card-primary card-outline card-tabs">
-    <div class="card-header p-0 pt-1 border-bottom-0">
+  <div class="card card-primary card-outline card-outline-tabs">
+    <div class="card-header p-0 border-bottom-0">
       <ul class="nav nav-tabs">
         <li
-          v-for="(tab, index) in tabs"
-          :key="tab.title"
+          v-for="tab in tabs"
+          :key="tab.props.title"
           class="nav-item"
-          @click="selectTab(index)"
         >
           <a
-            href="#"
             class="nav-link"
-            :class="{active: tab.isActive}"
-            @click.prevent
-          >{{ tab.title }}</a>
+            :class="tab.props.title === selectedIndex && 'active'"
+            href="#"
+            @click.prevent="selectedIndex = tab.props.title"
+          >
+            {{ tab.props.title }}
+          </a>
         </li>
       </ul>
       <div class="card-body">
@@ -25,27 +26,55 @@
   </div>
 </template>
 <script>
+import {
+  onBeforeMount,
+  onMounted,
+  onBeforeUpdate,
+  provide,
+  reactive,
+  toRefs
+} from 'vue'
+
+const isTab = (node) => node.type.name === 'Tab'
+const isFragment = (node) =>
+  typeof node.type === 'symbol' && node.type.description === 'Fragment'
+const hasTabs = (node) =>
+  node.children && node.children.length && node.children.some(isTab)
+const isTabParent = (node) => isFragment(node) && hasTabs(node)
+
 export default {
   name: 'Tabs',
-  data: () => ({
-    selectedIndex: 0,
-    tabs: []
-  }),
-  created () {
-    this.tabs = this.$children
-  },
-  mounted () {
-    this.selectTab(0)
-  },
-  methods: {
-    selectTab (index) {
-      this.selectedIndex = index
-      this.tabs.forEach((tab, i) => {
-        tab.isActive = (i === index)
-      })
-    }
-  }
+  setup (_, { slots }) {
+    const state = reactive({
+      selectedIndex: null,
+      tabs: [],
+      count: 0
+    })
 
+    provide('TabsProvider', state)
+
+    const selectTab = (i) => {
+      state.selectedIndex = i
+    }
+
+    const update = () => {
+      if (slots.default) {
+        state.tabs = slots
+          .default()
+          .filter((node) => isTab(node) || isTabParent(node))
+          .flatMap((node) => (isTabParent(node) ? node.children : node))
+      }
+    }
+
+    onBeforeMount(() => update())
+    onBeforeUpdate(() => update())
+
+    onMounted(() => {
+      selectTab(0)
+    })
+
+    return { ...toRefs(state), selectTab }
+  }
 }
 </script>
 

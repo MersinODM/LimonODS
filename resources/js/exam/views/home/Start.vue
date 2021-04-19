@@ -16,12 +16,40 @@
   -->
 
 <template>
-başlama
+  <page>
+    <template #header>
+      <h4>Ana Menü</h4>
+    </template>
+    <template #content>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row justify-content-center">
+                <div class="col-md-3">
+                  <router-link
+                    class="btn btn-primary"
+                    :to="{name: 'showExam'}"
+                  >
+                    Sınava Git
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </page>
 </template>
 
 <script>
+import Page from '../../../commons/components/Page'
+
 export default {
-name: "Start"
+  name: 'Start',
+  components: { Page }
+
 }
 </script>
 

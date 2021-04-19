@@ -15,12 +15,13 @@
  *
  */
 
-import {createRouter, createWebHistory} from "vue-router";
-import Login from "../views/auth/Login";
-import MasterView from "../views/layouts/MasterView";
-import Start from "../views/home/Start";
-import UnderConstruction from "../../commons/views/utils/UnderConstruction";
-import NotFound from "../../commons/views/utils/NotFound";
+import { createRouter, createWebHistory } from 'vue-router'
+import Login from '../views/auth/Login'
+import MasterView from '../views/layouts/MasterView'
+import Start from '../views/home/Start'
+import UnderConstruction from '../../commons/views/utils/UnderConstruction'
+import NotFound from '../../commons/views/utils/NotFound'
+import NewQuestion from '../views/questions/NewQuestion'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -38,6 +39,11 @@ const router = createRouter({
           path: '',
           name: 'start',
           component: Start
+        },
+        {
+          path: 'questions/new',
+          name: 'newQuestion',
+          component: NewQuestion
         },
         {
           path: 'under-construction',
