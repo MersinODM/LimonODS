@@ -21,7 +21,7 @@
     --ck-sample-color-blue: #1a9aef;
     --ck-sample-container-width: 1285px;
     --ck-sample-sidebar-width: 350px;
-    --ck-sample-editor-min-height: 200px;
+    --ck-sample-editor-min-height:6em;
     --ck-sample-editor-z-index: 10;
 }
 
@@ -100,4 +100,8 @@ body[data-editor='DecoupledDocumentEditor'] .sidebar {
 .ck-math-form input.ck.ck-input.ck-input-text {
     min-width: 16em;
     width:auto;
+}
+
+.ck-content .table {
+    width: auto;
 }

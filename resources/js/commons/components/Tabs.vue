@@ -70,9 +70,10 @@ export default {
     onBeforeUpdate(() => update())
 
     onMounted(() => {
-      selectTab(0)
+      selectTab(state.tabs[0].props.title)
     })
 
+    // selectTab(0)
     return { ...toRefs(state), selectTab }
   }
 }

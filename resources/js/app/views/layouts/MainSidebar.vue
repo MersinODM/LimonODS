@@ -23,11 +23,12 @@
       class="brand-link"
     >
       <img
-        alt="Logo"
-        class="brand-image img-circle elevation-3"
-        style="opacity: .8"
+        :src="logo"
+        alt="Limon ÖDS"
+        class="brand-image float-left"
+        style="max-width:1.5em; opacity: .8"
       >
-      <span class="brand-text font-weight-light">Test</span>
+      <span class="brand-text font-weight-light">Limon <b>ÖDS</b></span>
     </a>
     <div class="sidebar">
       <div class="user-panel mt-3 pb-3 mb-3 d-flex justify-content-center">
@@ -85,26 +86,6 @@
                 >
                   <i class="mdi mdi-book-plus" />
                   <p>Soru Oluştur</p>
-                </router-link>
-              </li>
-              <li
-                class="nav-item"
-              >
-                <router-link
-                  :to="{name: 'underConstruction' }"
-                  class="nav-link"
-                >
-                  <i class="mdi mdi-test-tube" />
-                  <p></p>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link
-                  :to="{name: '' }"
-                  class="nav-link"
-                >
-                  <i class="mdi mdi-delete-restore" />
-                  <p>Proje Silme İstekleri</p>
                 </router-link>
               </li>
             </ul>
@@ -188,13 +169,12 @@
 
 <script>
 
-// import img from '../../../images/Logo.png'
-// import { mapGetters } from 'vuex'
+import logo from '../../../../images/svg/logo.svg'
 
 export default {
   name: 'NMainSidebar',
   data: () => ({
-    // userImg: img
+    logo: logo
   }),
   mounted () {
     $('body').Layout('fixLayoutHeight')

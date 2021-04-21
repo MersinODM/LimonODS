@@ -60,11 +60,119 @@
                   {{ lessonEM }}
                 </div>
               </div>
+              <div class="form-group">
+                <label>Ünite Seçimi</label>
+                <multiselect
+                  v-model="selectedLevel"
+                  :options="levels"
+                  :class="{ 'select-error': lessonEM }"
+                />
+                <div
+                  v-if="lessonEM"
+                  role="alert"
+                  class="invalid-feedback order-last"
+                  style="display: inline-block;"
+                >
+                  {{ lessonEM }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Konu Seçimi</label>
+                <multiselect
+                  v-model="selectedLevel"
+                  :options="levels"
+                  :class="{ 'select-error': lessonEM }"
+                />
+                <div
+                  v-if="lessonEM"
+                  role="alert"
+                  class="invalid-feedback order-last"
+                  style="display: inline-block;"
+                >
+                  {{ lessonEM }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Kazanım Seçimi</label>
+                <multiselect
+                  v-model="selectedLevel"
+                  :options="levels"
+                  :class="{ 'select-error': lessonEM }"
+                />
+                <div
+                  v-if="lessonEM"
+                  role="alert"
+                  class="invalid-feedback order-last"
+                  style="display: inline-block;"
+                >
+                  {{ lessonEM }}
+                </div>
+              </div>
+              <div class="form-group">
+                <button
+                  class="btn btn-primary btn-block"
+                  @click="save"
+                >
+                  Kaydet
+                </button>
+              </div>
             </div>
           </div>
         </div>
         <div class="col-md-8">
-          <custom-editor />
+          <tabs>
+            <tab title="Düzenleme">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Madde</label>
+                    <custom-editor
+                      v-model="content"
+                      :style="{'min-height': 12 + 'em' }"
+                    />
+                  </div>
+                </div>
+              </div>
+              <c-exam :choices="choices" />
+              <!--                <div class="col-md-12">-->
+              <!--                  <div-->
+              <!--                    v-for="(choice, index) in choices"-->
+              <!--                    :key="index"-->
+              <!--                    class="form-group"-->
+              <!--                  >-->
+              <!--                    <div class="row md-1">-->
+              <!--                      <div class="col-md-12">-->
+              <!--                        <label>Seçenek {{ index + 1 }}</label>-->
+              <!--                        <button-->
+              <!--                          class="btn btn-warning btn-sm float-right"-->
+              <!--                          @click="removeChoice(index)"-->
+              <!--                        >-->
+              <!--                          Sil-->
+              <!--                        </button>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <custom-editor v-model="choice.content" />-->
+              <!--                    <pretty-check-->
+              <!--                      v-model="choice.isCorrect"-->
+              <!--                      @change="correctChoiceChanged(index)"-->
+              <!--                    >-->
+              <!--                      Doğru cevap-->
+              <!--                    </pretty-check>-->
+              <!--                  </div>-->
+              <!--                </div>-->
+            </tab>
+            <tab title="Önizleme">
+              <div class="card">
+                <div class="card-body">
+                  <div
+                    v-katex:auto
+                    class="ck-content"
+                    v-html="content"
+                  />
+                </div>
+              </div>
+            </tab>
+          </tabs>
         </div>
       </div>
     </template>
@@ -79,9 +187,13 @@ import { useField, useForm } from 'vee-validate'
 import { ref, watch } from 'vue'
 import LessonService from '../../services/LessonService'
 import CustomEditor from '../../../commons/components/CustomEditor'
+import Tabs from '../../../commons/components/Tabs'
+import Tab from '../../../commons/components/Tab'
+import CExam from '../../../commons/components/Choices'
+
 export default {
   name: 'NewQuestion',
-  components: { CustomEditor, Page, Multiselect },
+  components: { CExam, CustomEditor, Page, Multiselect, Tabs, Tab },
   setup () {
     const lessons = ref([])
     const levels = ref([]) // Bu lessons tan gelebilir
@@ -90,6 +202,8 @@ export default {
     const learningOutcomes = ref([])
     const context = ref('')
     const body = ref('')
+    const content = ref('')
+    const choices = []
 
     const schema = object({
       lesson: number().typeError(() => 'Ders seçimi yapılmaldır!')
@@ -118,12 +232,6 @@ export default {
       await console.log(values)
     })
 
-    // this.branches = this.tempBranchesClassLevels
-    //     .filter(value => {
-    //       return value.class_levels.split(',')
-    //           .map(Number)
-    //           .includes(this.selectedClassLevel)
-
     const getLessons = async () => {
       lessons.value = await LessonService.getLessons()
     }
@@ -140,6 +248,11 @@ export default {
     getLessons()
 
     return {
+      // addChoice,
+      // removeChoice,
+      // correctChoiceChanged,
+      choices,
+      content,
       selectedLesson,
       lessonEM,
       lessons,

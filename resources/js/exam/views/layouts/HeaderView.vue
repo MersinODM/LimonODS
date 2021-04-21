@@ -19,80 +19,80 @@
   <nav class="main-header navbar navbar-expand-md navbar-light">
     <div class="container-fluid">
       <router-link
-          class="navbar-brand"
-          :to="{ name: 'start' }"
+        class="navbar-brand"
+        :to="{ name: 'start' }"
       >
         <img
-            :src="logo"
-            alt="Limon ÖDS"
-            class="brand-image"
-            style="opacity: .8"
+          :src="logo"
+          alt="Limon ÖDS"
+          class="brand-image"
+          style="opacity: .8"
         >
       </router-link>
       <button
-          class="navbar-toggler order-1 collapsed"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarCollapse"
-          aria-controls="navbarCollapse"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+        class="navbar-toggler order-1 collapsed"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
         <span class="navbar-toggler-icon" />
       </button>
       <div
-          id="navbarCollapse"
-          class="collapse navbar-collapse order-3"
+        id="navbarCollapse"
+        class="collapse navbar-collapse order-3"
       >
         <!-- Left navbar links -->
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link
-                class="nav-link"
-                :to="{name: 'start'}"
+              class="nav-link"
+              :to="{name: 'start'}"
             >
               SINAVLAR
             </router-link>
           </li>
           <li class="nav-item dropdown">
             <a
-                id="ddsReport"
-                href="#"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="true"
-                class="nav-link dropdown-toggle"
+              id="ddsReport"
+              href="#"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="true"
+              class="nav-link dropdown-toggle"
             ><i class="mdi mdi-account-group" /> KARNELER</a>
             <ul
-                aria-labelledby="dropdownSubMenu1"
-                class="dropdown-menu border-0 shadow"
+              aria-labelledby="dropdownSubMenu1"
+              class="dropdown-menu border-0 shadow"
             >
               <li>
                 <router-link
-                    href="#"
-                    class="dropdown-item"
-                    :to="{name: 'underConstruction'}"
+                  href="#"
+                  class="dropdown-item"
+                  :to="{name: 'underConstruction'}"
                 >
                   Karne Listesi
                 </router-link>
               </li>
-<!--              <li class="dropdown-divider" />-->
-<!--              <li>-->
-<!--                <router-link-->
-<!--                    class="dropdown-item"-->
-<!--                    :to="{name: 'newCustomer'}"-->
-<!--                >-->
-<!--                  -->
-<!--                </router-link>-->
-<!--              </li>-->
+              <!--              <li class="dropdown-divider" />-->
+              <!--              <li>-->
+              <!--                <router-link-->
+              <!--                    class="dropdown-item"-->
+              <!--                    :to="{name: 'newCustomer'}"-->
+              <!--                >-->
+              <!--                  -->
+              <!--                </router-link>-->
+              <!--              </li>-->
             </ul>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto order-1 order-md-3">
           <li class="nav-item">
             <a
-                class="nav-link"
-                role="button"
+              class="nav-link"
+              role="button"
             >
               <i class="mdi mdi-logout" /></a>
           </li>
@@ -128,7 +128,6 @@
 <script>
 import logo from '../../../../images/svg/logo.svg'
 
-
 export default {
   name: 'NHeader',
   data: () => ({
@@ -138,7 +137,7 @@ export default {
   }),
   mounted () {
     $('[data-widget="pushmenu"]').PushMenu()
-  },
+  }
   // methods: {
   //   ...mapActions('app', ['logout'])
   // }

@@ -17,96 +17,124 @@
 
 <template>
   <ckeditor
+    style="height:auto;"
+    :model-value="modelValue"
     :editor="editor"
     :config="editorConfig"
+    @input="$emit('update:modelValue', $event)"
+    @ready="onReady"
   />
 </template>
 
 <script>
 import CKEditor from '@ckeditor/ckeditor5-vue'
+import AxiosAdapter from '../ckeditor/utils/AxiosAdapter'
+const defaultConfig = {
+  math: {
+    engine: 'katex',
+    outputType: 'span',
+    forceOutputType: false,
+    enablePreview: true
+  },
+  toolbar: {
+    items: [
+      'bold',
+      'italic',
+      'link',
+      'bulletedList',
+      'numberedList',
+      'subscript',
+      'superscript',
+      'underline',
+      'alignment',
+      '|',
+      'outdent',
+      'indent',
+      '|',
+      'math',
+      'specialCharacters',
+      'imageUpload',
+      'blockQuote',
+      'insertTable',
+      'undo',
+      'redo'
+    ]
+  },
+  language: 'tr',
+  table: {
+    contentToolbar: [
+      'tableColumn',
+      'tableRow',
+      'mergeTableCells',
+      'tableCellProperties',
+      'tableProperties'
+    ]
+  },
+  image: {
+    // Configure the available styles.
+    styles: [
+      'alignLeft', 'alignCenter', 'alignRight'
+    ],
+
+    // Configure the available image resize options.
+    resizeOptions: [
+      {
+        name: 'resizeImage:original',
+        label: 'Original',
+        value: null
+      },
+      {
+        name: 'resizeImage:50',
+        label: '50%',
+        value: '50'
+      },
+      {
+        name: 'resizeImage:75',
+        label: '75%',
+        value: '75'
+      }
+    ],
+    // You need to configure the image toolbar, too, so it shows the new style
+    // buttons as well as the resize buttons.
+    toolbar: [
+      'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+      '|',
+      'resizeImage',
+      '|',
+      'imageTextAlternative'
+    ]
+  },
+  licenseKey: ''
+}
+
 export default {
   name: 'CustomEditor',
   components: { ckeditor: CKEditor.component },
   props: {
-    // config: {
-    //   type: Object,
-    //   required: true
-    // },
-    // modelValue: {
-    //   type: String,
-    //   required: false,
-    //   default: ''
-    // }
+    config: {
+      required: false,
+      default: defaultConfig
+    },
+    modelValue: {
+      type: String,
+      required: false,
+      default: ''
+    }
   },
+  emits: ['update:modelValue'],
   setup (props) {
-    return {
-      // eslint-disable-next-line no-undef
-      editor: ClassicEditor,
-      editorConfig: {
-        math: {
-          engine: 'katex',
-          outputType: 'script',
-          forceOutputType: false,
-          enablePreview: true
-        },
-        toolbar: {
-          items: [
-            'bold',
-            'italic',
-            'link',
-            'bulletedList',
-            'numberedList',
-            'subscript',
-            'superscript',
-            'underline',
-            'alignment',
-            '|',
-            'outdent',
-            'indent',
-            '|',
-            'math',
-            'specialCharacters',
-            'imageUpload',
-            'blockQuote',
-            'insertTable',
-            'undo',
-            'redo'
-          ]
-        },
-        language: 'tr',
-        image: {
-          toolbar: [
-            'imageTextAlternative',
-            'imageStyle:full',
-            'imageStyle:side'
-          ]
-        },
-        table: {
-          contentToolbar: [
-            'tableColumn',
-            'tableRow',
-            'mergeTableCells',
-            'tableCellProperties',
-            'tableProperties'
-          ]
-        },
-        simpleUpload: {
-          // The URL that the images are uploaded to.
-          uploadUrl: 'http://localhost/api/storage',
-
-          // Enable the XMLHttpRequest.withCredentials property.
-          withCredentials: true
-
-          // Headers sent along with the XMLHttpRequest to the upload server.
-          // headers: {
-          //   'X-CSRF-TOKEN': 'CSRF-Token',
-          //   Authorization: 'Bearer <JSON Web Token>'
-          // }
-        },
-        licenseKey: ''
+    const onReady = (editor) => {
+      editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+        return new AxiosAdapter(loader)
       }
     }
 
+    return {
+      onReady,
+      // eslint-disable-next-line no-undef
+      editor: ClassicEditor,
+      editorConfig: props.config
+    }
     // onMounted(() => {
     //   ClassicEditor
     //     .create(document.querySelector('#editor'), {

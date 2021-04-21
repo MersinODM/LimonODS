@@ -21,24 +21,31 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <a
-            class="nav-link"
-            data-widget="pushmenu"
-            href="#"
-            role="button"
-        ><img alt="">
-          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
-        </svg>
-          <img/>
+          class="nav-link"
+          data-widget="pushmenu"
+          href="#"
+          role="button"
+        >
+          <img alt="">
+          <svg
+            style="width:24px;height:24px"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"
+            />
+          </svg>
+          <img>
         </a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a
-            class="nav-link"
-            role="button"
-            @click="logout"
+          class="nav-link"
+          role="button"
+          @click="logout"
         >
           <i class="mdi mdi-logout" /></a>
       </li>
@@ -49,7 +56,6 @@
 <script>
 // import img from '../../../images/Logo.png'
 
-
 export default {
   name: 'NHeader',
   data: () => ({
@@ -59,7 +65,7 @@ export default {
   }),
   mounted () {
     $('[data-widget="pushmenu"]').PushMenu()
-  },
+  }
   // methods: {
   //   ...mapActions('app', ['logout'])
   // }

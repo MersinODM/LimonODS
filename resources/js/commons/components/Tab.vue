@@ -21,17 +21,19 @@ export default {
   },
   setup (props) {
     const isActive = ref(false)
-    const tabs = inject('TabsProvider')
+    const state = inject('TabsProvider')
 
     watch(
-      () => tabs.selectedIndex,
+      () => state.selectedIndex,
       () => {
-        isActive.value = props.title === tabs.selectedIndex
+        // state.tabs[state.selectedIndex].isActive = true
+        isActive.value = props.title === state.selectedIndex
       }
     )
 
     onBeforeMount(() => {
-      isActive.value = props.title === tabs.selectedIndex
+      isActive.value = props.title === state.selectedIndex
+      // state.tabs[state.selectedIndex].isActive = true
     })
     return { isActive }
   }

@@ -18,8 +18,8 @@
 const mix = require('laravel-mix')
 require('laravel-mix-bundle-analyzer')
 require('laravel-mix-merge-manifest')
-// const webpack = require('webpack')
 const CompressionPlugin = require('compression-webpack-plugin')
+
 
 /*
  |--------------------------------------------------------------------------
@@ -47,7 +47,7 @@ mix.webpackConfig({
   externals: {
     jquery: 'jQuery',
     'jquery.dataTables': 'jquery.dataTables',
-    bootstrap: 'bootstrap',
+    bootstrap: 'bootstrap'
     // ckeditor: 'ckeditor'
   }
 })
@@ -62,6 +62,7 @@ mix.copyDirectory('resources/images', 'public/images')
 // mix.copy('node_modules/bootstrap/dist/css/bootstrap.min.css', 'public/css/bootstrap.min.css')
 mix.copyDirectory('node_modules/@mdi/font/fonts', 'public/fonts')
 mix.copyDirectory('./resources/js/external', 'public/js/app')
+// mix.copyDirectory('./resources/js/external', 'public/js/app')
 
 mix.js('resources/js/app/app.js', 'public/js/app')
   .vue({ version: 3 })

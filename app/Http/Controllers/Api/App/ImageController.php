@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Storage;
 class ImageController extends ApiController
 {
     public function save(Request $request) {
+
         $validationResult = $this->apiValidator($request, [
             "image" => "required|mimes:png,jpg,jpeg|max:1024"
         ]);

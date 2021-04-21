@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css" integrity="sha512-el2z+rjIj40JeIlKyqcoRjGNjvwHVlyahNQ1PhSs4PCztr6jJ4GgpjgN+1a++L9HZxhLXpa4eLG3ry976z0O2Q==" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/r-2.2.7/datatables.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -18,6 +20,7 @@
 <script defer type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/r-2.2.7/datatables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.js" integrity="sha512-O7WTu9pghLBfbQSGAf2xOFoRxDrHKS3kjRuuiCWttAf76q6h8Qj+KYPBF5EdZsE24LvXiFUshVNWaAxBOij8VA==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/contrib/mhchem.min.js" integrity="sha512-oGRFOTIYLFCM52dbNUeknDsKpeFmjrqvHTHR7mSDF9koxr+9nA4xAZ/qd1RlySCU/BS5HvHQMty0VAikZtfMqg==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.2/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"></script>
 <script defer src="{{ asset('js/app/ckeditor/ckeditor.js') }}" type="application/javascript"></script>
 <script defer src="{{ asset('js/app/manifest.js') }}" type="application/javascript"></script>
 <script defer src="{{ asset('js/app/vendor.js') }}" type="application/javascript"></script>
