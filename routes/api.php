@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'app/v1'], static func
     Route::put("exams/{id}", [ExamController::class, "update"]);
     Route::delete("exams/{id}", [ExamController::class, "delete"]);
 
-    // Sorular ile ilgili rota tanımlamaları
+    // Kurumlar ile ilgili rota tanımlamaları
     Route::get("institutions/{id}", [InstitutionController::class, "get"]);
     Route::post("institutions", [InstitutionController::class, "save"]);
     Route::put("institutions/{id}", [InstitutionController::class, "update"]);

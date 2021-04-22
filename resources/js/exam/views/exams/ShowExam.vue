@@ -25,9 +25,44 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
-              <tabs>
-                <tab title="Matematik">fdsfds</tab>
-                <tab title="Türkçe">dfggfdg</tab>
+              <tabs id="tabs">
+                <div
+                  class="row"
+                  style="margin-bottom:10px"
+                >
+                  <div
+                    id="back"
+                    class="col-md-2 bg-dark text-center"
+                  >
+                    <h2>Geri</h2>
+                  </div>
+                  <div class="col-md-8 bg-gray-light">
+                    <Answers
+                      v-for="a in answer"
+                      :title="a"
+                    >
+                      {{ l }}
+                    </Answers>
+                  </div>
+                  <div class="col-md-2 bg-blue text-center">
+                    <h2>İleri</h2>
+                  </div>
+                </div>
+                <tab
+                  v-for="lesson in lessons"
+                  :title="lesson[0]"
+                >
+                  <div><h1>1-</h1></div>
+                  {{ lesson[1] }}
+                  <Choices
+                      v-for="choice in choices"
+                      :id="choice[1]"
+                      :content="choice[0]"
+                  >
+                    {{ choice[0] }}
+                  </Choices>
+                </tab>
+
               </tabs>
             </div>
           </div>
@@ -41,11 +76,35 @@
 import Page from '../../../commons/components/Page'
 import Tabs from '../../../commons/components/Tabs'
 import Tab from '../../../commons/components/Tab'
+import Answers from '../../../commons/components/Answers'
+import Choices from '../../../commons/components/Choices'
 
 export default {
   name: 'ShowExam',
-  components: { Page, Tab, Tabs }
+  components: { Page, Tab, Tabs, Answers, Choices },
+  setup: function () {
+    const lessons = [
+        ['Matematik','laskjdkasjd'],
+        ['Türkçe','laksdjasjdkj'],
+        ['Sosyal','ldsjfjsdlfj'],
+        ['Fen','hsdjfıj']
+    ]
+    const answer = ['A', 'B', 'C', 'D']
+    // const choicesTag = ['A', 'B', 'C', 'D', 'E']
+    const choices = [
+      ['A) Birinci Seçenek', '3333'],
+      ['B) İkinci Seçenek', '4444'],
+      ['C) Üçüncü Seçenek', '5555'],
+      ['D) Dördüncü Seçenek', '6666']
+    ]
+    return {
+      lessons,
+      answer,
+      choices
+    }
+  }
 }
+
 </script>
 
 <style scoped>
