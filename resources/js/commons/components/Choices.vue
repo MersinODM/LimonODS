@@ -22,13 +22,15 @@
         <div class="col-md-12">
           <div
             v-for="(c, index) in choices"
-            :key="index"
+            :key="c.code"
             class="form-group"
           >
             <choice
               :value="c"
               :index="index"
-            />
+            >
+              Seçenek {{ index + 1 }}
+            </choice>
           </div>
         </div>
       </div>
@@ -64,27 +66,33 @@ export default defineComponent({
     const emitter = mitt()
     const state = reactive({
       correctIndex: null,
-      choices: [],
-      setCorrect: 0,
+      choices: props.choices,
       emitter
     })
 
-    state.choices = props.choices
-
     provide('ChoicesProvider', state)
 
-    const removeChoice = (index) => {
+    emitter.on('removeChoice', (args) => {
+      state.choices.splice(args.index, 1)
+    })
+
+    const remove = (index) => {
       state.choices.splice(index, 1)
     }
 
     const addChoice = () => {
       if (state.choices.length >= 5) { return }
-      state.choices.push({ content: '', isCorrect: false })
+      state.choices.push({
+        content: '',
+        isCorrect: false,
+        code: Math.random().toString(32)
+          .substring(8)
+      })
     }
 
     return {
-      removeChoice,
       addChoice,
+      remove,
       ...toRefs(state)
     }
   }

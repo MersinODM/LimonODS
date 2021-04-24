@@ -1,4 +1,3 @@
-<?php
 /*
  *     Copyright 2021 Mersin İl Milli Eğitim Müdürlüğü Ölçme Değerlendirme Merkezi
  *
@@ -16,24 +15,16 @@
  *
  */
 
-namespace App\Models;
+import http from '../utils/http'
 
-
-use App\Traits\SelfReferencing;
-use Illuminate\Database\Eloquent\Model;
-
-class Curriculum extends Model
-{
-    protected $table="curriculums";
-
-    use SelfReferencing;
-
-    protected $fillable=[
-      "lesson_id",
-      "parent_id",
-      "code",
-      "level",
-      "type",
-      "content"
-    ];
+const CurriculumService = {
+  find: async (queryParams) => {
+    try {
+      const response = await http.get('api/app/v1/curriculums/find-by', { params: queryParams })
+      return response.data
+    } catch (e) {
+    }
+  }
 }
+
+export default CurriculumService

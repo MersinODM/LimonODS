@@ -18,7 +18,19 @@
 <template>
   <div class="row mt-1">
     <div class="col-md-12">
-      <label><slot /></label>
+      <div class="row">
+        <div class="col-md-12">
+          <label class="float-left">
+            <slot />
+          </label>
+          <button
+            class="btn btn-danger btn-sm float-right"
+            @click="remove(index)"
+          >
+            X
+          </button>
+        </div>
+      </div>
       <custom-editor
         v-model="content"
       />
@@ -64,11 +76,17 @@ export default defineComponent({
     const isCorrect = ref(props.value?.isCorrect)
 
     const state = inject('ChoicesProvider')
+
     const listenCorrectChange = (args) => {
       if (args.index !== props.index) {
         isCorrect.value = false
       }
     }
+
+    const remove = (index) => {
+      state.emitter.emit('removeChoice', { index })
+    }
+
     state.emitter.on('correctIndexChanged', listenCorrectChange)
 
     watch(content, () => {
@@ -83,6 +101,7 @@ export default defineComponent({
     })
 
     return {
+      remove,
       content,
       isCorrect
     }

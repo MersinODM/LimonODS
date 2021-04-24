@@ -95,6 +95,37 @@
               href="#"
               class="nav-link"
             >
+              <i class="mdi mdi-account-question" />
+              <p>Kazanım İşlemleri
+                <i class="right fas fa-angle-left" />
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link
+                  :to="{name: 'underConstruction' }"
+                  class="nav-link"
+                >
+                  <i class="mdi mdi-book-multiple" />
+                  <p>Kazanımları Listele</p>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link
+                  :to="{name: 'newCurriculum' }"
+                  class="nav-link"
+                >
+                  <i class="mdi mdi-book-plus" />
+                  <p>Kazanım Oluştur</p>
+                </router-link>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a
+              href="#"
+              class="nav-link"
+            >
               <i class="mdi mdi-account-settings" />
               <p>Kullanıcı Modülü
                 <i class="right fas fa-angle-left" />

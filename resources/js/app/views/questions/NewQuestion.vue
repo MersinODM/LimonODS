@@ -29,7 +29,7 @@
                 <label>Ders Seçimi</label>
                 <multiselect
                   v-model="selectedLesson"
-                  name="room"
+                  name="lesson"
                   label="name"
                   value-prop="id"
                   :options="lessons"
@@ -48,64 +48,92 @@
                 <label>Sınıf Seçimi</label>
                 <multiselect
                   v-model="selectedLevel"
+                  name="level"
                   :options="levels"
-                  :class="{ 'select-error': lessonEM }"
+                  :class="{ 'select-error': levelEM }"
                 />
                 <div
-                  v-if="lessonEM"
+                  v-if="levelEM"
                   role="alert"
                   class="invalid-feedback order-last"
                   style="display: inline-block;"
                 >
-                  {{ lessonEM }}
+                  {{ levelEM }}
                 </div>
               </div>
+              <!--              <div class="form-group">-->
+              <!--                <label>Ünite Seçimi</label>-->
+              <!--                <multiselect-->
+              <!--                  v-model="selectedLevel"-->
+              <!--                  :options="levels"-->
+              <!--                  :class="{ 'select-error': lessonEM }"-->
+              <!--                />-->
+              <!--                <div-->
+              <!--                  v-if="lessonEM"-->
+              <!--                  role="alert"-->
+              <!--                  class="invalid-feedback order-last"-->
+              <!--                  style="display: inline-block;"-->
+              <!--                >-->
+              <!--                  {{ lessonEM }}-->
+              <!--                </div>-->
+              <!--              </div>-->
               <div class="form-group">
-                <label>Ünite Seçimi</label>
+                <label>Zorluk Seçimi</label>
                 <multiselect
-                  v-model="selectedLevel"
-                  :options="levels"
-                  :class="{ 'select-error': lessonEM }"
+                  v-model="selectedDifficulty"
+                  name="difficulty"
+                  :options="difficulties"
+                  :class="{ 'select-error': difficultyEM }"
                 />
                 <div
-                  v-if="lessonEM"
+                  v-if="difficultyEM"
                   role="alert"
                   class="invalid-feedback order-last"
                   style="display: inline-block;"
                 >
-                  {{ lessonEM }}
+                  {{ difficultyEM }}
                 </div>
               </div>
-              <div class="form-group">
-                <label>Konu Seçimi</label>
-                <multiselect
-                  v-model="selectedLevel"
-                  :options="levels"
-                  :class="{ 'select-error': lessonEM }"
-                />
-                <div
-                  v-if="lessonEM"
-                  role="alert"
-                  class="invalid-feedback order-last"
-                  style="display: inline-block;"
-                >
-                  {{ lessonEM }}
-                </div>
-              </div>
+              <!--              <div class="form-group">-->
+              <!--                <label>Konu Seçimi</label>-->
+              <!--                <multiselect-->
+              <!--                  v-model="selectedLevel"-->
+              <!--                  :options="levels"-->
+              <!--                  :class="{ 'select-error': lessonEM }"-->
+              <!--                />-->
+              <!--                <div-->
+              <!--                  v-if="lessonEM"-->
+              <!--                  role="alert"-->
+              <!--                  class="invalid-feedback order-last"-->
+              <!--                  style="display: inline-block;"-->
+              <!--                >-->
+              <!--                  {{ lessonEM }}-->
+              <!--                </div>-->
+              <!--              </div>-->
               <div class="form-group">
                 <label>Kazanım Seçimi</label>
                 <multiselect
-                  v-model="selectedLevel"
-                  :options="levels"
-                  :class="{ 'select-error': lessonEM }"
+                  v-model="selectedCurriculum"
+                  name="curriculum"
+                  :options="searchLO"
+                  :searchable="true"
+                  mode="multiple"
+                  label="content"
+                  :multiple-label="(values) => values.length + ' kazanım seçildi'"
+                  value-prop="id"
+                  :filter-results="false"
+                  :min-chars="1"
+                  :resolve-on-load="false"
+                  :delay="300"
+                  :class="{ 'select-error': curriculumEM }"
                 />
                 <div
-                  v-if="lessonEM"
+                  v-if="curriculumEM"
                   role="alert"
                   class="invalid-feedback order-last"
                   style="display: inline-block;"
                 >
-                  {{ lessonEM }}
+                  {{ curriculumEM }}
                 </div>
               </div>
               <div class="form-group">
@@ -133,33 +161,18 @@
                   </div>
                 </div>
               </div>
-              <c-exam :choices="choices" />
-              <!--                <div class="col-md-12">-->
-              <!--                  <div-->
-              <!--                    v-for="(choice, index) in choices"-->
-              <!--                    :key="index"-->
-              <!--                    class="form-group"-->
-              <!--                  >-->
-              <!--                    <div class="row md-1">-->
-              <!--                      <div class="col-md-12">-->
-              <!--                        <label>Seçenek {{ index + 1 }}</label>-->
-              <!--                        <button-->
-              <!--                          class="btn btn-warning btn-sm float-right"-->
-              <!--                          @click="removeChoice(index)"-->
-              <!--                        >-->
-              <!--                          Sil-->
-              <!--                        </button>-->
-              <!--                      </div>-->
-              <!--                    </div>-->
-              <!--                    <custom-editor v-model="choice.content" />-->
-              <!--                    <pretty-check-->
-              <!--                      v-model="choice.isCorrect"-->
-              <!--                      @change="correctChoiceChanged(index)"-->
-              <!--                    >-->
-              <!--                      Doğru cevap-->
-              <!--                    </pretty-check>-->
-              <!--                  </div>-->
-              <!--                </div>-->
+              <c-exam
+                :choices="choices"
+                name="choices"
+              />
+              <div
+                v-if="choicesEM"
+                role="alert"
+                class="invalid-feedback order-last"
+                style="display: inline-block;"
+              >
+                {{ choicesEM }}
+              </div>
             </tab>
             <tab title="Önizleme">
               <div class="card">
@@ -182,42 +195,68 @@
 <script>
 import Page from '../../../commons/components/Page'
 import Multiselect from '@vueform/multiselect'
-import { number, object, string, array } from 'yup'
+import { number, object, string, array, addMethod } from 'yup'
 import { useField, useForm } from 'vee-validate'
-import { ref, watch } from 'vue'
+import { reactive, ref, toRefs, watch } from 'vue'
 import LessonService from '../../services/LessonService'
 import CustomEditor from '../../../commons/components/CustomEditor'
 import Tabs from '../../../commons/components/Tabs'
 import Tab from '../../../commons/components/Tab'
 import CExam from '../../../commons/components/Choices'
+import CurriculumService from '../../services/CurriculumService'
+
+addMethod(array, 'atLeastOneTruth', (args) => {
+  const { message, predicate } = args
+  return this?.test('atLeastOneTruth', message, (list) => {
+    // If there are 2+ elements after filtering, we know atMostOne must be false.
+    return list.filter(predicate).length === 1
+  })
+})
 
 export default {
   name: 'NewQuestion',
   components: { CExam, CustomEditor, Page, Multiselect, Tabs, Tab },
   setup () {
-    const lessons = ref([])
-    const levels = ref([]) // Bu lessons tan gelebilir
-    const units = ref([])
-    const topics = ref([])
-    const learningOutcomes = ref([])
+    const data = reactive({
+      lessons: [],
+      levels: [], // Bu lessons tan gelebilir
+      units: [],
+      topics: [],
+      choices: [],
+      learningOutcomes: [],
+      difficulties: [
+        { value: 1, label: 'Çok Kolay' },
+        { value: 2, label: 'Kolay' },
+        { value: 3, label: 'Normal' },
+        { value: 4, label: 'Zor' },
+        { value: 5, label: 'Çok Zor' }
+      ]
+    })
+
     const context = ref('')
     const body = ref('')
     const content = ref('')
-    const choices = []
 
     const schema = object({
       lesson: number().typeError(() => 'Ders seçimi yapılmaldır!')
         .required(() => 'Ders seçimi yapılmaldır!'),
+      difficulty: number().typeError(() => 'Zorluk seçimi yapılmaldır!')
+        .required(() => 'Zorluk seçimi yapılmaldır!'),
       level: number().typeError(() => 'Seviye seçimi yapılmaldır!')
         .required(() => 'Seviye seçimi yapılmaldır!'),
-      learningOutcomeList: array(
+      curriculum: array().of(
         number().typeError(() => 'Kazanım bilgisi kazanım id\'si olmalıdır!')
-      ).min(1, () => 'En az bir kazanım seçimi yapılmaldır!'),
-      body: string().typeError('Soru kökü yazı veri tipinde olmalıdır')
+      )
+        .typeError(() => 'En az bir kazanım seçimi yapılmalıdır!')
+        .required(() => 'En az bir kazanım seçimi yapılmalıdır!')
+        .min(1, () => 'En az bir kazanım seçimi yapılmaldır!')
+        .strict(),
+      body: string().typeError('Soru kök ü yazı veri tipinde olmalıdır')
         .required(() => 'Soru kökü gereklidir'),
-      choices: array(string().required(() => 'Seçenek içeriği gereklidir!'))
+      choices: array()
         .min(3, () => 'En az 3 seçenek eklenmelidir!')
         .max(5, () => 'En fazla 5 seçenek eklenmelidir!')
+
     })
 
     const { handleSubmit } = useForm({
@@ -226,19 +265,26 @@ export default {
 
     const { value: selectedLesson, errorMessage: lessonEM } = useField('lesson')
     const { value: selectedLevel, errorMessage: levelEM } = useField('level')
-    const { value: selectedLearningOutcomes, errorMessage: learningOutcomesEM } = useField('learningOutcomeList')
-
+    const { value: selectedDifficulty, errorMessage: difficultyEM } = useField('difficulty')
+    const { value: selectedCurriculum, errorMessage: curriculumEM } = useField('curriculum')
+    const { value: choices, errorMessage: choicesEM } = useField('choices')
+    choices.value = data.choices
     const save = handleSubmit(async values => {
       await console.log(values)
     })
 
     const getLessons = async () => {
-      lessons.value = await LessonService.getLessons()
+      data.lessons = await LessonService.getLessons()
+    }
+
+    const searchLO = async (text) => {
+      const queryParams = { param: text, level: selectedLevel.value }
+      return await CurriculumService.find(queryParams)
     }
 
     watch(selectedLesson, (newVal, oldVal) => {
       selectedLevel.value = null
-      levels.value = lessons.value
+      data.levels = data.lessons
         .find((l) => l?.id === newVal)
         ?.levels
         .split(',')
@@ -248,25 +294,21 @@ export default {
     getLessons()
 
     return {
-      // addChoice,
-      // removeChoice,
-      // correctChoiceChanged,
-      choices,
+      ...toRefs(data),
       content,
       selectedLesson,
       lessonEM,
-      lessons,
       selectedLevel,
       levelEM,
-      levels,
-      units,
-      topics,
-      selectedLearningOutcomes,
-      learningOutcomesEM,
-      learningOutcomes,
+      selectedCurriculum,
+      curriculumEM,
+      selectedDifficulty,
+      difficultyEM,
+      choicesEM,
       context,
       body,
-      save
+      save,
+      searchLO
     }
   }
 }

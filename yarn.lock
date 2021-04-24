@@ -2403,9 +2403,9 @@ coa@^2.0.2:
     q "^1.1.2"
 
 codemirror@^5.60.0:
-  version "5.60.0"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.60.0.tgz#00a8cfd287d5d8737ceb73987f04aee2fe5860da"
-  integrity sha512-AEL7LhFOlxPlCL8IdTcJDblJm8yrAGib7I+DErJPdZd4l6imx8IMgKK3RblVgBQqz3TZJR4oknQ03bz+uNjBYA==
+  version "5.61.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.61.0.tgz#318e5b034a707207948b92ffc2862195e8fdb08e"
+  integrity sha512-D3wYH90tYY1BsKlUe0oNj2JAhQ9TepkD51auk3N7q+4uz7A/cgJ5JsWHreT0PqieW1QhOuqxQ2reCXV1YXzecg==
 
 collect.js@^4.28.4:
   version "4.28.6"
@@ -8034,10 +8034,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-sweetalert2@^10.15.6:
-  version "10.16.4"
-  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-10.16.4.tgz#77eafc05d9e5b27ca49f6acac6c42345c9aa8a55"
-  integrity sha512-DMrHpGH8/Dyoly1bTzIQkwDS61atgYL8D8fPsvtVuxpgHRJuk80KAIq5Alw+kHTuQtfLQYF4xwiHKJPdaoaPGg==
+sweetalert2@^10.15.6, sweetalert2@^10.16.5:
+  version "10.16.5"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-10.16.5.tgz#87637f91ada6befb0536f0e01fdf5ddb861b9fcb"
+  integrity sha512-M2mpdSkVRcCCJ7Asa7y4Mxirwxi+XLVXcQnqfyLLUgZRUyfKaUpakQoRv1uVVmeptoQdC0ydaOy8m+WxVxbTSg==
 
 table@^6.0.4:
   version "6.3.0"
