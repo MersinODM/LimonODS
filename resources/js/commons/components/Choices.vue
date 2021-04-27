@@ -14,57 +14,89 @@
   -     limitations under the License.
   -
   -->
-//Seçenekler için
+
 <template>
-  <div
-    class="card"
-    style="cursor: pointer"
-    @click="_click(id)"
-  >
-    <div class="card-body">
+  <div class="row mt-2">
+    <div class="col-md-12">
       <div class="row">
-        <div class="col-md-1">
-          <h2 />
-        </div>
-        <div class="col-md-11">
-          <div class="card-body">
-            <div class="row">
-              <div>
-                <slot />
-              </div>
-            </div>
+        <div class="col-md-12">
+          <div
+            v-for="(c, index) in choices"
+            :key="c.code"
+            class="form-group"
+          >
+            <choice
+              :value="c"
+              :index="index"
+            >
+              Seçenek {{ index + 1 }}
+            </choice>
           </div>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-1">
+        <div class="col-md-4">
+          <button
+            class="btn btn-info btn-block"
+            @click="addChoice"
+          >
+            Seçenek Ekle
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
-export default {
+import Choice from './Choice'
+import { defineComponent, provide, reactive, toRefs } from 'vue'
+import mitt from 'mitt'
+
+export default defineComponent({
   name: 'Choices',
+  components: { Choice },
   props: {
-    id:{
-      required: true,
-      type: String,
-      default: ' '
-    },
-    content: {
-      required: true,
-      type: String,
-      default: ' '
+    choices: {
+      required: false,
+      default: null,
+      type: Array
     }
   },
-  setup:function(){
-    const _click = (id) => {
-      alert(id)
+  setup (props, { emit }) {
+    const emitter = mitt()
+    const state = reactive({
+      correctIndex: null,
+      choices: props.choices,
+      emitter
+    })
+
+    provide('ChoicesProvider', state)
+
+    emitter.on('removeChoice', (args) => {
+      state.choices.splice(args.index, 1)
+    })
+
+    const remove = (index) => {
+      state.choices.splice(index, 1)
     }
+
+    const addChoice = () => {
+      if (state.choices.length >= 5) { return }
+      state.choices.push({
+        content: '',
+        isCorrect: false,
+        code: Math.random().toString(32)
+          .substring(8)
+      })
+    }
+
     return {
-      _click
+      addChoice,
+      remove,
+      ...toRefs(state)
     }
   }
-}
-
+})
 </script>
 
 <style scoped>

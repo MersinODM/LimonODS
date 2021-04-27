@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\App\AuthController as AppApiAuthController;
+use App\Http\Controllers\Api\App\CurriculumController;
 use App\Http\Controllers\Api\App\ExamController;
 use App\Http\Controllers\Api\App\ImageController;
 use App\Http\Controllers\Api\App\InstitutionController;
@@ -60,6 +61,9 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'app/v1'], static func
 
     //Dersler ilgili rota tanımlamaları
     Route::get("lessons", [LessonController::class, "getAllLessons"]);
+
+    //Öğrenme Programı öğelerini için rota tanımlamaları
+    Route::get("curriculums/find-by", [CurriculumController::class, "findBy"]);
 });
 
 /*

@@ -32,15 +32,19 @@ class LessonSeeder extends Seeder
             ["code" => "TUR", "name" => "Türkçe", "levels" => "4,5,6,7,8"],
             ["code" => "IMAT", "name" => "İlköğretim Matematik", "levels" => "4,5,6,7,8"],
             ["code" => "FB", "name" => "Fen Bilimleri", "levels" => "5,6,7,8"],
+            ["code" => "ING", "name" => "İngilizce", "levels" => "4,5,6,7,8,9,10,11,12"],
             ["code" => "SB", "name" => "Sosyal Bilgiler", "levels" => "4,5,6,7,8"],
             ["code" => "HB", "name" => "Hayat Bilgisi", "levels" => "4"],
             ["code" => "DKAB", "name" => "Din Kültürü ve Ahlak Bilgisi", "levels" => "4,5,6,7,8,9,10,11,12"],
             ["code" => "ITA", "name" => "İnkılap Tarihi ve Atatürkçülük", "levels" => "8,12"],
             ["code" => "TDE", "name" => "Türk Dili ve Edebiyatı", "levels" => "9,10,11,12"],
-            ["code" => "MAT", "name" => "Türk Dili ve Edebiyatı", "levels" => "9,10,11,12"],
+            ["code" => "MAT", "name" => "Matematik", "levels" => "9,10,11,12"],
             ["code" => "FZK", "name" => "Fizik", "levels" => "9,10,11,12"],
             ["code" => "KMY", "name" => "Kimya", "levels" => "9,10,11,12"],
             ["code" => "BYL", "name" => "Biyoloji", "levels" => "9,10,11,12"],
+            ["code" => "TAR", "name" => "Tarih", "levels" => "9,10,11,12"],
+            ["code" => "COĞ", "name" => "Coğrafya", "levels" => "9,10,11,12"],
+            ["code" => "İTA", "name" => "T.C. İnkılap Tarihi ve Atatürkçülük", "levels" => "8,12"],
             ["code" => "FEL", "name" => "Felsefe", "levels" => "9,10,11,12"]
         ];
 
