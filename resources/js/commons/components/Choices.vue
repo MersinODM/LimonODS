@@ -29,7 +29,20 @@
               :value="c"
               :index="index"
             >
-              Seçenek {{ index + 1 }}
+              <template #header>
+                Seçenek {{ index + 1 }}
+              </template>
+
+<!--              <template #errorMessage>-->
+<!--                <div-->
+<!--                  v-if="errors[`choices[${index}].content`]"-->
+<!--                  role="alert"-->
+<!--                  class="invalid-feedback order-last"-->
+<!--                  style="display: inline-block;"-->
+<!--                >-->
+<!--                  {{ errors[`choices[${index}].content`] }}-->
+<!--                </div>-->
+<!--              </template>-->
             </choice>
           </div>
         </div>
@@ -60,6 +73,10 @@ export default defineComponent({
       required: false,
       default: null,
       type: Array
+    },
+    errors: {
+      required: false,
+      default: null
     }
   },
   setup (props, { emit }) {
@@ -67,6 +84,7 @@ export default defineComponent({
     const state = reactive({
       correctIndex: null,
       choices: props.choices,
+      form: null,
       emitter
     })
 
