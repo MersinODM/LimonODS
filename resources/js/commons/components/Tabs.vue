@@ -32,7 +32,7 @@ import {
   onBeforeUpdate,
   provide,
   reactive,
-  toRefs
+  toRefs, inject
 } from 'vue'
 
 const isTab = (node) => node.type.name === 'Tab'
@@ -45,13 +45,16 @@ const isTabParent = (node) => isFragment(node) && hasTabs(node)
 export default {
   name: 'Tabs',
   setup (_, { slots }) {
-    const state = reactive({
-      selectedIndex: null,
-      tabs: [],
-      count: 0
-    })
+    // const state = reactive({
+    //   selectedIndex: null,
+    //   tabs: [],
+    //   count: 0,
+    //   selectedId: 0
+    // })
+    //
+    // provide('TabsProvider', state)
 
-    provide('TabsProvider', state)
+    const state = inject('TabsProvider')
 
     const selectTab = (i) => {
       state.selectedIndex = i

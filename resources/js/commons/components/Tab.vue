@@ -17,6 +17,11 @@ export default {
       required: true,
       type: String,
       default: ''
+    },
+    id: {
+      required: true,
+      type: Number,
+      default: 0
     }
   },
   setup (props) {
@@ -26,6 +31,7 @@ export default {
     watch(
       () => tabs.selectedIndex,
       () => {
+        tabs.selectedId = props.id
         isActive.value = props.title === tabs.selectedIndex
       }
     )
