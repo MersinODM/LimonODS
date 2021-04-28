@@ -11,7 +11,7 @@
             class="nav-link"
             :class="tab.props.title === selectedIndex && 'active'"
             href="#"
-            @click.prevent="selectedIndex = tab.props.title"
+            @click.prevent="changeTab(tab.props.title, tab.key)"
           >
             {{ tab.props.title }}
           </a>
@@ -45,19 +45,23 @@ const isTabParent = (node) => isFragment(node) && hasTabs(node)
 export default {
   name: 'Tabs',
   setup (_, { slots }) {
-    // const state = reactive({
-    //   selectedIndex: null,
-    //   tabs: [],
-    //   count: 0,
-    //   selectedId: 0
-    // })
-    //
-    // provide('TabsProvider', state)
+    const state = reactive({
+      selectedIndex: null,
+      tabs: [],
+      count: 0,
+      selectedId: 0
+    })
 
-    const state = inject('TabsProvider')
+    provide('TabsProvider', state)
 
+    // const state = inject('TabsProvider')
     const selectTab = (i) => {
       state.selectedIndex = i
+    }
+
+    const changeTab = (title, id) => {
+      localStorage.setItem('tabIndex', id)
+      state.selectedIndex = title
     }
 
     const update = () => {
@@ -73,10 +77,10 @@ export default {
     onBeforeUpdate(() => update())
 
     onMounted(() => {
-      selectTab(0)
+      selectTab(state.tabs[0].props.title)
+      localStorage.setItem('tabIndex', '0')
     })
-
-    return { ...toRefs(state), selectTab }
+    return { ...toRefs(state), selectTab, changeTab }
   }
 }
 </script>

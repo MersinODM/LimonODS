@@ -19,23 +19,26 @@ export default {
       default: ''
     },
     id: {
-      required: true,
+      required: false,
       type: Number,
       default: 0
     }
   },
-  setup (props) {
+  emits: ['click'],
+  setup (props, { emit }) {
     const isActive = ref(false)
     const tabs = inject('TabsProvider')
 
     watch(
       () => tabs.selectedIndex,
-      () => {
-        tabs.selectedId = props.id
-        isActive.value = props.title === tabs.selectedIndex
+      (newVal) => {
+        console.log(newVal)
+        isActive.value = newVal === tabs.selectedIndex
+        // if (isActive.value) {
+        //   emit('click', { id: props.id, title: newVal })
+        // }
       }
     )
-
     onBeforeMount(() => {
       isActive.value = props.title === tabs.selectedIndex
     })
