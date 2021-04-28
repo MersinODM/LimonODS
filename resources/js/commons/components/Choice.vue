@@ -21,7 +21,7 @@
       <div class="row">
         <div class="col-md-12">
           <label class="float-left">
-            <slot />
+            <slot name="header" />
           </label>
           <button
             class="btn btn-danger btn-sm float-right"
@@ -33,7 +33,9 @@
       </div>
       <custom-editor
         v-model="content"
+        :name="name"
       />
+      <slot name="errorMessage" />
       <div class="custom-control custom-switch">
         <input
           id="customSwitch1"
@@ -54,7 +56,8 @@
 <script>
 
 import CustomEditor from './CustomEditor'
-import { defineComponent, inject, ref, watch } from 'vue'
+import { defineComponent, inject, onMounted, ref, watch } from 'vue'
+import { useField } from 'vee-validate'
 
 export default defineComponent({
   name: 'Choice',
@@ -72,8 +75,10 @@ export default defineComponent({
     }
   },
   setup (props, { emit }) {
-    const content = ref(props.value?.content)
+    // const content = ref(props.value?.content)
+    const name = 'choices[' + props.index + '].content'
     const isCorrect = ref(props.value?.isCorrect)
+    const content = ref(props.value?.content)
 
     const state = inject('ChoicesProvider')
 
@@ -103,7 +108,8 @@ export default defineComponent({
     return {
       remove,
       content,
-      isCorrect
+      isCorrect,
+      name
     }
   }
 })

@@ -52,10 +52,13 @@ class QuestionController extends ApiController
         $validationResult = $this->apiValidator($request, [
             'type' => 'required',
             'body' => 'required',
+            'lesson_id' => 'required',
+            'curriculums' => 'required|array|min:1',
             'level' => 'required|integer',
+            'difficulty' => 'required|integer',
             'choices' => 'required|array|min:3|max:5',
             'choices.*.content' => 'required',
-            'choices.*.is_correct' => 'required'
+            'choices.*.isCorrect' => 'required'
         ]);
 
         if ($validationResult) {
@@ -66,12 +69,13 @@ class QuestionController extends ApiController
 
         try {
             DB::beginTransaction();
-            $question = new Question($request->all(["type", "body", "context","level"]));
+            $question = new Question($request->all(["type", "body", "context","level", "lesson_id", "curriculum_id", "difficulty"]));
             $question->creator_id = Auth::id();
             $question->save();
+            $question->curriculums()->attach($request->input("curriculums"));
 
             foreach ($choices as $choice) {
-                $choicesModel = new Choice($choice);
+                $choicesModel = new Choice(["content" => $choice["content"], "is_correct" => $choice["isCorrect"]]);
                 $choicesModel->question_id = $question->id;
                 $choicesModel->save();
             }

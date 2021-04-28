@@ -21,6 +21,8 @@ namespace App\Models;
 
 use App\Traits\SelfReferencing;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
@@ -32,10 +34,20 @@ class Question extends Model
         "context",
         "body",
         "parent_id",
-        "creator_id"
+        "creator_id",
+        "lesson_id",
+        'level',
+        'difficulty',
+        'description'
     ];
 
-    public function choices() {
+    public function curriculums(): BelongsToMany
+    {
+        return $this->belongsToMany(Curriculum::class, 'curriculum_question_infos')->withTimestamps();
+    }
+
+    public function choices(): HasMany
+    {
         return $this->hasMany(Choice::class);
     }
 

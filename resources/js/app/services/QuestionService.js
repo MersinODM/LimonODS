@@ -1,4 +1,3 @@
-<?php
 /*
  *     Copyright 2021 Mersin İl Milli Eğitim Müdürlüğü Ölçme Değerlendirme Merkezi
  *
@@ -16,30 +15,15 @@
  *
  */
 
-namespace App\Models;
+import http from '../utils/http'
 
-
-use App\Traits\SelfReferencing;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-class Curriculum extends Model
-{
-    protected $table="curriculums";
-
-    use SelfReferencing;
-
-    protected $fillable=[
-      "lesson_id",
-      "parent_id",
-      "code",
-      "level",
-      "type",
-      "content"
-    ];
-
-    public function questions(): BelongsToMany
-    {
-        return $this->belongsToMany(Question::class, 'curriculum_question_infos')->withTimestamps();;
-    }
+const QuestionService = {
+  save: async (data) => {
+    try {
+      const response = await http.post('api/app/v1/questions', data)
+      return response.data
+    } catch (e) {}
+  }
 }
+
+export default QuestionService
