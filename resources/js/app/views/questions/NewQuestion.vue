@@ -208,6 +208,7 @@ import CExam from '../../../commons/components/Choices'
 import CurriculumService from '../../services/CurriculumService'
 import Messenger from '../../../commons/utils/messenger'
 import QuestionService from '../../services/QuestionService'
+import router from '../../router'
 
 export default {
   name: 'NewQuestion',
@@ -303,7 +304,11 @@ export default {
           choices: data.question.choices
         }
         await console.log(questionData)
-        await QuestionService.save(questionData)
+        try {
+          const response = await QuestionService.save(questionData)
+          await Messenger.showSuccess(response.message)
+          await router.push('questionList')
+        } catch (e) { }
       }
     })
 
