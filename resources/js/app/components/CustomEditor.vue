@@ -45,7 +45,7 @@ export default {
       editorConfig: {
         math: {
           engine: 'katex',
-          outputType: 'script',
+          outputType: 'span',
           forceOutputType: false,
           enablePreview: true
         },

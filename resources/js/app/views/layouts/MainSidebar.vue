@@ -71,7 +71,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <router-link
-                  :to="{name: '' }"
+                  :to="{name: 'questionList' }"
                   class="nav-link"
                 >
                   <i class="mdi mdi-book-multiple" />
@@ -85,26 +85,6 @@
                 >
                   <i class="mdi mdi-book-plus" />
                   <p>Soru Oluştur</p>
-                </router-link>
-              </li>
-              <li
-                class="nav-item"
-              >
-                <router-link
-                  :to="{name: 'underConstruction' }"
-                  class="nav-link"
-                >
-                  <i class="mdi mdi-test-tube" />
-                  <p></p>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link
-                  :to="{name: '' }"
-                  class="nav-link"
-                >
-                  <i class="mdi mdi-delete-restore" />
-                  <p>Proje Silme İstekleri</p>
                 </router-link>
               </li>
             </ul>

@@ -15,22 +15,26 @@
  *
  */
 
-import './bootstrap'
+import { inject, ref } from 'vue'
+import dayjs from 'dayjs'
 
-import App from './views/App.vue'
-import { createApp } from 'vue'
-import router from './router'
-import can from '../commons/directives/can'
-import maska from 'maska'
-import uppercase from '../commons/directives/uppercase'
-import dateFormat from '../commons/directives/dateFormat'
-import latex from '../commons/directives/katex'
+export default function () {
+  const store = inject('filterStore')
+  const selectedYear = ref()
 
-const app = createApp(App)
-app.use(router)
-app.use(maska)
-app.directive('can', can)
-app.directive('katex', latex)
-app.directive('uppercase', uppercase)
-app.directive('date-format', dateFormat)
-router.isReady().then(() => app.mount('#app'))
+  const years = Array.from({ length: dayjs().year() - 2019 + 1 }, (v, k) => {
+    const year = dayjs().year() - k
+    return { label: year, value: year }
+  })
+
+  const setDefaultYear = () => {
+    // if (!store.getters.year) store.actions.setYear(now().year())
+    selectedYear.value = store.getters.year
+  }
+
+  return {
+    years,
+    selectedYear,
+    setDefaultYear
+  }
+}

@@ -15,22 +15,9 @@
  *
  */
 
-import './bootstrap'
-
-import App from './views/App.vue'
-import { createApp } from 'vue'
-import router from './router'
-import can from '../commons/directives/can'
-import maska from 'maska'
-import uppercase from '../commons/directives/uppercase'
-import dateFormat from '../commons/directives/dateFormat'
-import latex from '../commons/directives/katex'
-
-const app = createApp(App)
-app.use(router)
-app.use(maska)
-app.directive('can', can)
-app.directive('katex', latex)
-app.directive('uppercase', uppercase)
-app.directive('date-format', dateFormat)
-router.isReady().then(() => app.mount('#app'))
+export default function () {
+  const STATUS = 'store/status'
+  return {
+    STATUS
+  }
+}

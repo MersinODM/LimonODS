@@ -15,22 +15,27 @@
  *
  */
 
-import './bootstrap'
+import { inject, ref, watch } from 'vue'
 
-import App from './views/App.vue'
-import { createApp } from 'vue'
-import router from './router'
-import can from '../commons/directives/can'
-import maska from 'maska'
-import uppercase from '../commons/directives/uppercase'
-import dateFormat from '../commons/directives/dateFormat'
-import latex from '../commons/directives/katex'
+export default function () {
+  const store = inject('statusStore')
+  const selectedStatus = ref(store.getters.status)
 
-const app = createApp(App)
-app.use(router)
-app.use(maska)
-app.directive('can', can)
-app.directive('katex', latex)
-app.directive('uppercase', uppercase)
-app.directive('date-format', dateFormat)
-router.isReady().then(() => app.mount('#app'))
+  const statuses = [
+    { value: 100, label: 'İşleme alınmamış' },
+    { value: 101, label: 'Değerlendirme aşamasında' },
+    { value: 102, label: 'Revizyon alması gerek' },
+    { value: 103, label: 'Sorulamayacak soru' },
+    { value: 104, label: 'Revizyonu tamamlandı' },
+    { value: 104, label: 'Havuzda' }
+  ]
+
+  watch(selectedStatus, () => {
+    store.actions.setCurrentStatus(selectedStatus)
+  })
+
+  return {
+    selectedStatus,
+    statuses
+  }
+}

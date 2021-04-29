@@ -15,22 +15,25 @@
  *
  */
 
-import './bootstrap'
+const latex = {
+  updated (el, binding, vnode) {
+    // const argOptions = (binding.value && binding.value.options) || {}
+    // const allOptions = merge(globalOptions, argOptions)
 
-import App from './views/App.vue'
-import { createApp } from 'vue'
-import router from './router'
-import can from '../commons/directives/can'
-import maska from 'maska'
-import uppercase from '../commons/directives/uppercase'
-import dateFormat from '../commons/directives/dateFormat'
-import latex from '../commons/directives/katex'
+    if (binding.arg && binding.arg === 'auto') {
+      // eslint-disable-next-line no-undef
+      renderMathInElement(el)
+    } else {
+      const expression = binding.value.expression || binding.value
+      const displayMode = {}
+      if (binding.arg === 'display') {
+        displayMode.displayMode = true
+      }
+      // const options = merge(allOptions, displayMode)
 
-const app = createApp(App)
-app.use(router)
-app.use(maska)
-app.directive('can', can)
-app.directive('katex', latex)
-app.directive('uppercase', uppercase)
-app.directive('date-format', dateFormat)
-router.isReady().then(() => app.mount('#app'))
+      // eslint-disable-next-line no-undef
+      katex.render(expression, el)
+    }
+  }
+}
+export default latex

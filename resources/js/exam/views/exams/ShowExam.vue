@@ -90,7 +90,7 @@ import Page from '../../../commons/components/Page'
 import Tabs from '../../../commons/components/Tabs'
 import Tab from '../../../commons/components/Tab'
 import Answers from '../../../commons/components/Answers'
-import Choices from '../../../commons/components/Choices'
+import Choices from '../../../app/components/Choices'
 import { inject, provide, reactive, ref } from 'vue'
 
 export default {

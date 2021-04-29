@@ -15,22 +15,32 @@
  *
  */
 
-import './bootstrap'
+import { reactive, computed, readonly } from 'vue'
+// import now from '../helpers/dayjs'
 
-import App from './views/App.vue'
-import { createApp } from 'vue'
-import router from './router'
-import can from '../commons/directives/can'
-import maska from 'maska'
-import uppercase from '../commons/directives/uppercase'
-import dateFormat from '../commons/directives/dateFormat'
-import latex from '../commons/directives/katex'
+import constants from '../utils/constants'
+const { STATUS } = constants()
 
-const app = createApp(App)
-app.use(router)
-app.use(maska)
-app.directive('can', can)
-app.directive('katex', latex)
-app.directive('uppercase', uppercase)
-app.directive('date-format', dateFormat)
-router.isReady().then(() => app.mount('#app'))
+const state = reactive({
+  status: null
+})
+
+const setCurrentStatus = (status) => {
+  sessionStorage.setItem(STATUS, JSON.stringify(status))
+  state.status = status
+}
+
+const status = computed(() => {
+  if (!state.status) { state.status = JSON.parse(sessionStorage.getItem(STATUS)) }
+  return state.status
+})
+
+export const statusStore = readonly({
+  state: state,
+  actions: {
+    setCurrentStatus
+  },
+  getters: {
+    status
+  }
+})

@@ -11,7 +11,7 @@
             class="nav-link"
             :class="tab.props.title === selectedIndex && 'active'"
             href="#"
-            @click.prevent="changeTab(tab.props.title, tab.key)"
+            @click.prevent="changeTab(tab.props.title, 0)"
           >
             {{ tab.props.title }}
           </a>
@@ -32,7 +32,7 @@ import {
   onBeforeUpdate,
   provide,
   reactive,
-  toRefs, inject
+  toRefs
 } from 'vue'
 
 const isTab = (node) => node.type.name === 'Tab'

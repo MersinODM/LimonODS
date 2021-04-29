@@ -22,7 +22,8 @@ import Start from '../views/home/Start'
 import UnderConstruction from '../../commons/views/utils/UnderConstruction'
 import NotFound from '../../commons/views/utils/NotFound'
 import NewQuestion from '../views/questions/NewQuestion'
-import NewCurriculum from "../views/curriculums/NewCurriculum";
+import NewCurriculum from '../views/curriculums/NewCurriculum'
+import QuestionList from '../views/questions/QuestionList'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -45,6 +46,11 @@ const router = createRouter({
           path: 'questions/new',
           name: 'newQuestion',
           component: NewQuestion
+        },
+        {
+          path: 'questions/table',
+          name: 'questionList',
+          component: QuestionList
         },
         {
           path: 'curriculums/new',

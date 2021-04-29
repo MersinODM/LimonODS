@@ -33,7 +33,7 @@ export default {
       () => tabs.selectedIndex,
       (newVal) => {
         console.log(newVal)
-        isActive.value = newVal === tabs.selectedIndex
+        isActive.value = props.title === tabs.selectedIndex
         // if (isActive.value) {
         //   emit('click', { id: props.id, title: newVal })
         // }

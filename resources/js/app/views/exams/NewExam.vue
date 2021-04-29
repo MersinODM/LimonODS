@@ -16,10 +16,30 @@
   -->
 
 <template>
-
+  <page>
+    <template #header>
+      <h4>
+        <span class="text-bold text-blue"> Yeni</span> Sınav
+      </h4>
+    </template>
+    <template #content>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <tabs>
+              <tab title=""></tab>
+            </tabs>
+          </div>
+        </div>
+      </div>
+      </template>
+  </page>
 </template>
 
 <script>
+
+
+
 export default {
   name: "NewExam"
 }
