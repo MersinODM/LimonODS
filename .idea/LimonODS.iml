@@ -123,6 +123,8 @@
       <excludeFolder url="file://$MODULE_DIR$/public/fonts" />
       <excludeFolder url="file://$MODULE_DIR$/public/css" />
       <excludeFolder url="file://$MODULE_DIR$/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/js/app/components/ckeditor" />
+      <excludeFolder url="file://$MODULE_DIR$/resources/js/external" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

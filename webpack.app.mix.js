@@ -18,6 +18,7 @@
 const mix = require('laravel-mix')
 require('laravel-mix-bundle-analyzer')
 require('laravel-mix-merge-manifest')
+require('laravel-mix-purgecss')
 // const webpack = require('webpack')
 const CompressionPlugin = require('compression-webpack-plugin')
 
@@ -71,6 +72,7 @@ mix.js('resources/js/app/app.js', 'public/js/app')
   })
   .extract()
   .mergeManifest()
+  .purgeCss()
 
 // mix.js('resources/js/exam/exam.js', 'public/js/exam')
 //   .vue({ version: 3 })

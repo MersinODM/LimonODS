@@ -24,7 +24,114 @@
 
 <script>
 import CKEditor from '@ckeditor/ckeditor5-vue'
-export default {
+import http from '../utils/http'
+import { ResponseCodes } from '../../commons/utils/constants'
+import Messenger from '../../commons/utils/messenger'
+
+// class CustomUploadAdapter {
+//   constructor (loader) {
+//     this.loader = loader
+//   }
+//
+//   upload () {
+//     return new Promise((resolve, reject) => {
+//       this.loader.file
+//         .then((image) => {
+//           const data = new FormData()
+//           data.append('image', image)
+//           http.post('api/v1/storage', data,
+//             {
+//               headers: {
+//                 'Content-Type': 'multipart/form-data;'
+//               }
+//             })
+//             .then(response => {
+//               if (response.code === ResponseCodes.CODE_SUCCESS) {
+//                 resolve({ default: response.url })
+//               } else {
+//                 // eslint-disable-next-line prefer-promise-reject-errors
+//                 reject()
+//               }
+//             })
+//             .catch(e => {
+//               Messenger.showWarning('Resim yükleme hatası lütfen sistem yönteicinize başvurunuz!')
+//               // eslint-disable-next-line prefer-promise-reject-errors
+//               reject()
+//             })
+//         })
+//       //
+//       // return this.loader.file
+//       //   .then(uploadedFile => {
+//       //     return new Promise((resolve, reject) => {
+//       //       const data = new FormData()
+//       //       data.append('image', uploadedFile)
+//       //       http.post('api/v1/storage',
+//       //         data,
+//       //         {
+//       //           headers: {
+//       //             'Content-Type': 'multipart/form-data;'
+//       //           }
+//       //         }
+//       //       ).then(response => {
+//       //         if (response.code === ResponseCodes.CODE_SUCCESS) {
+//       //           resolve({
+//       //             default: response.data.url
+//       //           })
+//       //         } else {
+//       //           reject(response.data.message)
+//       //         }
+//       //       })
+//       //         .catch(response => {
+//       //           reject('Upload failed')
+//       //         })
+//       //     })
+//       //   })
+//     })
+//   }
+//
+//   abort () {
+//   }
+// }
+
+function CustomUploadAdapter (loader) {
+  this.loader = loader
+  this.upload = async () => {
+    const uploadedFile = await this.loader.file
+
+    const data = new FormData()
+    data.append('image', uploadedFile)
+
+    try {
+      const response = await http.post('api/v1/storage', data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data;'
+          }
+        })
+      if (response.data.code === ResponseCodes.CODE_SUCCESS) {
+        return {
+          default: response.data.url
+        }
+      } else {
+        return response.data.message
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  this.abort = () => {
+    console.log('Abort upload.')
+  }
+}
+
+function CustomUploadAdapterPlugin (editor) {
+  editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+    return new CustomUploadAdapter(loader)
+  }
+}
+
+export
+default {
   name: 'CustomEditor',
   components: { ckeditor: CKEditor.component },
   props: {
@@ -38,6 +145,7 @@ export default {
     //   default: ''
     // }
   },
+
   setup (props) {
     return {
       // eslint-disable-next-line no-undef
@@ -75,10 +183,38 @@ export default {
         },
         language: 'tr',
         image: {
+          // Configure the available styles.
+          styles: [
+            'alignLeft', 'alignCenter', 'alignRight'
+          ],
+
+          // Configure the available image resize options.
+          resizeOptions: [
+            {
+              name: 'resizeImage:original',
+              label: 'Original',
+              value: null
+            },
+            {
+              name: 'resizeImage:50',
+              label: '50%',
+              value: '50'
+            },
+            {
+              name: 'resizeImage:75',
+              label: '75%',
+              value: '75'
+            }
+          ],
+
+          // You need to configure the image toolbar, too, so it shows the new style
+          // buttons as well as the resize buttons.
           toolbar: [
-            'imageTextAlternative',
-            'imageStyle:full',
-            'imageStyle:side'
+            'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+            '|',
+            'resizeImage',
+            '|',
+            'imageTextAlternative'
           ]
         },
         table: {
@@ -90,19 +226,7 @@ export default {
             'tableProperties'
           ]
         },
-        simpleUpload: {
-          // The URL that the images are uploaded to.
-          uploadUrl: 'http://localhost/api/storage',
-
-          // Enable the XMLHttpRequest.withCredentials property.
-          withCredentials: true
-
-          // Headers sent along with the XMLHttpRequest to the upload server.
-          // headers: {
-          //   'X-CSRF-TOKEN': 'CSRF-Token',
-          //   Authorization: 'Bearer <JSON Web Token>'
-          // }
-        },
+        extraPlugins: [CustomUploadAdapterPlugin],
         licenseKey: ''
       }
     }
