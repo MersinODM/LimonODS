@@ -15,13 +15,27 @@
  *
  */
 
+import { inject, ref, watch } from 'vue'
+
 export default function () {
-  const STATUS = 'store/status'
-  const LESSON = 'store/lesson'
-  const LESSONS = 'store/lessons'
+  const store = inject('lessonStore')
+  const selectedLesson = ref(store.getters.lesson)
+
+  // const statuses = [
+  //   { value: 100, label: 'İşleme alınmamış' },
+  //   { value: 101, label: 'Değerlendirme aşamasında' },
+  //   { value: 102, label: 'Revizyon alması gerek' },
+  //   { value: 103, label: 'Sorulamayacak soru' },
+  //   { value: 104, label: 'Revizyonu tamamlandı' },
+  //   { value: 104, label: 'Havuzda' }
+  // ]
+
+  watch(selectedLesson, () => {
+    store.actions.setCurrentLesson(selectedLesson)
+  })
+
   return {
-    STATUS,
-    LESSON,
-    LESSONS
+    selectedLesson,
+    lessons: store.getters.lessons
   }
 }

@@ -22,7 +22,7 @@
       <h4>
         <span class="text-bold text-blue"> Soru</span> Listesi, Seçilen Yıl:
         <span class="text-bold">{{ selectedYear!=null ? selectedYear : 'Hepsi' }}</span>, Seçilen Ders
-        <span class="text-bold">{{ selectedYear!=null ? selectedLesson : 'Hepsi' }}</span>
+        <span class="text-bold">{{ selectedLesson!=null ? selectedLesson : 'Hepsi' }}</span>
       </h4>
     </template>
     <template #content>
@@ -105,6 +105,7 @@ import Multiselect from '@vueform/multiselect'
 import useStatusFilter from '../../compositions/useStatusFilter'
 import useYearFilter from '../../../commons/compositions/useYearFilter'
 import dayjs from '../../../commons/utils/dayjs'
+import useLessonFilter from "../../compositions/useLessonFilter";
 
 // import useDropOrBackInventory from '../../compositions/useDropOrBackInventory'
 // import dayjs from '../../helpers/dayjs'
@@ -119,12 +120,9 @@ export default {
     // const router = useRouter()
     const { years, selectedYear } = useYearFilter()
     const { selectedStatus, statuses } = useStatusFilter()
+    const { selectedLesson } = useLessonFilter()
 
-    watch(selectedYear, () => {
-      table?.ajax.reload(null, false)
-    })
-
-    watch(selectedStatus, () => {
+    watch([selectedYear, selectedStatus, selectedLesson], () => {
       table?.ajax.reload(null, false)
     })
 
@@ -293,6 +291,7 @@ export default {
     // })
 
     return {
+      selectedLesson,
       selectedStatus,
       statuses,
       selectedYear,

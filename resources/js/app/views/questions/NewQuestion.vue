@@ -209,13 +209,15 @@ import CurriculumService from '../../services/CurriculumService'
 import Messenger from '../../../commons/utils/messenger'
 import QuestionService from '../../services/QuestionService'
 import router from '../../router'
+import useLessonFilter from '../../compositions/useLessonFilter'
 
 export default {
   name: 'NewQuestion',
   components: { CExam, CustomEditor, Page, Multiselect, Tabs, Tab, Question },
   setup () {
+    const { lessons } = useLessonFilter()
+
     const data = reactive({
-      lessons: [],
       levels: [], // Bu lessons tan gelebilir
       units: [],
       topics: [],
@@ -279,8 +281,11 @@ export default {
     const { value: selectedCurriculum, errorMessage: curriculumEM } = useField('curriculum')
     const { value: choices, errorMessage: choicesEM } = useField('choices')
     const { value: root, errorMessage: rootEM } = useField('root')
+
+    // Atama işlmeleri
     choices.value = data.choices
     data.question.choices = data.choices
+    data.lessons = lessons
 
     watch(root, (newVal) => {
       data.question.body = newVal
@@ -313,9 +318,9 @@ export default {
     })
 
     // Dersleri listeleyen fonk.
-    const getLessons = async () => {
-      data.lessons = await LessonService.getLessons()
-    }
+    // const getLessons = async () => {
+    //   data.lessons = await LessonService.getLessons()
+    // }
 
     // Kazanım arama fonk.
     const searchCurriculum = async (text) => {
@@ -332,10 +337,11 @@ export default {
         .map(Number)
     })
 
-    getLessons()
+    // getLessons()
 
     return {
       ...toRefs(data),
+      lessons,
       root,
       rootEM,
       selectedLesson,
