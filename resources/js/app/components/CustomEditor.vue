@@ -192,8 +192,13 @@ default {
           resizeOptions: [
             {
               name: 'resizeImage:original',
-              label: 'Original',
+              label: 'Gerçek boyut',
               value: null
+            },
+            {
+              name: 'resizeImage:25',
+              label: '25%',
+              value: '25'
             },
             {
               name: 'resizeImage:50',

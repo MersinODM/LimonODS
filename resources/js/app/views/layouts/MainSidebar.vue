@@ -25,7 +25,8 @@
       <img
         alt="Logo"
         class="brand-image img-circle elevation-3"
-        style="opacity: .8"
+        style="opacity: .8; width:1.5em"
+        :src="logo"
       >
       <span class="brand-text font-weight-light">Test</span>
     </a>
@@ -201,15 +202,20 @@
 
 // import img from '../../../images/Logo.png'
 // import { mapGetters } from 'vuex'
+import logo from '../../../../images/svg/logo.svg'
+import { onMounted } from 'vue'
 
 export default {
   name: 'NMainSidebar',
-  data: () => ({
-    // userImg: img
-  }),
-  mounted () {
-    $('body').Layout('fixLayoutHeight')
-    $('ul').Treeview('init')
+  setup () {
+    onMounted(() => {
+      $('body').Layout('fixLayoutHeight')
+      $('ul').Treeview('init')
+    })
+
+    return {
+      logo
+    }
   }
 }
 </script>
