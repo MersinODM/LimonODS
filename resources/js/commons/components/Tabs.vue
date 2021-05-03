@@ -72,7 +72,6 @@ export default {
           .flatMap((node) => (isTabParent(node) ? node.children : node))
       }
     }
-
     onBeforeMount(() => update())
     onBeforeUpdate(() => update())
 

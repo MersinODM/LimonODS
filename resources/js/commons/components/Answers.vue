@@ -16,12 +16,16 @@
   -->
 //Öğrenci cevapları için
 <template>
-  <div class="rounded-circle bg-blue float-md-left">
-    <div
-      class="card"
-      style="cursor: pointer"
-    >
-      <slot />
+  <div
+    class="rounAnswer"
+    @click="answerClick(id)"
+  >
+    <div class="card">
+      <div class="card-body">
+        <h4>
+          <slot />
+        </h4>
+      </div>
     </div>
   </div>
 </template>
@@ -35,12 +39,28 @@ export default {
       required: true,
       type: String,
       default: ' '
+    },
+    id: {
+      required: true,
+      type: Number,
+      default: 0
     }
-  }
+  },
 
+  setup: function () {
+    // localStorage.setItem('questionIndex', this.index)
+    const answerClick = (id) => {
+      localStorage.setItem('questionIndex', id)
+    }
+    return { answerClick }
+  }
 }
+
 </script>
 
 <style scoped>
-
+.rounAnswer{
+  float:left;
+  cursor: pointer;
+}
 </style>
