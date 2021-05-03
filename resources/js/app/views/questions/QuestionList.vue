@@ -46,6 +46,8 @@
                     <multiselect
                       v-model="selectedLesson"
                       :options="lessons"
+                      label="name"
+                      value-prop="id"
                     />
                   </div>
                 </div>
@@ -72,7 +74,6 @@
                         <tr>
                           <th>ID</th>
                           <th>LESSON_ID</th>
-                          <th>CURRICULUM_ID</th>
                           <th>CREATOR_ID</th>
                           <th>GİRİŞ</th>
                           <th>YAZAR</th>
@@ -80,7 +81,7 @@
                           <th>BRANŞ</th>
                           <th>DERS</th>
                           <th>KULLANIM SAYISI</th>
-                          <th>KAZANIM</th>
+                          <th>KAZANIM(LAR)</th>
                           <th>AKSİYON</th>
                         </tr>
                       </thead>
@@ -104,8 +105,8 @@ import { useRouter } from 'vue-router'
 import Multiselect from '@vueform/multiselect'
 import useStatusFilter from '../../compositions/useStatusFilter'
 import useYearFilter from '../../../commons/compositions/useYearFilter'
-import dayjs from '../../../commons/utils/dayjs'
-import useLessonFilter from "../../compositions/useLessonFilter";
+import { formatDate } from '../../../commons/utils/dayjs'
+import useLessonFilter from '../../compositions/useLessonFilter'
 
 // import useDropOrBackInventory from '../../compositions/useDropOrBackInventory'
 // import dayjs from '../../helpers/dayjs'
@@ -120,178 +121,145 @@ export default {
     // const router = useRouter()
     const { years, selectedYear } = useYearFilter()
     const { selectedStatus, statuses } = useStatusFilter()
-    const { selectedLesson } = useLessonFilter()
+    const { selectedLesson, lessons } = useLessonFilter()
 
     watch([selectedYear, selectedStatus, selectedLesson], () => {
       table?.ajax.reload(null, false)
     })
 
-    // onMounted(() => {
-    //   table = $('#questionsTable')
-    //     .on('preXhr.dt', (e, settings, data) => {
-    //       // Bu event sunucuya datatable üzerinden veri gitmeden önce
-    //       // yeni parametre eklemek için ateşleniyor
-    //       data.year = selectedYear.value
-    //       data.is_dropped = selectedInventoryState.value
-    //     })
-    //     .DataTable({
-    //       fixedHeader: true,
-    //       processing: true,
-    //       serverSide: true,
-    //       responsive: false,
-    //       stateSave: true,
-    //       retrieve: true,
-    //       searching: true,
-    //       paging: true,
-    //       stateDuration: -1,
-    //       order: [[5, 'asc']],
-    //       ajax: {
-    //         url: '/api/app/v1/questions/table',
-    //         dataType: 'json',
-    //         type: 'POST',
-    //         xhrFields: {
-    //           withCredentials: true
-    //         }
-    //       },
-    //       language: tr,
-    //       columns: [
-    //         {
-    //           data: 'id',
-    //           name: 'i.id',
-    //           searchable: true,
-    //           visible: false
-    //         }, {
-    //           data: 'id',
-    //           name: 'i.rack_id',
-    //           searchable: true,
-    //           visible: false
-    //         }, {
-    //           data: 'id',
-    //           name: 'i.product_id',
-    //           searchable: true,
-    //           visible: false
-    //         },
-    //         {
-    //           data: 'id',
-    //           name: 'r.stock_room_id',
-    //           searchable: true,
-    //           visible: false
-    //         },
-    //         {
-    //           data: 'id',
-    //           name: 'i.customer_id',
-    //           searchable: true,
-    //           visible: false
-    //         },
-    //         {
-    //           data: 'entry_date',
-    //           name: 'i.entry_date',
-    //           searchable: true,
-    //           render (data) {
-    //             if (data) {
-    //               return dayjs(data).format('L')
-    //             }
-    //             return '<span class="badge badge-warning">BELİRTİLMEMİŞ</span>'
-    //           }
-    //         },
-    //         {
-    //           data: 'code',
-    //           name: 'i.code',
-    //           searchable: true
-    //         },
-    //         {
-    //           data: 'customer',
-    //           name: 'customer',
-    //           searchable: true
-    //         },
-    //         {
-    //           data: 'phone',
-    //           name: 'c.phone',
-    //           searchable: true
-    //         },
-    //         {
-    //           data: 'address',
-    //           name: 'c.address',
-    //           searchable: true
-    //         },
-    //         {
-    //           data: 'identity_no',
-    //           name: 'c.identity_no',
-    //           searchable: true
-    //         },
-    //         {
-    //           data: 'product',
-    //           name: 'product',
-    //           searchable: true,
-    //           render (data, type, row) {
-    //             if (row.description) {
-    //               return data + ' <span class="text-success text-bold">' + row.description + '</span>'
-    //             }
-    //             return data
-    //           }
-    //         },
-    //         {
-    //           data: 'amount',
-    //           name: 'i.amount',
-    //           searchable: true
-    //         },
-    //         {
-    //           data: 'room',
-    //           name: 'room',
-    //           searchable: true
-    //         },
-    //         {
-    //           data: 'rack',
-    //           name: 'rack',
-    //           searchable: true
-    //         },
-    //         {
-    //           data: 'contact',
-    //           name: 'i.contact',
-    //           searchable: true
-    //         },
-    //         {
-    //           data: '',
-    //           width: '10%',
-    //           render (data, type, row, meta) {
-    //             if (row.is_dropped) {
-    //               return '<div class="btn-group">' +
-    //                     '<button class="btn btn-xs btn-primary">Göster</button>' +
-    //                     '<button class="btn btn-xs btn-warning">Düzenle</button>' +
-    //                     // '<button class="btn btn-xs btn-info">Geri Al</button>' +
-    //                     '</div>'
-    //             }
-    //             return '<div class="btn-group">' +
-    //                   '<button class="btn btn-xs btn-primary">Göster</button>' +
-    //                   '<button class="btn btn-xs btn-warning">Düzenle</button>' +
-    //                   // '<button class="btn btn-xs btn-danger">Düşür</button>' +
-    //                   '</div>'
-    //           },
-    //           searchable: false,
-    //           orderable: false
-    //         }
-    //       ]
-    //     })
-    //
-    //   table.on('click', '.btn-primary', (e) => {
-    //     const data = table.row($(e.target).parents('tr')[0]).data()
-    //     router.push({ name: 'showInventory', params: { inventoryId: data.id } })
-    //   })
-    //
-    //   table.on('click', '.btn-warning', (e) => {
-    //     const data = table.row($(e.target).parents('tr')[0]).data()
-    //     customerStore.actions.setCustomer({ id: data.customer_id, name: data.customer, identity: data.identity_no, phone: data.phone, address: data.address })
-    //     router.push({ name: 'editInventory', params: { inventoryId: data.id } })
-    //   })
-    // })
+    onMounted(() => {
+      table = $('#questionsTable')
+        .on('preXhr.dt', (e, settings, data) => {
+          // Bu event sunucuya datatable üzerinden veri gitmeden önce
+          // yeni parametre eklemek için ateşleniyor
+          data.year = selectedYear.value
+          data.lesson_id = selectedLesson.value
+          data.status = selectedStatus.value
+        })
+        .DataTable({
+          fixedHeader: true,
+          processing: true,
+          serverSide: true,
+          responsive: false,
+          stateSave: true,
+          retrieve: true,
+          searching: true,
+          paging: true,
+          stateDuration: -1,
+          order: [[4, 'asc']],
+          ajax: {
+            url: '/api/app/v1/questions/table',
+            dataType: 'json',
+            type: 'POST',
+            xhrFields: {
+              withCredentials: true
+            }
+          },
+          language: tr,
+          columns: [
+            {
+              data: 'id',
+              name: 'id',
+              searchable: false,
+              visible: false
+            }, {
+              data: 'lesson_id',
+              name: 'lesson_id',
+              searchable: false,
+              visible: false
+            }, {
+              data: 'creator_id',
+              name: 'creator_id',
+              searchable: false,
+              visible: false
+            },
+            {
+              data: 'created_at',
+              name: 'created_at',
+              searchable: true,
+              render (data) {
+                return formatDate(data)
+              }
+            },
+            {
+              data: 'creator.full_name',
+              name: 'creator.full_name',
+              searchable: true
+            },
+            {
+              data: 'creator.phone',
+              name: 'creator.phone',
+              searchable: true
+            },
+            {
+              data: '',
+              searchable: false,
+              orderable: false
+            },
+            {
+              data: 'lesson.name',
+              name: 'lesson.name',
+              searchable: true
+            },
+            {
+              data: 'exams_count',
+              name: 'exams_count',
+              searchable: false
+            },
+            {
+              data: '',
+              name: 'curriculum',
+              searchable: true,
+              orderable: false,
+              render (data, type, row) {
+                const count = row?.curriculums_count
+                if (count <= 0) return '<span class="badge bg-danger">Kazanım Seçilmemiş</span>'
+                return '<button class="btn btn-xs btn-secondary">' + count + ' Adet Kazanım Göster</button>'
+              }
+            },
+            {
+              data: '',
+              width: '10%',
+              render (data, type, row, meta) {
+                if (row.is_dropped) {
+                  return '<div class="btn-group">' +
+                        '<button class="btn btn-xs btn-primary">Göster</button>' +
+                        '<button class="btn btn-xs btn-warning">Düzenle</button>' +
+                        // '<button class="btn btn-xs btn-info">Geri Al</button>' +
+                        '</div>'
+                }
+                return '<div class="btn-group">' +
+                      '<button class="btn btn-xs btn-primary">Göster</button>' +
+                      '<button class="btn btn-xs btn-warning">Düzenle</button>' +
+                      // '<button class="btn btn-xs btn-danger">Düşür</button>' +
+                      '</div>'
+              },
+              searchable: false,
+              orderable: false
+            }
+          ]
+        })
 
-    // onUnmounted(() => {
-    //   table.clear()
-    //   table.destroy()
-    // })
+      table.on('click', '.btn-primary', (e) => {
+        const data = table.row($(e.target).parents('tr')[0]).data()
+        // router.push({ name: 'showInventory', params: { inventoryId: data.id } })
+      })
+
+      table.on('click', '.btn-warning', (e) => {
+        const data = table.row($(e.target).parents('tr')[0]).data()
+        // customerStore.actions.setCustomer({ id: data.customer_id, name: data.customer, identity: data.identity_no, phone: data.phone, address: data.address })
+        // router.push({ name: 'editInventory', params: { inventoryId: data.id } })
+      })
+    })
+
+    onUnmounted(() => {
+      table?.clear()
+      table?.destroy()
+    })
 
     return {
       selectedLesson,
+      lessons,
       selectedStatus,
       statuses,
       selectedYear,

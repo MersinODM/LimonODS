@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\App\ImageController;
 use App\Http\Controllers\Api\App\InstitutionController;
 use App\Http\Controllers\Api\App\LessonController;
 use App\Http\Controllers\Api\App\QuestionController;
+use App\Http\Controllers\Api\App\QuestionQueryController;
 use App\Http\Controllers\Api\App\UserController;
 use App\Http\Controllers\Common\ImageQueryController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,7 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'app/v1'], static func
     Route::post("questions", [QuestionController::class, "save"]);
     Route::put("questions/{id}", [QuestionController::class, "update"]);
     Route::delete("questions/{id}", [QuestionController::class, "delete"]);
+    Route::post("questions/table", [QuestionQueryController::class, "getTable"]);
 
     // Sınavlar ile ilgili rota tanımlamaları
     Route::get("exams/{id}", [ExamController::class, "get"]);

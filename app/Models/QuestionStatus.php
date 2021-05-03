@@ -1,3 +1,4 @@
+<?php
 /*
  *     Copyright 2021 Mersin İl Milli Eğitim Müdürlüğü Ölçme Değerlendirme Merkezi
  *
@@ -15,18 +16,16 @@
  *
  */
 
-export default function () {
-  const CONSTANTS = {
-    STATUS: 'store/status',
-    LESSON: 'store/lesson',
-    LESSONS: 'store/lessons',
-    EVENT_CLOSE_MODAL: 'closeModal',
-    EVENT_MODAL_CLOSED: 'modalClosed',
-    EVENT_OPEN_MODAL: 'openModal',
-    EVENT_MODAL_OPENED: 'modalOpened'
-  }
+namespace App\Models;
 
-  return {
-    ...CONSTANTS
-  }
+
+class QuestionStatus
+{
+    public const WAITING_FOR_ACTION = 900; // İşeleme alınmamış
+    public const IN_ELECTION = 901; // değerledirme aşamasında
+    public const NOT_MUST_ASKED = 902;          // SORULMAMALI
+    public const NEED_REVISION = 903;           // Revizyon gerekir
+    public const REVISION_COMPLETED = 904; // değerledirme aşamasında
+    public const APPROVED = 905;          // Onaylanmış soru
+    public const DELETE_REQUESTED = 906; //905;          // Onaylanmış soru
 }

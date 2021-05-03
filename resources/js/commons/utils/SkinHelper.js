@@ -23,6 +23,14 @@ const SkinHelper = {
   MainSkin () {
     document.body.classList.remove('login-page', 'register-page')
     document.body.classList.add('sidebar-mini', 'layout-fixed', 'layout-navbar-fixed')
+  },
+  OpenModalSkin () {
+    document.body.classList.add('modal-open')
+    document.body.style.paddingRight = '15px'
+  },
+  CloseModalSkin () {
+    document.body.classList.remove('modal-open')
+    document.body.style.removeProperty('padding-right')
   }
 }
 

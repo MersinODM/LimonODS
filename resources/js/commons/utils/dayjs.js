@@ -32,5 +32,10 @@ const getYears = () => {
     return { label: year, value: year }
   })
 }
-export { getYears }
+
+const formatDate = (date) => {
+  return dayjs(date).format('L')
+}
+
+export { getYears, formatDate }
 export default dayjs
