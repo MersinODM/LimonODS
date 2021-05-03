@@ -52,7 +52,10 @@
                 class="row fixed-bottom"
                 style="margin-bottom:10px"
               >
-                <div class="card-body col-md-12 align-center" @click="questionDirection">
+                <div
+                  class="card-body col-md-12 align-center"
+                  @click="questionDirection"
+                >
                   <Answers
                     v-for="(a, index) in answer"
                     :id="index"
@@ -214,9 +217,9 @@ export default {
     let questionIndex = 0
     const question = ref()
     question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
-    const questionDirection=()=>{
-      questionIndex=localStorage.getItem('questionIndex')
-      qn=questionIndex
+    const questionDirection = () => {
+      questionIndex = localStorage.getItem('questionIndex')
+      qn = questionIndex
       question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
     }
     const changeTab = () => {
