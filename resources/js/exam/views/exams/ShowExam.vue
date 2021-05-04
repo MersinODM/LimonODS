@@ -18,9 +18,67 @@
 <template>
   <page>
     <template #header>
-      <h4>Sınav Adı</h4>
+      <div class="noselect">
+        <div class="col-md-5 float-left">
+          <h4>Sınav Adı</h4>
+        </div>
+        <div class="col-md-2 float-left text-center">
+          <TimeBox
+            exam-time="examTime"
+          >
+            {{ examTime }}
+          </TimeBox>
+        </div>
+        <div
+          class="card col-md-2 float-right bg-gradient-red"
+          style="cursor:pointer"
+          @click="finishExam"
+        >
+          <div class="card-body text-center">
+            <h2>Bitir</h2>
+          </div>
+        </div>
+      </div>
     </template>
     <template #content>
+      <div class="card noselect">
+        <div
+          class="row"
+        >
+          <div
+            class="card-body col-md-2 bg-dark item-center"
+            style="cursor:pointer"
+            @click="prevQuestion"
+          >
+            <div class="card-body text-center">
+              <h4>Geri</h4>
+            </div>
+          </div>
+          <div
+            class="card-body col-md-8 text-center"
+            @click="questionDirection"
+          >
+            <Answers
+              v-for="(a, index) in answer"
+              :id="index"
+              :key="index"
+              :title="a"
+            >
+              {{ (index + 1) + ')' + a }}
+            </Answers>
+          </div>
+          <div
+            class="card-body col-md-2 bg-blue text-center float-right"
+            style="cursor:pointer"
+            @click="nextQuestion"
+          >
+            <div class="card-body">
+              <h4>İleri</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         class="row noselect"
       >
@@ -45,44 +103,10 @@
                 v-for="choice in question?.choices"
                 :id="choice.id"
                 :content="choice.content"
+                @click="selectChoice()"
               >
                 {{ choice.content }}
               </Choices>
-              <div
-                class="row fixed-bottom"
-                style="margin-bottom:10px"
-              >
-                <div
-                  class="card-body col-md-12 align-center"
-                  @click="questionDirection"
-                >
-                  <Answers
-                    v-for="(a, index) in answer"
-                    :id="index"
-                    :key="index"
-                    :title="a"
-                  >
-                    {{ (index + 1) + ')' + a }}
-                  </Answers>
-                </div>
-
-                <div
-                  id="back"
-                  class="col-md-6 bg-dark text-center cursor-pointer"
-                  style="cursor:pointer"
-                  @click="prevQuestion"
-                >
-                  <h2>Geri</h2>
-                </div>
-
-                <div
-                  class="col-md-6 bg-blue text-center"
-                  style="cursor:pointer"
-                  @click="nextQuestion"
-                >
-                  <h2>İleri</h2>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -97,13 +121,15 @@ import Tabs from '../../../commons/components/Tabs'
 import Tab from '../../../commons/components/Tab'
 import Answers from '../../../commons/components/Answers'
 import Choices from '../../ccomponents/Choices'
+import TimeBox from '../../ccomponents/TimeBox'
 import { inject, provide, reactive, ref } from 'vue'
 
 export default {
   name: 'ShowExam',
-  components: { Page, Tab, Tabs, Answers, Choices },
+  components: { Page, Tab, Tabs, Answers, Choices, TimeBox },
 
   setup (props) {
+    localStorage.clear()
     const state = inject('TabsProvider')
     const lessons = [
       {
@@ -209,14 +235,32 @@ export default {
         }]
       }
     ]
-
-    const answer = ['A', ' ', 'B', 'C']
+    const examTime = '60:00'
+    const answer = ref(['A', 'B', 'D', 'C', 'A'])
     let qn = 0
     let tabIndex = 0
     let oldtabIndex = 0
     let questionIndex = 0
     const question = ref()
     question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
+    // Tablara ait soruları ve verilen cevapları tutan nesne
+    const tqInfo = {
+      tabIndex: String,
+      questionIndex: String,
+      choiceIndex: String
+    }
+    // Sınavı Bitir
+    const finishExam = () => {
+      alert('Bitti')
+    }
+    // Seçenek tıklanması
+    const selectChoice = () => {
+      // tqInfo.tabIndex(tabIndex)
+      // tqInfo.questionIndex(qn)
+      // tqInfo.choiceIndex(Number(localStorage.getItem('questionId')))
+      // localStorage.setObject('tqInfo', tqInfo)
+      Choices.css = 'selectedChoice'
+    }
     const questionDirection = () => {
       questionIndex = localStorage.getItem('questionIndex')
       qn = questionIndex
@@ -246,7 +290,7 @@ export default {
       }
     }
     return {
-      lessons, qn, answer, nextQuestion, prevQuestion, question, changeTab, questionDirection
+      lessons, qn, answer, nextQuestion, prevQuestion, question, changeTab, questionDirection, selectChoice, examTime, finishExam
     }
   }
 
@@ -262,4 +306,7 @@ export default {
     -webkit-touch-callout: none;
     -ms-user-select: none;
 }
+  .selectedChoice{
+    background-color: rgba(0, 0, 0, 0.43)
+  }
 </style>
