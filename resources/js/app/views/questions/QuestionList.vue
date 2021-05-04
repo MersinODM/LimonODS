@@ -92,6 +92,39 @@
             </div>
           </div>
         </div>
+        <modal>
+          <template #modal-title>
+            <h5>Kazanımlar</h5>
+          </template>
+          <template #modal-body>
+            <div
+              v-for="c in curriculums"
+              :key="c.id"
+              class="callout callout-info"
+            >
+              <table
+                style="width:100%"
+                class="table table-responsive table-sm  table-borderless"
+              >
+                <tbody>
+                  <tr>
+                    <th>Kod</th>
+                    <td>{{ c.code }}</td>
+                  </tr>
+                  <tr>
+                    <th>Sınıf Seviyesi</th>
+                    <td>{{ c.level }}</td>
+                  </tr>
+                  <tr>
+                    <th>İçerik</th>
+                    <td>{{ c.content }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 />
+            </div>
+          </template>
+        </modal>
       </div>
     </template>
   </page>
@@ -107,6 +140,9 @@ import useStatusFilter from '../../compositions/useStatusFilter'
 import useYearFilter from '../../../commons/compositions/useYearFilter'
 import { formatDate } from '../../../commons/utils/dayjs'
 import useLessonFilter from '../../compositions/useLessonFilter'
+import Modal from '../../components/Modal'
+import constants from '../../utils/constants'
+import useCurriculumShower from '../../compositions/useCurriculumShower'
 
 // import useDropOrBackInventory from '../../compositions/useDropOrBackInventory'
 // import dayjs from '../../helpers/dayjs'
@@ -115,16 +151,20 @@ let table = null
 
 export default {
   name: 'InventoryTable',
-  components: { Page, Multiselect },
+  components: { Page, Multiselect, Modal },
   setup (props) {
-    // const customerStore = inject('customerStore')
-    // const router = useRouter()
+    const { EVENT_CLOSE_MODAL, EVENT_MODAL_CLOSED, EVENT_OPEN_MODAL, EVENT_MODAL_OPENED } = constants()
+
+    const eventBus = inject('eventBus')
+    const router = useRouter()
     const { years, selectedYear } = useYearFilter()
     const { selectedStatus, statuses } = useStatusFilter()
     const { selectedLesson, lessons } = useLessonFilter()
+    const { getCurriculumsByQuestionId, curriculums } = useCurriculumShower()
 
     watch([selectedYear, selectedStatus, selectedLesson], () => {
       table?.ajax.reload(null, false)
+      // eventBus.emit(EVENT_OPEN_MODAL)
     })
 
     onMounted(() => {
@@ -240,15 +280,23 @@ export default {
           ]
         })
 
-      table.on('click', '.btn-primary', (e) => {
+      table.on('click', '.btn-secondary', async (e) => {
         const data = table.row($(e.target).parents('tr')[0]).data()
+        await getCurriculumsByQuestionId(data.id)
+        await eventBus.emit(EVENT_OPEN_MODAL)
         // router.push({ name: 'showInventory', params: { inventoryId: data.id } })
       })
 
-      table.on('click', '.btn-warning', (e) => {
+      table.on('click', '.btn-primary', async (e) => {
         const data = table.row($(e.target).parents('tr')[0]).data()
         // customerStore.actions.setCustomer({ id: data.customer_id, name: data.customer, identity: data.identity_no, phone: data.phone, address: data.address })
-        // router.push({ name: 'editInventory', params: { inventoryId: data.id } })
+        await router.push({ name: 'underConstruction' })
+      })
+
+      table.on('click', '.btn-warning', async (e) => {
+        const data = table.row($(e.target).parents('tr')[0]).data()
+        // customerStore.actions.setCustomer({ id: data.customer_id, name: data.customer, identity: data.identity_no, phone: data.phone, address: data.address })
+        await router.push({ name: 'underConstruction' })
       })
     })
 
@@ -263,7 +311,8 @@ export default {
       selectedStatus,
       statuses,
       selectedYear,
-      years
+      years,
+      curriculums
     }
   }
 }

@@ -21,13 +21,29 @@ namespace App\Http\Controllers\Api\App;
 
 use App\Http\Controllers\ApiController;
 use App\Models\Curriculum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CurriculumController extends ApiController
 {
+
+    public function getById($id)
+    {
+        $query = Curriculum::find($id);
+        return response()->json($query);
+    }
+
     public function findBy(Request $request): JsonResponse
     {
+        if($request->has('questionId') && !is_null($request->query('questionId'))) {
+            $id = $request->query('questionId');
+            $model = Curriculum::whereHas('questions',  static function (Builder $query) use ($id) {
+                $query->where('id', $id);
+            })->get();
+            return response()->json($model);
+        }
+
         $param = $request->query("param");
         $level = $request->query("level");
         if (!is_null($param)) {
@@ -40,4 +56,5 @@ class CurriculumController extends ApiController
         }
         return response()->json([], 200);
     }
+
 }
