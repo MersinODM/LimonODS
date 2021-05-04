@@ -22,9 +22,7 @@
   >
     <div class="card">
       <div class="card-body">
-        <h4>
-          <slot />
-        </h4>
+        <slot />
       </div>
     </div>
   </div>

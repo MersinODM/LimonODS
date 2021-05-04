@@ -16,41 +16,38 @@
   -->
 
 <template>
-  <div
-    class="card"
-    style=" cursor:pointer"
-    @click="click(id)"
-  >
+  <div class="card">
     <div class="card-body">
-      <slot />
+      <h1>
+        <slot />
+      </h1>
     </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: 'Choices',
+  name: 'TimeBox',
   props: {
-    content: {
+    examTime: {
       required: true,
       type: String,
       default: ''
-    },
-    id: {
-      required: true,
-      type: Number,
-      default: 0
     }
   },
   setup: function () {
-    const click = (id) => {
-      localStorage.setItem('questionId', id)
+    const lastTime = () => {
+
     }
-    return { click }
+    return { lastTime }
   }
 }
 </script>
 
 <style scoped>
-
+  .roundtimer{
+    height: 4%;
+    width: 4%;
+    border-radius: 100%;
+    border:10px solid darkblue;
+  }
 </style>
