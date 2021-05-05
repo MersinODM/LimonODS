@@ -46,16 +46,16 @@
           class="row"
         >
           <div
-            class="card-body col-md-2 bg-dark item-center"
-            style="cursor:pointer"
+            id="prevButton"
+            class="card-body col-md-2 text-center unclickable"
             @click="prevQuestion"
           >
-            <div class="card-body text-center">
+            <div class="card-body">
               <h4>Geri</h4>
             </div>
           </div>
           <div
-            class="card-body col-md-8 text-center"
+            class="card-body col-md-8"
             @click="questionDirection"
           >
             <Answers
@@ -68,8 +68,8 @@
             </Answers>
           </div>
           <div
-            class="card-body col-md-2 bg-blue text-center float-right"
-            style="cursor:pointer"
+            id="nextButton"
+            class="card-body col-md-2 text-center clickable"
             @click="nextQuestion"
           >
             <div class="card-body">
@@ -265,6 +265,11 @@ export default {
       questionIndex = localStorage.getItem('questionIndex')
       qn = questionIndex
       question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
+      if (qn > 0) $('#prevButton').attr('class', 'card-body col-md-2 text-center clickable')
+      else $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
+
+      if (qn < lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
+      else $('#nextButton').attr('class', 'card-body col-md-2 text-center unclickable')
     }
     const changeTab = () => {
       tabIndex = Number(localStorage.getItem('tabIndex'))
@@ -273,6 +278,8 @@ export default {
         qn = 0
         question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
         oldtabIndex = tabIndex
+        $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
+        $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
       }
     }
     const nextQuestion = () => {
@@ -281,12 +288,20 @@ export default {
       if (qn < lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) {
         qn++
         question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
+        $('#prevButton').attr('class', 'card-body col-md-2 text-center clickable')
+        if (qn === lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) {
+          $('#nextButton').attr('class', 'card-body col-md-2 text-center unclickable')
+        }
       }
     }
     const prevQuestion = () => {
       if (qn > 0) {
         qn--
         question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
+        $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
+        if (qn === 0) {
+          $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
+        }
       }
     }
     return {
@@ -306,7 +321,14 @@ export default {
     -webkit-touch-callout: none;
     -ms-user-select: none;
 }
-  .selectedChoice{
-    background-color: rgba(0, 0, 0, 0.43)
+  .unclickable{
+    cursor: default;
+    background-color: #5e5d5d;
+    color:white;
+  }
+  .clickable{
+    cursor:pointer;
+    background-color: rgba(7, 134, 217, 0.87);
+    color:white;
   }
 </style>

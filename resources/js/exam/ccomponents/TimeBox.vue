@@ -19,12 +19,15 @@
   <div class="card">
     <div class="card-body">
       <h1>
-        <slot />
+        {{ minutes + ":" + seconds }}
       </h1>
     </div>
   </div>
 </template>
 <script>
+
+import { ref } from 'vue'
+
 export default {
   name: 'TimeBox',
   props: {
@@ -35,10 +38,20 @@ export default {
     }
   },
   setup: function () {
-    const lastTime = () => {
-
-    }
-    return { lastTime }
+    // const tm = this.props.examTime.split(':')
+    let minutes = ref(60)
+    let seconds = ref(0)
+    // let lastTime = ref()
+    setInterval(function () {
+      if (seconds === 0) {
+        minutes--
+        seconds = 59
+      } else seconds--
+      // if (seconds < 10) lastTime = minutes + ':0' + seconds
+      // else lastTime = minutes + ':' + seconds
+      return { minutes, seconds }
+      // console.log(lastTime)
+    }, 1000)
   }
 }
 </script>
