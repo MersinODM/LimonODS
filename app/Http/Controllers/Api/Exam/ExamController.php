@@ -20,8 +20,19 @@ namespace App\Http\Controllers\Api\Exam;
 
 
 use App\Http\Controllers\ApiController;
+use App\Models\Exam;
 
 class ExamController extends ApiController
 {
-
+    public function get($id){
+        $exam=Exam::find($id);
+        return response()->json($exam);
+    }
+    public function getTable(){
+        $now=now();
+        $exam=Exam::where('start_date','<=',$now)
+        ->where('end_date','>=',$now)
+        ->get();
+        return response()->json($exam);
+    }
 }

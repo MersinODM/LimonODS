@@ -240,7 +240,7 @@ export default {
       minute: 60,
       second: 0
     })
-    const answer = ref(['A', 'B', 'D', 'C', 'A'])
+    const answer = ref([])
     let qn = 0
     let tabIndex = 0
     let oldtabIndex = 0
@@ -253,6 +253,13 @@ export default {
       questionIndex: String,
       choiceIndex: String
     }
+    // Cevaplar dizisine boş doldurma
+    const answerWrite = (ln) => {
+      for (let i = 0; i < ln; i++) {
+        answer[i].value = ' '
+      }
+    }
+    answerWrite(lessons.filter(l => l.id === tabIndex)[0].questions.length)
     // Sınavı Bitir
     const finishExam = () => {
       alert('Bitti')
@@ -265,6 +272,7 @@ export default {
       // localStorage.setObject('tqInfo', tqInfo)
       Choices.css = 'selectedChoice'
     }
+    // Üstteki cevap alanından soruya ulaşma
     const questionDirection = () => {
       questionIndex = localStorage.getItem('questionIndex')
       qn = questionIndex
@@ -285,7 +293,9 @@ export default {
         $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
         $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
       }
+      answerWrite(lessons.filter(l => l.id === tabIndex)[0].questions.length)
     }
+
     const nextQuestion = () => {
       // TODO Burada dizi dışına taşma kontrol edilsin
       // tabIndex = Number(localStorage.getItem('tabIndex'))

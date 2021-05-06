@@ -23,7 +23,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Utils\ResponseCodes;
 use App\Http\Controllers\Utils\ResponseKeys;
 use App\Models\Exam;
-use App\Models\ExamInfo;
+use App\Models\ExamLessonInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +64,7 @@ class ExamController extends ApiController
             $exam->save();
 
             foreach ($lessons as $lesson) {
-                $lessonModel = new ExamInfo();
+                $lessonModel = new ExamLessonInfo();
                 $lessonModel->exam_id = $exam["id"];
                 $lessonModel->lesson_id = $lesson["id"];
                 $lessonModel->count = $lesson["count"];
@@ -108,11 +108,11 @@ class ExamController extends ApiController
 
             $exam_id=$id;
 
-            $lessons_delete = ExamInfo::where('exam_id',$exam_id);
+            $lessons_delete = ExamLessonInfo::where('exam_id',$exam_id);
             $lessons_delete->delete();
 
             foreach ($lessons as $lesson) {
-                $lessonModel = new ExamInfo();
+                $lessonModel = new ExamLessonInfo();
                 $lessonModel->exam_id = $id;
                 $lessonModel->lesson_id = $lesson["lesson_id"];
                 $lessonModel->count = $lesson["count"];

@@ -21,8 +21,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ExamInfo extends Model
+class ExamLessonInfo extends Model
 {
+
     protected $fillable = [
         "lesson_id",
         "exam_id",
