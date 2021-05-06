@@ -39,19 +39,23 @@ export default {
   },
   setup: function () {
     // const tm = this.props.examTime.split(':')
-    let minutes = ref(60)
-    let seconds = ref(0)
-    // let lastTime = ref()
-    setInterval(function () {
-      if (seconds === 0) {
-        minutes--
-        seconds = 59
-      } else seconds--
+
+    let minutes = ref()
+    let seconds = ref()
+
+    minutes.value = 60
+    seconds.value = 0
+    const lTime = setInterval(function () {
+      if (seconds.value === 0) {
+        minutes.value--
+        seconds.value = 59
+      } else seconds.value--
       // if (seconds < 10) lastTime = minutes + ':0' + seconds
       // else lastTime = minutes + ':' + seconds
-      return { minutes, seconds }
+      return { lTime, minutes, seconds }
       // console.log(lastTime)
     }, 1000)
+    return { lTime, minutes, seconds }
   }
 }
 </script>
