@@ -24,7 +24,8 @@
         </div>
         <div class="col-md-2 float-left text-center">
           <TimeBox
-            exam-time="examTime"
+            :minute="examTime.minute"
+            :second="examTime.second"
           >
             {{ examTime }}
           </TimeBox>
@@ -235,7 +236,10 @@ export default {
         }]
       }
     ]
-    const examTime = '60:00'
+    const examTime = ({
+      minute: 60,
+      second: 0
+    })
     const answer = ref(['A', 'B', 'D', 'C', 'A'])
     let qn = 0
     let tabIndex = 0
