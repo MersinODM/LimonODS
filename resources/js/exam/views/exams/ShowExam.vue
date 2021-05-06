@@ -256,7 +256,7 @@ export default {
     // Cevaplar dizisine boş doldurma
     const answerWrite = (ln) => {
       for (let i = 0; i < ln; i++) {
-        answer[i].value = ' '
+        answer.value[i] = ' '
       }
     }
     answerWrite(lessons.filter(l => l.id === tabIndex)[0].questions.length)
