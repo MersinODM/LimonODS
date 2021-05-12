@@ -54,6 +54,12 @@ import constants from '../utils/constants'
 
 export default {
   name: 'Modal',
+  props: {
+    name: {
+      type: String,
+      default: ''
+    }
+  },
   setup (props) {
     const isShow = ref(false)
     const eventBus = inject('eventBus')
@@ -67,12 +73,13 @@ export default {
       eventBus.emit(EVENT_MODAL_CLOSED)
     }
 
-    eventBus.on(EVENT_OPEN_MODAL, () => {
+    eventBus.on(EVENT_OPEN_MODAL, (event) => {
+      if (props.name !== event.name) return
       isShow.value = true
       SkinHelper.OpenModalSkin()
     })
 
-    eventBus.emit(EVENT_MODAL_OPENED)
+    eventBus.emit(EVENT_MODAL_OPENED, { name: props.name })
     return {
       isShow,
       close

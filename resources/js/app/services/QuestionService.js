@@ -18,6 +18,12 @@
 import http from '../utils/http'
 
 const QuestionService = {
+  findById: async (id) => {
+    try {
+      const response = await http.get(`api/app/v1/questions/${id}`)
+      return response.data
+    } catch (e) {}
+  },
   save: async (data) => {
     try {
       const response = await http.post('api/app/v1/questions', data)

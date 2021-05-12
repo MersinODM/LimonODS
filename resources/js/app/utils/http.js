@@ -67,6 +67,9 @@ http.interceptors.response.use((response) => {
   if (error.config?.errorHandle === false) {
     return Promise.reject(error)
   }
+  if (error.response.status === 419) {
+    location.reload()
+  }
   if (error.response.status === 401) {
     Swal.fire({
       title: 'Oturum süreniz dolmuştur',

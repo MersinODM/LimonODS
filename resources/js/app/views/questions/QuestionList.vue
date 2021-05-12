@@ -92,7 +92,7 @@
             </div>
           </div>
         </div>
-        <modal>
+        <modal :name="curriculumModal">
           <template #modal-title>
             <h5>Kazanımlar</h5>
           </template>
@@ -150,10 +150,10 @@ import useCurriculumShower from '../../compositions/useCurriculumShower'
 let table = null
 
 export default {
-  name: 'InventoryTable',
+  name: 'QuestionList',
   components: { Page, Multiselect, Modal },
   setup (props) {
-    const { EVENT_CLOSE_MODAL, EVENT_MODAL_CLOSED, EVENT_OPEN_MODAL, EVENT_MODAL_OPENED } = constants()
+    const { EVENT_OPEN_MODAL, MODAL_CURRICULUM } = constants()
 
     const eventBus = inject('eventBus')
     const router = useRouter()
@@ -283,7 +283,7 @@ export default {
       table.on('click', '.btn-secondary', async (e) => {
         const data = table.row($(e.target).parents('tr')[0]).data()
         await getCurriculumsByQuestionId(data.id)
-        await eventBus.emit(EVENT_OPEN_MODAL)
+        await eventBus.emit(EVENT_OPEN_MODAL, { name: curriculumModal })
         // router.push({ name: 'showInventory', params: { inventoryId: data.id } })
       })
 
@@ -312,7 +312,8 @@ export default {
       statuses,
       selectedYear,
       years,
-      curriculums
+      curriculums,
+      curriculumModal: MODAL_CURRICULUM
     }
   }
 }

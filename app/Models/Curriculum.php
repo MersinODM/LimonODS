@@ -40,6 +40,7 @@ class Curriculum extends Model
 
     public function questions(): BelongsToMany
     {
-        return $this->belongsToMany(Question::class, 'curriculum_question_infos')->withTimestamps();;
+        return $this->belongsToMany(Question::class, 'curriculum_question_infos')
+            ->withTimestamps();
     }
 }

@@ -32,16 +32,6 @@ class QuestionController extends ApiController
 {
 
     public function get($id) {
-//        $question = DB::table('questions')
-//            ->where('id', $id)
-//            ->select("id", "type", "body", "context", "parent_id", "creator_id")
-//            ->first();
-//        $choices = DB::table('choices')
-//            ->where('q_id', $id)
-//            ->select("id", "content", "is_correct")
-//            ->get();
-//        $question->choices = $choices;
-
         $question = Question::with('choices')
             ->where("id", $id)
             ->first();

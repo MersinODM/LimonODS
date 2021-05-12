@@ -6,6 +6,7 @@
 
 import { statusStore } from '../store/statusStore'
 import { lessonStore } from '../store/lessonStore'
+import { examStore } from '../store/examStore'
 
 import mitt from 'mitt'
 
@@ -17,6 +18,7 @@ export default {
   provide: {
     statusStore,
     lessonStore,
+    examStore,
     eventBus
   },
   setup () {

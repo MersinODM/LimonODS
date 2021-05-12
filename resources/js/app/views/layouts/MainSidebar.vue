@@ -28,7 +28,7 @@
         style="opacity: .8; width:1.5em"
         :src="logo"
       >
-      <span class="brand-text font-weight-light">Test</span>
+      <span class="brand-text font-weight-light">Limon ÖDS</span>
     </a>
     <div class="sidebar">
       <div class="user-panel mt-3 pb-3 mb-3 d-flex justify-content-center">
@@ -37,7 +37,7 @@
             href="#"
             class="d-block"
             @click.prevent
-          >Test</a>
+          >Test User</a>
         </div>
       </div>
       <nav class="mt-2">
@@ -86,6 +86,37 @@
                 >
                   <i class="mdi mdi-book-plus" />
                   <p>Soru Oluştur</p>
+                </router-link>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a
+              href="#"
+              class="nav-link"
+            >
+              <i class="mdi mdi-account-question" />
+              <p>Sınav İşlemleri
+                <i class="right fas fa-angle-left" />
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link
+                  :to="{name: 'underConstruction' }"
+                  class="nav-link"
+                >
+                  <i class="mdi mdi-book-multiple" />
+                  <p>Sınavları Listele</p>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link
+                  :to="{name: 'newExam' }"
+                  class="nav-link"
+                >
+                  <i class="mdi mdi-book-plus" />
+                  <p>Sınav Oluştur</p>
                 </router-link>
               </li>
             </ul>

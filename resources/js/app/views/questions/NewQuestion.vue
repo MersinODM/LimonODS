@@ -184,7 +184,7 @@
               </div>
             </tab>
             <tab title="Önizleme">
-              <question :question="question" />
+              <preview-question :question="question" />
             </tab>
           </tabs>
         </div>
@@ -199,9 +199,8 @@ import Multiselect from '@vueform/multiselect'
 import { number, object, string, array } from 'yup'
 import { useField, useForm } from 'vee-validate'
 import { reactive, ref, toRefs, watch } from 'vue'
-import LessonService from '../../services/LessonService'
 import CustomEditor from '../../components/CustomEditor'
-import Question from '../../../commons/components/exams/Question'
+import PreviewQuestion from '../../components/PreviewQuestion'
 import Tabs from '../../../commons/components/Tabs'
 import Tab from '../../../commons/components/Tab'
 import CExam from '../../components/Choices'
@@ -213,7 +212,7 @@ import useLessonFilter from '../../compositions/useLessonFilter'
 
 export default {
   name: 'NewQuestion',
-  components: { CExam, CustomEditor, Page, Multiselect, Tabs, Tab, Question },
+  components: { CExam, CustomEditor, Page, Multiselect, Tabs, Tab, PreviewQuestion },
   setup () {
     const { lessons } = useLessonFilter()
 

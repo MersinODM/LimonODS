@@ -20,10 +20,20 @@ export default function () {
     STATUS: 'store/status',
     LESSON: 'store/lesson',
     LESSONS: 'store/lessons',
+    EXAM_TYPE: 'store/examType',
+    EXAM_TITLE: 'store/examTitle',
+    EXAM_START_DATE: 'store/examStartDate',
+    EXAM_END_DATE: 'store/examEndDate',
+    EXAM_LEVEL: 'store/examLevel',
+    EXAM_DESCRIPTION: 'store/examDescription',
+    EXAM_LESSONS: 'store/examLessons',
+    EXAM_QUESTIONS: 'store/examQuestions',
     EVENT_CLOSE_MODAL: 'closeModal',
     EVENT_MODAL_CLOSED: 'modalClosed',
     EVENT_OPEN_MODAL: 'openModal',
-    EVENT_MODAL_OPENED: 'modalOpened'
+    EVENT_MODAL_OPENED: 'modalOpened',
+    MODAL_CURRICULUM: 'curriculumModal',
+    MODAL_QUESTION: 'questionModal'
   }
 
   return {
