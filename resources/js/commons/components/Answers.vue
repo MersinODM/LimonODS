@@ -48,7 +48,7 @@ export default {
   setup: function () {
     // localStorage.setItem('questionIndex', this.index)
     const answerClick = (id) => {
-      localStorage.setItem('questionIndex', id)
+      // localStorage.setItem('questionIndex', id)
     }
     return { answerClick }
   }
@@ -60,5 +60,6 @@ export default {
 .rounAnswer{
   float:left;
   cursor: pointer;
+  margin-right: 5px;
 }
 </style>

@@ -19,7 +19,6 @@
   <div
     class="card"
     style=" cursor:pointer"
-    @click="click(id)"
   >
     <div class="card-body">
       <slot />
@@ -41,12 +40,6 @@ export default {
       type: Number,
       default: 0
     }
-  },
-  setup: function () {
-    const click = (id) => {
-      localStorage.setItem('questionId', id)
-    }
-    return { click }
   }
 }
 </script>

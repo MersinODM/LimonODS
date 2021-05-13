@@ -57,15 +57,14 @@
           </div>
           <div
             class="card-body col-md-8"
-            @click="questionDirection"
           >
             <Answers
-              v-for="(a, index) in answer"
+              v-for="(answer1, index) in answer"
               :id="index"
-              :key="index"
-              :title="a"
+              :title="answer1"
+              @click="questionDirection(index)"
             >
-              {{ (index + 1) + ')' + a }}
+              {{ (index + 1) + ')' + answer1 }}
             </Answers>
           </div>
           <div
@@ -92,22 +91,23 @@
                   :id="lesson.id"
                   :key="lesson.id"
                   :title="lesson.name"
-                >
-                  <div>
-                    <div>
-                      {{ question?.body }}
-                    </div>
-                  </div>
-                </tab>
+                />
+                <div>
+                  {{ (Number(qn) + 1 ) + ") " + question?.body }}
+                </div>
+                <p />
               </tabs>
-              <Choices
-                v-for="choice in question?.choices"
-                :id="choice.id"
-                :content="choice.content"
-                @click="selectChoice()"
-              >
-                {{ choice.content }}
-              </Choices>
+              <div>
+                <Choices
+                  v-for="(choice,index) in question?.choices"
+                  :id="choice.id"
+                  :key="index"
+                  :content="choice.content"
+                  @click="selectChoice(index, choice.id)"
+                >
+                  {{ abc[index] + ") " + choice.content }}
+                </Choices>
+              </div>
             </div>
           </div>
         </div>
@@ -124,6 +124,7 @@ import Answers from '../../../commons/components/Answers'
 import Choices from '../../ccomponents/Choices'
 import TimeBox from '../../ccomponents/TimeBox'
 import { inject, provide, reactive, ref } from 'vue'
+import * as Json from 'postcss'
 
 export default {
   name: 'ShowExam',
@@ -236,90 +237,103 @@ export default {
         }]
       }
     ]
+    const abc = ['A', 'B', 'C', 'D', 'E']
     const examTime = ({
       minute: 60,
       second: 0
     })
     const answer = ref([])
-    let qn = 0
+    const qn = ref()
+    qn.value = 0
     let tabIndex = 0
     let oldtabIndex = 0
-    let questionIndex = 0
+    const activeQuestion = ref()
     const question = ref()
-    question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
+    question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value]
     // Tablara ait soruları ve verilen cevapları tutan nesne
-    const tqInfo = {
-      tabIndex: String,
-      questionIndex: String,
-      choiceIndex: String
-    }
+    const answerObject = ref([{
+      tabIndex: Number,
+      questionIndex: Number,
+      answerIndex: Number
+    }])
     // Cevaplar dizisine boş doldurma
-    const answerWrite = (ln) => {
-      for (let i = 0; i < ln; i++) {
-        answer.value[i] = ' '
+    const answerWrite = () => {
+      for (let j = 0; j < lessons.length; j++) {
+        for (let i = 0; i < lessons[j].questions.length; i++) {
+          answerObject.value.push({ questionIndex: i, answerIndex: -1, tabIndex: lessons[j].id })
+          answer.value[i] = ' '
+        }
       }
     }
-    answerWrite(lessons.filter(l => l.id === tabIndex)[0].questions.length)
+    console.log(answerObject)
+    answerWrite()
     // Sınavı Bitir
     const finishExam = () => {
       alert('Bitti')
     }
     // Seçenek tıklanması
-    const selectChoice = () => {
-      // tqInfo.tabIndex(tabIndex)
-      // tqInfo.questionIndex(qn)
-      // tqInfo.choiceIndex(Number(localStorage.getItem('questionId')))
-      // localStorage.setObject('tqInfo', tqInfo)
-      Choices.css = 'selectedChoice'
+    const answerWriteLast = (ln) => {
+      for (let i = 0; i < ln; i++) {
+        if (answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === i)[0]?.answerIndex !== -1) {
+          answer.value[i] = abc[answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === i)[0]?.answerIndex]
+        } else answer.value[i] = ' '
+      }
+    }
+    const selectChoice = (index, id) => {
+      if (answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex === index) {
+        answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex = -1
+      } else answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex = index
+      localStorage.setItem('answerObject', JSON.stringify(answerObject))
+      answerWriteLast(lessons.filter(l => l.id === tabIndex)[0].questions.length)
     }
     // Üstteki cevap alanından soruya ulaşma
-    const questionDirection = () => {
-      questionIndex = localStorage.getItem('questionIndex')
-      qn = questionIndex
-      question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
-      if (qn > 0) $('#prevButton').attr('class', 'card-body col-md-2 text-center clickable')
+    const questionDirection = (index) => {
+      qn.value = index
+      question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value]
+
+      if (qn.value > 0) $('#prevButton').attr('class', 'card-body col-md-2 text-center clickable')
       else $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
 
-      if (qn < lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
+      if (qn.value < lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
       else $('#nextButton').attr('class', 'card-body col-md-2 text-center unclickable')
     }
     const changeTab = () => {
       tabIndex = Number(localStorage.getItem('tabIndex'))
 
       if (tabIndex !== oldtabIndex) {
-        qn = 0
-        question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
+        qn.value = 0
+        question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value]
         oldtabIndex = tabIndex
         $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
         $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
       }
-      answerWrite(lessons.filter(l => l.id === tabIndex)[0].questions.length)
+      answerWriteLast(lessons.filter(l => l.id === tabIndex)[0].questions.length)
     }
 
     const nextQuestion = () => {
       // TODO Burada dizi dışına taşma kontrol edilsin
       // tabIndex = Number(localStorage.getItem('tabIndex'))
-      if (qn < lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) {
-        qn++
-        question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
+      if (qn.value < lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) {
+        qn.value++
+        question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value]
         $('#prevButton').attr('class', 'card-body col-md-2 text-center clickable')
-        if (qn === lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) {
+        if (qn.value === lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) {
           $('#nextButton').attr('class', 'card-body col-md-2 text-center unclickable')
         }
       }
     }
     const prevQuestion = () => {
-      if (qn > 0) {
-        qn--
-        question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn]
+      if (qn.value > 0) {
+        qn.value--
+        question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value]
         $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
-        if (qn === 0) {
+        if (qn.value === 0) {
           $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
         }
       }
     }
     return {
-      lessons, qn, answer, nextQuestion, prevQuestion, question, changeTab, questionDirection, selectChoice, examTime, finishExam
+      lessons, qn, answer, abc, nextQuestion, prevQuestion, question, changeTab, questionDirection, selectChoice, examTime, finishExam, activeQuestion
     }
   }
 
