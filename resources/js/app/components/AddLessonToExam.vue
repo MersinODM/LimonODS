@@ -68,10 +68,12 @@
 
 <script>
 import useLessonFilter from '../compositions/useLessonFilter'
-import { ref, watch } from 'vue'
+import { inject, ref, watch } from 'vue'
 import Multiselect from '@vueform/multiselect'
 import { useField, useForm } from 'vee-validate'
 import { number, object } from 'yup'
+import constants from '../utils/constants'
+import {examStore} from "../store/examStore";
 
 export default {
   name: 'AddLessonToExam',
@@ -84,6 +86,8 @@ export default {
   },
   emits: ['lessonAdded', 'update:modelValue', 'onUpdate:modelValue'],
   setup (props, { emit }) {
+    const eventBus = inject('eventBus')
+    const { EVENT_LESSON_ADDED_TO_EXAM } = constants()
     const { lessons } = useLessonFilter()
     const examLessons = ref(props.modelValue)
     const lessonsLocal = ref([])
@@ -109,8 +113,10 @@ export default {
       if (!examLessons.value.some(l => l.id === selectedLesson.value)) {
         const lesson = lessonsLocal.value.filter(l => l.id === selectedLesson.value)[0]
         const data = { id: lesson.id, name: lesson.name, count: selectedCount.value }
-        examLessons.value.push(data)
+        // examLessons.value.push(data)
+        examStore.actions.addExamLesson(data)
         emit('lessonAdded', data)
+        eventBus.emit(EVENT_LESSON_ADDED_TO_EXAM, data)
       }
       emit('update:modelValue', examLessons)
     })

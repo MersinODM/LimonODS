@@ -38,7 +38,7 @@ const state = reactive({
   endDate: null,
   level: null,
   description: null,
-  lessons: [],
+  examLessons: [],
   questions: []
 })
 
@@ -73,8 +73,8 @@ const setDescription = (description) => {
 }
 
 const setLessons = (lessons) => {
-  sessionStorage.setItem(EXAM_LESSONS, JSON.stringify(state.lessons))
-  state.lessons = lessons
+  sessionStorage.setItem(EXAM_LESSONS, JSON.stringify(state.examLessons))
+  state.examLessons = lessons
 }
 
 const setQuestions = (questions) => {
@@ -92,6 +92,19 @@ const removeQuestion = (id) => {
     const index = state.questions.map(l => l.id).indexOf(id)
     state.questions.splice(index, 1)
     setQuestions(state.questions)
+  }
+}
+
+const addExamLesson = (lesson) => {
+  this.state.examLessons.push(lesson)
+  setLessons(state.examLessons)
+}
+
+const removeExamLesson = (id) => {
+  if (state.examLessons.some(q => q.id === id)) {
+    const index = state.examLessons.map(l => l.id).indexOf(id)
+    state.examLessons.splice(index, 1)
+    setQuestions(state.examLessons)
   }
 }
 
@@ -125,9 +138,9 @@ const description = computed(() => {
   return state.description
 })
 
-const lessons = computed(() => {
-  if (!state.lessons) { state.lessons = JSON.parse(sessionStorage.getItem(EXAM_LESSONS)) }
-  return state.lessons
+const examLessons = computed(() => {
+  if (!state.examLessons) { state.examLessons = JSON.parse(sessionStorage.getItem(EXAM_LESSONS)) }
+  return state.examLessons
 })
 
 const questions = computed(() => {
@@ -151,7 +164,9 @@ export const examStore = readonly({
     setLessons,
     addQuestion,
     removeQuestion,
-    setQuestions
+    setQuestions,
+    addExamLesson,
+    removeExamLesson
   },
   getters: {
     type,
@@ -160,7 +175,7 @@ export const examStore = readonly({
     endDate,
     level,
     description,
-    lessons,
+    examLessons,
     questions
   }
 })

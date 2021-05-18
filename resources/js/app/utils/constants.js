@@ -31,6 +31,7 @@ export default function () {
     EVENT_CLOSE_MODAL: 'closeModal',
     EVENT_MODAL_CLOSED: 'modalClosed',
     EVENT_OPEN_MODAL: 'openModal',
+    EVENT_LESSON_ADDED_TO_EXAM: 'lessonAddedToExam',
     EVENT_MODAL_OPENED: 'modalOpened',
     MODAL_CURRICULUM: 'curriculumModal',
     MODAL_QUESTION: 'questionModal'

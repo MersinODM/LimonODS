@@ -125,8 +125,8 @@
                       </div>
                     </div>
                   </div>
-                  <add-lesson-to-exam v-model="examLessons" />
-                  <selected-lesson-list-for-exam v-model="examLessons" />
+                  <add-lesson-to-exam v-model.lazy="examLessons" />
+                  <selected-lesson-list-for-exam v-model.lazy="examLessons" />
                   <div
                     v-if="examLessonsEM"
                     role="alert"
@@ -175,7 +175,9 @@
             <tab title=" Soru Seçimi">
               <select-questions />
             </tab>
-            <tab title="Sınav Özeti" />
+            <tab title="Sınav Özeti">
+              <abstract-exam />
+            </tab>
           </tabs>
         </div>
       </div>
@@ -196,10 +198,11 @@ import tr from 'date-fns/locale/tr'
 import AddLessonToExam from '../../components/AddLessonToExam'
 import SelectedLessonListForExam from '../../components/SelectedLessonListForExam'
 import SelectQuestions from '../../components/SelectQuestions'
+import AbstractExam from "../../components/AbstractExam";
 
 export default {
   name: 'NewExam',
-  components: { SelectQuestions, SelectedLessonListForExam, CustomEditor, Page, Tab, Tabs, Multiselect, DatePicker, AddLessonToExam },
+  components: {AbstractExam, SelectQuestions, SelectedLessonListForExam, CustomEditor, Page, Tab, Tabs, Multiselect, DatePicker, AddLessonToExam },
   setup () {
     const examTypes = [
       { value: 1, label: 'Çoktan Seçmeli' }

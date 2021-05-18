@@ -60,6 +60,7 @@
 
 <script>
 import { ref } from 'vue'
+import {examStore} from "../store/examStore";
 
 export default {
   name: 'SelectedLessonListForExam',
@@ -76,7 +77,8 @@ export default {
       // examLessons içinde önce index imizi bulalım
       const index = examLessons.value.map(l => l.id).indexOf(id)
       if (index == null) return // index yoksa geri dönelim
-      examLessons.value.splice(index, 1)
+      // examLessons.value.splice(index, 1)
+      examStore.actions.removeExamLesson(id)
       emit('update:modelValue', examLessons)
       emit('lessonRemoved', id)
     }

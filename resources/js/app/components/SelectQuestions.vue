@@ -131,7 +131,6 @@
 import { inject, onMounted, onUnmounted, watch } from 'vue'
 import PreviewQuestion from './PreviewQuestion'
 import constants from '../utils/constants'
-import { useRouter } from 'vue-router'
 import Multiselect from '@vueform/multiselect'
 import useYearFilter from '../../commons/compositions/useYearFilter'
 import useStatusFilter from '../compositions/useStatusFilter'
@@ -151,7 +150,6 @@ export default {
     const { EVENT_OPEN_MODAL, MODAL_CURRICULUM, MODAL_QUESTION } = constants()
 
     const eventBus = inject('eventBus')
-    const router = useRouter()
     const { years, selectedYear } = useYearFilter()
     const { selectedStatus, statuses } = useStatusFilter()
     const { selectedLesson, lessons } = useLessonFilter()
@@ -159,6 +157,11 @@ export default {
     const { getQuestionById, question } = usePreviewQuestion()
 
     watch([selectedYear, selectedStatus, selectedLesson], () => {
+      table?.ajax.reload(null, false)
+      // eventBus.emit(EVENT_OPEN_MODAL)
+    })
+
+    watch(examStore.state.examLessons, () => {
       table?.ajax.reload(null, false)
       // eventBus.emit(EVENT_OPEN_MODAL)
     })
@@ -257,15 +260,17 @@ export default {
               data: '',
               width: '10%',
               render (data, type, row, meta) {
-                // TODO Burada sorunun eklenme durumuna göre filter çakılcak
-                const qs = examStore.getters.questions
-                if (qs.some(q => q.id === row.id)) {
-                  return '<button class="btn btn-xs btn-primary">Göster(Eklenmiş)</button>'
-                }
-                return '<div class="btn-group">' +
+                if (examStore.getters.examLessons.some(el => el.id === row.lesson_id)) {
+                  const qs = examStore.getters.questions
+                  if (qs.some(q => q.id === row.id)) {
+                    return '<button class="btn btn-xs btn-primary">Göster(Eklenmiş)</button>'
+                  }
+                  return '<div class="btn-group">' +
                       '<button class="btn btn-xs btn-primary">Göster</button>' +
                       '<button class="btn btn-xs btn-success">Ekle</button>' +
                       '</div>'
+                }
+                return '<button class="btn btn-xs btn-primary">Göster(Eklenemez)</button>'
               },
               searchable: false,
               orderable: false

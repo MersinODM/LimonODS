@@ -58,8 +58,8 @@ export default function () {
 
   const { handleSubmit, errors } = useForm({ validationSchema: schema })
 
-  const { value: selectedLesson, errorMessage: lessonEM } = useField('lesson')
-  const { value: selectedCount, errorMessage: countEM } = useField('count')
+  // const { value: selectedLesson, errorMessage: lessonEM } = useField('lesson')
+  // const { value: selectedCount, errorMessage: countEM } = useField('count')
   const { value: title, errorMessage: titleEM } = useField('title')
   const { value: startDate, errorMessage: startDateEM } = useField('startDate')
   const { value: endDate, errorMessage: endDateEM } = useField('endDate')
@@ -70,10 +70,17 @@ export default function () {
 
   // Burası önemli validasyon için
   questions.value = examStore.getters.questions
+  examLessons.value = examStore.getters.examLessons
+
+  watch(examLessons, () => {
+    examStore.actions.setLessons(examLessons.value)
+  })
+
+  watch(questions, () => {
+    examStore.actions.setQuestions(questions.value)
+  })
 
   const EM = {
-    lessonEM,
-    countEM,
     titleEM,
     startDateEM,
     endDateEM,
@@ -83,8 +90,6 @@ export default function () {
   }
 
   const models = {
-    selectedLesson,
-    selectedCount,
     title,
     startDate,
     endDate,
@@ -105,9 +110,9 @@ export default function () {
     examLessons.value = []
   }
 
-  watch(selectedLesson, () => {
-    actions.setLessons(selectedLesson)
-  })
+  // watch(selectedLesson, () => {
+  //   actions.setLessons(selectedLesson)
+  // })
 
   init()
 
