@@ -198,11 +198,11 @@ import tr from 'date-fns/locale/tr'
 import AddLessonToExam from '../../components/AddLessonToExam'
 import SelectedLessonListForExam from '../../components/SelectedLessonListForExam'
 import SelectQuestions from '../../components/SelectQuestions'
-import AbstractExam from "../../components/AbstractExam";
+import AbstractExam from '../../components/AbstractExam'
 
 export default {
   name: 'NewExam',
-  components: {AbstractExam, SelectQuestions, SelectedLessonListForExam, CustomEditor, Page, Tab, Tabs, Multiselect, DatePicker, AddLessonToExam },
+  components: { AbstractExam, SelectQuestions, SelectedLessonListForExam, CustomEditor, Page, Tab, Tabs, Multiselect, DatePicker, AddLessonToExam },
   setup () {
     const examTypes = [
       { value: 1, label: 'Çoktan Seçmeli' }

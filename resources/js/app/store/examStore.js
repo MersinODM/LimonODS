@@ -96,7 +96,7 @@ const removeQuestion = (id) => {
 }
 
 const addExamLesson = (lesson) => {
-  this.state.examLessons.push(lesson)
+  state.examLessons.push(lesson)
   setLessons(state.examLessons)
 }
 
