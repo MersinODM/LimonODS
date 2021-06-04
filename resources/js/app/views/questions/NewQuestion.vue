@@ -311,7 +311,7 @@ export default {
         try {
           const response = await QuestionService.save(questionData)
           await Messenger.showSuccess(response.message)
-          await router.push('questionList')
+          await router.push({ name: 'questionList' })
         } catch (e) { }
       }
     })

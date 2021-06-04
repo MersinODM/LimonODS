@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: "ExamList"
+  name: 'ExamList'
 }
 </script>
 

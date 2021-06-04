@@ -15,11 +15,11 @@
  *
  */
 
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 import dayjs from 'dayjs'
 
 export default function () {
-  const store = inject('filterStore')
+  // const store = inject('filterStore')
   const selectedYear = ref()
 
   const years = Array.from({ length: dayjs().year() - 2019 + 1 }, (v, k) => {
@@ -29,7 +29,7 @@ export default function () {
 
   const setDefaultYear = () => {
     // if (!store.getters.year) store.actions.setYear(now().year())
-    selectedYear.value = store.getters.year
+    // selectedYear.value = store.getters.year
   }
 
   return {

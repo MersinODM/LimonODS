@@ -68,18 +68,18 @@
                     <div class="form-group col-md-6">
                       <label>Sınıf Seviyesi</label>
                       <multiselect
-                        v-model="selectedType"
-                        name="type"
-                        :options="examTypes"
-                        :class="{ 'select-error': typeEM}"
+                        v-model="selectedLevel"
+                        name="level"
+                        :options="levels"
+                        :class="{ 'select-error': levelEM}"
                       />
                       <div
-                        v-if="typeEM"
+                        v-if="levelEM"
                         role="alert"
                         class="invalid-feedback order-last"
                         style="display: inline-block;"
                       >
-                        {{ typeEM }}
+                        {{ levelEM }}
                       </div>
                     </div>
                   </div>
@@ -199,10 +199,17 @@ import AddLessonToExam from '../../components/AddLessonToExam'
 import SelectedLessonListForExam from '../../components/SelectedLessonListForExam'
 import SelectQuestions from '../../components/SelectQuestions'
 import AbstractExam from '../../components/AbstractExam'
+import mitt from 'mitt'
+
+// eslint-disable-next-line new-cap
+const examBus = new mitt()
 
 export default {
   name: 'NewExam',
   components: { AbstractExam, SelectQuestions, SelectedLessonListForExam, CustomEditor, Page, Tab, Tabs, Multiselect, DatePicker, AddLessonToExam },
+  provide: {
+    examBus
+  },
   setup () {
     const examTypes = [
       { value: 1, label: 'Çoktan Seçmeli' }
@@ -211,7 +218,7 @@ export default {
       models,
       methods,
       EM
-    } = useNewExam()
+    } = useNewExam(examBus)
 
     return {
       ...EM,

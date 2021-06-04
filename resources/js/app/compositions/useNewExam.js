@@ -15,16 +15,19 @@
  *
  */
 
-import { inject, ref, watch } from 'vue'
+import { watch } from 'vue'
 import { examStore } from '../store/examStore'
 import { array, date, number, object, string, ref as yupRef } from 'yup'
 import { useField, useForm } from 'vee-validate'
-import useLessonFilter from './useLessonFilter'
+import constants from '../utils/constants'
 
-export default function () {
+export default function (examBus) {
   const { getters, actions } = examStore
+  const { EVENT_LEVEL_CHANGED } = constants()
 
   const SELECTED_LESSONS_MESSAGE = 'En az bir ders seçimi yapılmaldır!'
+  const levels = Array.from({ length: 9 }, (_, i) => i + 4)
+  // levels.push("")
 
   const schema = object({
     examLessons: array()
@@ -65,6 +68,7 @@ export default function () {
   const { value: endDate, errorMessage: endDateEM } = useField('endDate')
   const { value: examLessons, errorMessage: examLessonsEM } = useField('examLessons')
   const { value: selectedType, errorMessage: typeEM } = useField('type')
+  const { value: selectedLevel, errorMessage: levelEM } = useField('level')
   const { value: description, errorMessage: descriptionEM } = useField('description')
   const { value: questions, errorMessage: questionEM } = useField('questions')
 
@@ -80,13 +84,18 @@ export default function () {
     examStore.actions.setQuestions(questions.value)
   })
 
+  watch(selectedLevel, () => {
+    examBus?.emit(EVENT_LEVEL_CHANGED, selectedLevel.value)
+  })
+
   const EM = {
     titleEM,
     startDateEM,
     endDateEM,
     examLessonsEM,
     typeEM,
-    descriptionEM
+    descriptionEM,
+    levelEM
   }
 
   const models = {
@@ -95,7 +104,9 @@ export default function () {
     endDate,
     examLessons,
     selectedType,
-    description
+    description,
+    selectedLevel,
+    levels
   }
 
   const save = handleSubmit(values => {

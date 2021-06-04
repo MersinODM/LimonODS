@@ -24,7 +24,7 @@ import NotFound from '../../commons/views/utils/NotFound'
 import NewQuestion from '../views/questions/NewQuestion'
 import NewCurriculum from '../views/curriculums/NewCurriculum'
 import QuestionList from '../views/questions/QuestionList'
-import NewExam from "../views/exams/NewExam";
+import NewExam from '../views/exams/NewExam'
 
 const router = createRouter({
   history: createWebHistory(),

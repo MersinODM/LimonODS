@@ -44,7 +44,8 @@
         "sass-loader": "^12.0.0",
         "vue-loader": "^16.2.0",
         "webpack": "^5.38.1",
-        "webpack-bundle-analyzer": "^4.4.2"
+        "webpack-bundle-analyzer": "^4.4.2",
+        "webpack-cli": "^4.7.0"
     },
     "dependencies": {
         "@braintree/sanitize-url": "^5.0.2",
@@ -59,6 +60,7 @@
         "date-fns": "^2.22.1",
         "dayjs": "^1.10.5",
         "deepmerge": "^4.2.2",
+
         "katex": "^0.13.11",
         "maska": "^1.4.2",
         "mitt": "^2.1.0",

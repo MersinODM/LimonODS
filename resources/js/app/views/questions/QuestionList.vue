@@ -283,7 +283,7 @@ export default {
       table.on('click', '.btn-secondary', async (e) => {
         const data = table.row($(e.target).parents('tr')[0]).data()
         await getCurriculumsByQuestionId(data.id)
-        await eventBus.emit(EVENT_OPEN_MODAL, { name: curriculumModal })
+        await eventBus.emit(EVENT_OPEN_MODAL, { name: MODAL_CURRICULUM })
         // router.push({ name: 'showInventory', params: { inventoryId: data.id } })
       })
 

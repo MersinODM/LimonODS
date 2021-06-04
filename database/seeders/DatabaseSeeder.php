@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
                 "full_name" => "Hakan GÜLEN",
                 "phone" => "05556614641",
                 "email" => "hgulen33@gmail.com",
-                "password" => Hash::make("Hakan.1986")
+                "password" => Hash::make("Deneme.1234")
             ]);
             $user->save();
             $user->assignRole('admin');
