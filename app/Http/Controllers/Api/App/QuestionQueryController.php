@@ -42,6 +42,10 @@ class QuestionQueryController extends ApiController
             $query->where('questions.lesson_id', '=', $request->input('lesson_id'));
         }
 
+        if ($request->has('level') && !is_null($request->input('level'))) {
+            $query->where('questions.level', '=', $request->input('level'));
+        }
+
 //        if ($request->has('search') && !is_null($request->input('search')['value'])) {
 //            $query->orWhereHas('curriculums', function (Builder $qury) use ($request) {
 //                $searchParam = $request->input('search')['value'];

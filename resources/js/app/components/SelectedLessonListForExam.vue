@@ -60,7 +60,7 @@
 
 <script>
 import { ref } from 'vue'
-import {examStore} from "../store/examStore";
+import { examStore } from '../store/examStore'
 
 export default {
   name: 'SelectedLessonListForExam',

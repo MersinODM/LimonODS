@@ -19,7 +19,7 @@
   <page>
     <template #header>
       <h4>
-        <span class="text-bold text-blue"> Yeni</span> Sınav
+        <span class="text-bold text-blue"> Yeni</span> Sınav <span v-if="selectedLevel" class="text-bold text-green">{{selectedLevel}}. Sınıflar</span>
       </h4>
     </template>
     <template #content>

@@ -74,7 +74,7 @@ export default function (examBus) {
 
   // Burası önemli validasyon için
   questions.value = examStore.getters.questions
-  examLessons.value = examStore.getters.examLessons
+  // examLessons.value = examStore.getters.examLessons
 
   watch(examLessons, () => {
     examStore.actions.setLessons(examLessons.value)
@@ -84,8 +84,9 @@ export default function (examBus) {
     examStore.actions.setQuestions(questions.value)
   })
 
+  // Burada sınıf seviyesi değişince otomatik o sınıf seviyesine ait dersler listelensin event emitter
   watch(selectedLevel, () => {
-    examBus?.emit(EVENT_LEVEL_CHANGED, selectedLevel.value)
+    examBus.emit(EVENT_LEVEL_CHANGED, selectedLevel.value)
   })
 
   const EM = {

@@ -128,7 +128,7 @@
 
 <script>
 
-import { inject, onMounted, onUnmounted, watch } from 'vue'
+import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
 import PreviewQuestion from './PreviewQuestion'
 import constants from '../utils/constants'
 import Multiselect from '@vueform/multiselect'
@@ -147,15 +147,23 @@ export default {
   name: 'SelectQuestions',
   components: { Multiselect, Modal, PreviewQuestion },
   setup () {
-    const { EVENT_OPEN_MODAL, MODAL_CURRICULUM, MODAL_QUESTION } = constants()
+    const { EVENT_OPEN_MODAL, MODAL_CURRICULUM, MODAL_QUESTION, EVENT_LEVEL_CHANGED } = constants()
 
     const eventBus = inject('eventBus')
+    const examBus = inject('examBus')
+
     const { years, selectedYear } = useYearFilter()
     const { selectedStatus, statuses } = useStatusFilter()
     const { selectedLesson, lessons } = useLessonFilter()
     const { getCurriculumsByQuestionId, curriculums } = useCurriculumShower()
     const { getQuestionById, question } = usePreviewQuestion()
+    let selectedLevel = ''
 
+
+    examBus.on(EVENT_LEVEL_CHANGED, (level) => {
+      selectedLevel = level
+      table?.ajax.reload(null, false)
+    })
     watch([selectedYear, selectedStatus, selectedLesson], () => {
       table?.ajax.reload(null, false)
       // eventBus.emit(EVENT_OPEN_MODAL)
@@ -171,6 +179,7 @@ export default {
         .on('preXhr.dt', (e, settings, data) => {
           // Bu event sunucuya datatable üzerinden veri gitmeden önce
           // yeni parametre eklemek için ateşleniyor
+          data.level = selectedLevel
           data.year = selectedYear.value
           data.lesson_id = selectedLesson.value
           data.status = selectedStatus.value

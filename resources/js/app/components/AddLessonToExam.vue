@@ -93,9 +93,10 @@ export default {
     const examLessons = ref(props.modelValue)
     const lessonsLocal = ref([])
 
-
     watch(lessons, () => {
-      lessons.every(l => lessonsLocal.value.push(l))
+      if (selectedLesson.value !== null) {
+        lessons.every(l => lessonsLocal.value.push(l))
+      }
     })
 
     const questionCounts = Array.from({ length: 55 }, (_, i) => i + 5)
@@ -112,8 +113,12 @@ export default {
     const { value: selectedLesson, errorMessage: lessonEM } = useField('lesson')
     const { value: selectedCount, errorMessage: countEM } = useField('count')
 
-    // examBus.on(EVENT_LEVEL_CHANGED, (level) => {
-    // })
+    // Burada sınıf seviyesi değişince otomatik o sınıf seviyesine ait dersler listelensin event handler
+    examBus.on(EVENT_LEVEL_CHANGED, (level) => {
+      selectedLesson.value = null
+      lessonsLocal.value = lessons.filter(l => l.levels.split(',').map(Number)
+        .includes(level))
+    })
 
     const addLesson = handleSubmit(() => {
       // Daha önce eklenmiş ise geri dönelim
