@@ -32,7 +32,7 @@ class QuestionController extends ApiController
 {
 
     public function get($id) {
-        $question = Question::with('choices')
+        $question = Question::with('choices', 'creator', 'lesson')
             ->where("id", $id)
             ->first();
         return response()->json($question);

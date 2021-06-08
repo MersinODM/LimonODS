@@ -43,32 +43,11 @@
                       :key="q.id"
                     >
                       <td>
-                        {{ q.name }}
+                        {{ JSON.stringify(q)}}
                       </td>
                       <td>$13 USD</td>
                       <td>
                         {{ q.length }}
-                      </td>
-                      <td>
-                        <a
-                          href="#"
-                          class="text-muted"
-                        >
-                          <i class="fas fa-search" />
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        Another Product
-                      </td>
-                      <td>$29 USD</td>
-                      <td>
-                        <small class="text-warning mr-1">
-                          <i class="fas fa-arrow-down" />
-                          0.5%
-                        </small>
-                        123,234 Sold
                       </td>
                       <td>
                         <a

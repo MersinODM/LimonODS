@@ -19,7 +19,10 @@
   <page>
     <template #header>
       <h4>
-        <span class="text-bold text-blue"> Yeni</span> Sınav <span v-if="selectedLevel" class="text-bold text-green">{{selectedLevel}}. Sınıflar</span>
+        <span class="text-bold text-blue"> Yeni</span> Sınav <span
+          v-if="selectedLevel"
+          class="text-bold text-green"
+        >{{ selectedLevel }}. Sınıflar</span>
       </h4>
     </template>
     <template #content>
@@ -88,13 +91,23 @@
                       <label>Sınav Başlangıç Tarihi</label>
                       <date-picker
                         v-model="startDate"
+                        mode="dateTime"
+                        is24hr
                         name="startDate"
-                        class="form-control text-center"
-                        :class="{'is-invalid': startDateEM != null}"
+                        :minute-increment="15"
                         :locale="tr"
-                        input-format="dd.MM.yyyy"
+                        input-format="dd.MM.yyyy HH:mm"
                         style="background-color: white"
-                      />
+                      >
+                        <template #default="{ inputValue, inputEvents }">
+                          <input
+                            class="form-control text-center"
+                            :class="{'is-invalid': startDateEM != null}"
+                            :value="inputValue"
+                            v-on="inputEvents"
+                          >
+                        </template>
+                      </date-picker>
                       <div
                         v-if="startDateEM"
                         role="alert"
@@ -108,13 +121,23 @@
                       <label>Sınav Bitiş Tarihi</label>
                       <date-picker
                         v-model="endDate"
+                        mode="dateTime"
+                        is24hr
+                        :minute-increment="15"
                         name="endDate"
-                        class="form-control text-center"
-                        :class="{'is-invalid': endDateEM != null}"
                         :locale="tr"
-                        input-format="dd.MM.yyyy"
+                        input-format="dd.MM.yyyy HH:mm"
                         style="background-color: white"
-                      />
+                      >
+                        <template #default="{ inputValue, inputEvents }">
+                          <input
+                            class="form-control text-center"
+                            :class="{'is-invalid': endDateEM != null}"
+                            :value="inputValue"
+                            v-on="inputEvents"
+                          >
+                        </template>
+                      </date-picker>
                       <div
                         v-if="endDateEM"
                         role="alert"
@@ -191,7 +214,7 @@ import Page from '../../../commons/components/Page'
 import Tabs from '../../../commons/components/Tabs'
 import Tab from '../../../commons/components/Tab'
 import Multiselect from '@vueform/multiselect'
-import DatePicker from 'vue3-datepicker'
+// import DatePicker from 'vue3-datepicker'
 import CustomEditor from '../../components/CustomEditor'
 import useNewExam from '../../compositions/useNewExam'
 import tr from 'date-fns/locale/tr'
@@ -200,6 +223,7 @@ import SelectedLessonListForExam from '../../components/SelectedLessonListForExa
 import SelectQuestions from '../../components/SelectQuestions'
 import AbstractExam from '../../components/AbstractExam'
 import mitt from 'mitt'
+import { DatePicker } from 'v-calendar'
 
 // eslint-disable-next-line new-cap
 const examBus = new mitt()
