@@ -16,9 +16,9 @@
  */
 
 const groupBy = function (items, key) {
-  return items.reduce((rv, x) => {
-    (rv[x[key]] = rv[x[key]] || []).push(x)
-    return rv
+  return items.reduce((acc, current) => {
+    (acc[current[key]] = acc[current[key]] || []).push(current)
+    return acc
   }, {})
 }
 

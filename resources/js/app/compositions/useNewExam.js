@@ -29,6 +29,7 @@ export default function (examBus) {
   const levels = Array.from({ length: 9 }, (_, i) => i + 4)
   // levels.push("")
 
+  // Burası önemli validasyon için
   const schema = object({
     examLessons: array()
       .typeError(() => SELECTED_LESSONS_MESSAGE)
@@ -72,9 +73,7 @@ export default function (examBus) {
   const { value: description, errorMessage: descriptionEM } = useField('description')
   const { value: questions, errorMessage: questionEM } = useField('questions')
 
-  // Burası önemli validasyon için
-  questions.value = examStore.getters.questions
-  // examLessons.value = examStore.getters.examLessons
+
 
   watch(examLessons, () => {
     examStore.actions.setLessons(examLessons.value)
@@ -119,7 +118,8 @@ export default function (examBus) {
   }
 
   const init = () => {
-    examLessons.value = []
+    questions.value = examStore.getters.questions
+    examLessons.value = examStore.getters.examLessons
   }
 
   // watch(selectedLesson, () => {

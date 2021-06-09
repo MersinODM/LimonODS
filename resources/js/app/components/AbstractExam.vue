@@ -22,7 +22,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-12">
-              {{ questions.length }}
+              {{ questionsGroupByLesson['100'].length }}
             </div>
           </div>
           <div class="row">
@@ -39,23 +39,18 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="q in questions"
+                      v-for="q in examLessons"
                       :key="q.id"
                     >
                       <td>
-                        {{ JSON.stringify(q)}}
+                        {{ q.name }}
                       </td>
-                      <td>$13 USD</td>
+                      <td>{{ questionsGroupByLesson[q.id]?.length ?? 0 }}</td>
                       <td>
-                        {{ q.length }}
+                        {{ q.count - (questionsGroupByLesson[q.id]?.length ?? 0) }}
                       </td>
                       <td>
-                        <a
-                          href="#"
-                          class="text-muted"
-                        >
-                          <i class="fas fa-search" />
-                        </a>
+                        {{ q.count }}
                       </td>
                     </tr>
                   </tbody>
@@ -76,12 +71,21 @@
 <script>
 
 import { examStore } from '../store/examStore'
+import { groupBy } from '../utils/collections'
+import { ref, watch } from 'vue'
 
 export default {
   name: 'AbstractExam',
   setup () {
+    const questionsGroupByLesson = ref(groupBy(examStore.getters.questions, 'lesson_id'))
+    // const examLessons = examStore.getters.examLessons
+    watch(examStore.getters.questions, () => {
+      questionsGroupByLesson.value = groupBy(examStore.getters.questions, 'lesson_id')
+    })
     return {
-      questions: examStore.getters.questions
+      questionsGroupByLesson,
+      questions: examStore.getters.questions,
+      examLessons: examStore.getters.examLessons
     }
   }
 }

@@ -148,8 +148,8 @@
                       </div>
                     </div>
                   </div>
-                  <add-lesson-to-exam v-model.lazy="examLessons" />
-                  <selected-lesson-list-for-exam v-model.lazy="examLessons" />
+                  <add-lesson-to-exam v-model="examLessons" />
+                  <selected-lesson-list-for-exam v-model="examLessons" />
                   <div
                     v-if="examLessonsEM"
                     role="alert"
