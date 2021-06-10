@@ -90,7 +90,7 @@ export default {
     const examBus = inject('examBus')
     const { EVENT_LESSON_ADDED_TO_EXAM, EVENT_LEVEL_CHANGED } = constants()
     const { lessons } = useLessonFilter()
-    const examLessons = ref(props.modelValue)
+    // const examLessons = ref(props.modelValue)
     const lessonsLocal = ref([])
 
     watch(lessons, () => {
@@ -122,7 +122,7 @@ export default {
 
     const addLesson = handleSubmit(() => {
       // Daha önce eklenmiş ise geri dönelim
-      if (!examLessons.value.some(l => l.id === selectedLesson.value)) {
+      if (!props.modelValue.some(l => l.id === selectedLesson.value)) {
         const lesson = lessonsLocal.value.filter(l => l.id === selectedLesson.value)[0]
         const data = { id: lesson.id, name: lesson.name, count: selectedCount.value }
         // examLessons.value.push(data)
@@ -130,7 +130,7 @@ export default {
         emit('lessonAdded', data)
         eventBus.emit(EVENT_LESSON_ADDED_TO_EXAM, data)
       }
-      emit('update:modelValue', examLessons)
+      emit('update:modelValue', props.modelValue)
     })
 
     return {

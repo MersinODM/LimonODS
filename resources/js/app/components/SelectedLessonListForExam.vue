@@ -17,7 +17,7 @@
 
 <template>
   <div
-    v-if="examLessons.length > 0"
+    v-if="modelValue.length > 0"
     class="form-row"
   >
     <div class="col-md-12">
@@ -32,7 +32,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="(lesson, index) in examLessons"
+            v-for="(lesson, index) in modelValue"
             :key="lesson.id"
           >
             <td>{{ index+1 }}</td>
@@ -72,19 +72,17 @@ export default {
   },
   emits: ['lessonRemoved', 'update:modelValue', 'onUpdate:modelValue'],
   setup (props, { emit }) {
-    const examLessons = ref(props.modelValue)
     const removeLesson = (id) => {
       // examLessons içinde önce index imizi bulalım
-      const index = examLessons.value.map(l => l.id).indexOf(id)
+      const index = props.modelValue.map(l => l.id).indexOf(id)
       if (index == null) return // index yoksa geri dönelim
       // examLessons.value.splice(index, 1)
       examStore.actions.removeExamLesson(id)
-      emit('update:modelValue', examLessons)
+      emit('update:modelValue', props.modelValue)
       emit('lessonRemoved', id)
     }
     return {
-      removeLesson,
-      examLessons
+      removeLesson
     }
   }
 }

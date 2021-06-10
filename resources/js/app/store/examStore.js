@@ -104,7 +104,7 @@ const removeExamLesson = (id) => {
   if (state.examLessons.some(q => q.id === id)) {
     const index = state.examLessons.map(l => l.id).indexOf(id)
     state.examLessons.splice(index, 1)
-    setQuestions(state.examLessons)
+    setLessons(state.examLessons)
   }
 }
 
@@ -139,7 +139,9 @@ const description = computed(() => {
 })
 
 const examLessons = computed(() => {
-  if (!state.examLessons) { state.examLessons = JSON.parse(sessionStorage.getItem(EXAM_LESSONS)) }
+  if (!state.examLessons || state.examLessons.length <= 0) {
+    state.examLessons = JSON.parse(sessionStorage.getItem(EXAM_LESSONS))
+  }
   return state.examLessons
 })
 

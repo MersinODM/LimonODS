@@ -20,6 +20,7 @@ import { examStore } from '../store/examStore'
 import { array, date, number, object, string, ref as yupRef } from 'yup'
 import { useField, useForm } from 'vee-validate'
 import constants from '../utils/constants'
+import Messenger from '../../commons/utils/messenger'
 
 export default function (examBus) {
   const { getters, actions } = examStore
@@ -73,19 +74,27 @@ export default function (examBus) {
   const { value: description, errorMessage: descriptionEM } = useField('description')
   const { value: questions, errorMessage: questionEM } = useField('questions')
 
-
-
-  watch(examLessons, () => {
-    examStore.actions.setLessons(examLessons.value)
-  })
+  //
+  //
+  // watch(examLessons, () => {
+  //   examStore.actions.setLessons(examLessons.value)
+  // })
 
   watch(questions, () => {
+    if (questions || questions.length <= 0) return
     examStore.actions.setQuestions(questions.value)
   })
 
   // Burada sınıf seviyesi değişince otomatik o sınıf seviyesine ait dersler listelensin event emitter
-  watch(selectedLevel, () => {
-    examBus.emit(EVENT_LEVEL_CHANGED, selectedLevel.value)
+  watch(selectedLevel, async () => {
+    const promptResult = await Messenger.showPrompt('Sınıf seviyesini değiştirmeniz ders ve soru seçimlerinin sıfırlanmasına sebep olacak. Onaylıyor msunuz?')
+    if (promptResult.isConfirmed) {
+      examStore.actions.setLessons([])
+      examStore.actions.setQuestions([])
+      questions.value = []
+      examLessons.value = []
+      await examBus.emit(EVENT_LEVEL_CHANGED, selectedLevel.value)
+    }
   })
 
   const EM = {
@@ -110,7 +119,7 @@ export default function (examBus) {
   }
 
   const save = handleSubmit(values => {
-
+    console.log(values)
   })
 
   const methods = {
