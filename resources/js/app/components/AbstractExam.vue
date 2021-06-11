@@ -70,14 +70,15 @@
 
 <script>
 
-import { examStore } from '../store/examStore'
+import examStore from '../store/examStore'
 import { groupBy } from '../utils/collections'
 import { ref, watch } from 'vue'
 
 export default {
   name: 'AbstractExam',
   setup () {
-    const questionsGroupByLesson = ref(groupBy(examStore.getters.questions, 'lesson_id'))
+    const questions = examStore.getters.questions
+    const questionsGroupByLesson = ref(groupBy(questions, 'lesson_id'))
     // const examLessons = examStore.getters.examLessons
     watch(examStore.getters.questions, () => {
       questionsGroupByLesson.value = groupBy(examStore.getters.questions, 'lesson_id')

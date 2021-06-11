@@ -73,7 +73,7 @@ import Multiselect from '@vueform/multiselect'
 import { useField, useForm } from 'vee-validate'
 import { number, object } from 'yup'
 import constants from '../utils/constants'
-import { examStore } from '../store/examStore'
+import examStore from '../store/examStore'
 
 export default {
   name: 'AddLessonToExam',
@@ -122,7 +122,7 @@ export default {
 
     const addLesson = handleSubmit(() => {
       // Daha önce eklenmiş ise geri dönelim
-      if (!props.modelValue.some(l => l.id === selectedLesson.value)) {
+      if (!examStore.getters.examLessons.some(l => l.id === selectedLesson.value)) {
         const lesson = lessonsLocal.value.filter(l => l.id === selectedLesson.value)[0]
         const data = { id: lesson.id, name: lesson.name, count: selectedCount.value }
         // examLessons.value.push(data)
@@ -130,7 +130,7 @@ export default {
         emit('lessonAdded', data)
         eventBus.emit(EVENT_LESSON_ADDED_TO_EXAM, data)
       }
-      emit('update:modelValue', props.modelValue)
+      // emit('update:modelValue', props.modelValue)
     })
 
     return {
@@ -140,7 +140,8 @@ export default {
       selectedLesson,
       selectedCount,
       countEM,
-      lessonEM
+      lessonEM,
+      examLessons: examStore.getters.examLessons
     }
   }
 }

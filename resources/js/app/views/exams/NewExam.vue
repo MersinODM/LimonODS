@@ -148,8 +148,8 @@
                       </div>
                     </div>
                   </div>
-                  <add-lesson-to-exam v-model="examLessons" v-show="selectedLevel"/>
-                  <selected-lesson-list-for-exam v-model="examLessons" />
+                  <add-lesson-to-exam v-show="selectedLevel"/>
+                  <selected-lesson-list-for-exam />
                   <div
                     v-if="examLessonsEM"
                     role="alert"

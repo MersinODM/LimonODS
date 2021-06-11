@@ -16,7 +16,7 @@
  */
 
 import { watch } from 'vue'
-import { examStore } from '../store/examStore'
+import examStore from '../store/examStore'
 import { array, date, number, object, string, ref as yupRef } from 'yup'
 import { useField, useForm } from 'vee-validate'
 import constants from '../utils/constants'

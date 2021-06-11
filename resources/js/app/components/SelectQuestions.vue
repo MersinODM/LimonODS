@@ -140,7 +140,7 @@ import tr from '../../commons/utils/dataTablesTurkish'
 import { formatDate } from '../../commons/utils/dayjs'
 import Modal from './Modal'
 import usePreviewQuestion from '../compositions/usePreviewQuestion'
-import { examStore } from '../store/examStore'
+import examStore from '../store/examStore'
 
 let table = null
 export default {

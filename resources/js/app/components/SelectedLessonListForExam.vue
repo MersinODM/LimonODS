@@ -17,7 +17,7 @@
 
 <template>
   <div
-    v-if="modelValue.length > 0"
+    v-if="examLessons.length > 0"
     class="form-row"
   >
     <div class="col-md-12">
@@ -32,7 +32,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="(lesson, index) in modelValue"
+            v-for="(lesson, index) in examLessons"
             :key="lesson.id"
           >
             <td>{{ index+1 }}</td>
@@ -60,7 +60,7 @@
 
 <script>
 import { ref } from 'vue'
-import { examStore } from '../store/examStore'
+import examStore from '../store/examStore'
 
 export default {
   name: 'SelectedLessonListForExam',
@@ -74,15 +74,16 @@ export default {
   setup (props, { emit }) {
     const removeLesson = (id) => {
       // examLessons içinde önce index imizi bulalım
-      const index = props.modelValue.map(l => l.id).indexOf(id)
+      const index = examStore.getters.examLessons.map(l => l.id).indexOf(id)
       if (index == null) return // index yoksa geri dönelim
       // examLessons.value.splice(index, 1)
       examStore.actions.removeExamLesson(id)
-      emit('update:modelValue', props.modelValue)
+      // emit('update:modelValue', props.modelValue)
       emit('lessonRemoved', id)
     }
     return {
-      removeLesson
+      removeLesson,
+      examLessons: examStore.getters.examLessons
     }
   }
 }
