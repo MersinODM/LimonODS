@@ -15,7 +15,7 @@
  *
  */
 
-import { watch } from 'vue'
+import { nextTick, watch } from 'vue'
 import examStore from '../store/examStore'
 import { array, date, number, object, string, ref as yupRef } from 'yup'
 import { useField, useForm } from 'vee-validate'
@@ -23,7 +23,6 @@ import constants from '../utils/constants'
 import Messenger from '../../commons/utils/messenger'
 
 export default function (examBus) {
-  const { getters, actions } = examStore
   const { EVENT_LEVEL_CHANGED } = constants()
 
   const SELECTED_LESSONS_MESSAGE = 'En az bir ders seçimi yapılmaldır!'
@@ -86,15 +85,36 @@ export default function (examBus) {
   })
 
   // Burada sınıf seviyesi değişince otomatik o sınıf seviyesine ait dersler listelensin event emitter
-  watch(selectedLevel, async () => {
-    const promptResult = await Messenger.showPrompt('Sınıf seviyesini değiştirmeniz ders ve soru seçimlerinin sıfırlanmasına sebep olacak. Onaylıyor msunuz?')
-    if (promptResult.isConfirmed) {
-      examStore.actions.setLessons([])
-      examStore.actions.setQuestions([])
-      questions.value = []
-      examLessons.value = []
-      await examBus.emit(EVENT_LEVEL_CHANGED, selectedLevel.value)
-    }
+  // nextTick ile komponent oluşur oluşmaz watch edilmesini engelliyoruz bu sayede komponent yüklenir yüklenmez
+  // Messenger ın showPropmtu çalışmıyor
+  nextTick(() => {
+    watch(selectedLevel, async () => {
+      const promptResult = await Messenger.showPrompt('Sınıf seviyesini değiştirmeniz ders ve soru seçimlerinin sıfırlanmasına sebep olacak. Onaylıyor msunuz?')
+      if (promptResult.isConfirmed) {
+        examStore.actions.setLevel(selectedLevel.value)
+        examStore.actions.setLessons([])
+        examStore.actions.setQuestions([])
+        questions.value = []
+        examLessons.value = []
+        await examBus.emit(EVENT_LEVEL_CHANGED, selectedLevel.value)
+      }
+    })
+
+    watch(title, () => {
+      examStore.actions.setTitle(title.value)
+    })
+
+    watch(selectedType, () => {
+      examStore.actions.setType(selectedType.value)
+    })
+
+    watch(description, () => {
+      examStore.actions.setDescription(description.value)
+    })
+  })
+
+  const save = handleSubmit(values => {
+    console.log(values)
   })
 
   const EM = {
@@ -118,22 +138,19 @@ export default function (examBus) {
     levels
   }
 
-  const save = handleSubmit(values => {
-    console.log(values)
-  })
-
   const methods = {
     save
   }
 
+  // sessionStorage içinde kalan bişey varsa yükleyelim
   const init = () => {
-    questions.value = examStore.getters.questions
-    examLessons.value = examStore.getters.examLessons
+    title.value = examStore.getters.title.value
+    selectedType.value = examStore.getters.type.value
+    description.value = examStore.getters.description.value
+    selectedLevel.value = examStore.getters.level.value
+    questions.value = examStore.getters.questions.value
+    examLessons.value = examStore.getters.examLessons.value
   }
-
-  // watch(selectedLesson, () => {
-  //   actions.setLessons(selectedLesson)
-  // })
 
   init()
 
@@ -141,7 +158,7 @@ export default function (examBus) {
     EM,
     models,
     methods,
-    lessons: getters.lessons,
+    lessons: examStore.getters.lessons,
     handleSubmit,
     errors
   }

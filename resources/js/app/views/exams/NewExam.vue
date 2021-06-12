@@ -198,7 +198,7 @@
             <tab title=" Soru Seçimi">
               <select-questions />
             </tab>
-            <tab title="Sınav Özeti">
+            <tab title="Sınav Kontrolü">
               <abstract-exam />
             </tab>
           </tabs>

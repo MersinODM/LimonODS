@@ -74,7 +74,7 @@ export default {
   setup (props, { emit }) {
     const removeLesson = (id) => {
       // examLessons içinde önce index imizi bulalım
-      const index = examStore.getters.examLessons.map(l => l.id).indexOf(id)
+      const index = examStore.state.examLessons.map(l => l.id).indexOf(id)
       if (index == null) return // index yoksa geri dönelim
       // examLessons.value.splice(index, 1)
       examStore.actions.removeExamLesson(id)

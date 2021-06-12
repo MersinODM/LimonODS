@@ -22,7 +22,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-12">
-              {{ questionsGroupByLesson['100'].length }}
+              {{ questionsGroupByLesson['100']?.length }}
             </div>
           </div>
           <div class="row">
@@ -77,11 +77,10 @@ import { ref, watch } from 'vue'
 export default {
   name: 'AbstractExam',
   setup () {
-    const questions = examStore.getters.questions
-    const questionsGroupByLesson = ref(groupBy(questions, 'lesson_id'))
+    const questionsGroupByLesson = ref(groupBy(examStore.state.questions, 'lesson_id'))
     // const examLessons = examStore.getters.examLessons
     watch(examStore.getters.questions, () => {
-      questionsGroupByLesson.value = groupBy(examStore.getters.questions, 'lesson_id')
+      questionsGroupByLesson.value = groupBy(examStore.state.questions, 'lesson_id')
     })
     return {
       questionsGroupByLesson,

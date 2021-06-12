@@ -43,43 +43,43 @@ const state = reactive({
 })
 
 const setType = (type) => {
-  sessionStorage.setItem(EXAM_TYPE, JSON.stringify(state.type))
   state.type = type
+  sessionStorage.setItem(EXAM_TYPE, JSON.stringify(state.type))
 }
 
 const setTitle = (title) => {
-  sessionStorage.setItem(EXAM_TITLE, JSON.stringify(state.title))
   state.title = title
+  sessionStorage.setItem(EXAM_TITLE, JSON.stringify(state.title))
 }
 
 const setStartDate = (date) => {
-  sessionStorage.setItem(EXAM_START_DATE, JSON.stringify(state.startDate))
   state.startDate = date
+  sessionStorage.setItem(EXAM_START_DATE, JSON.stringify(state.startDate))
 }
 
 const setEndDate = (date) => {
-  sessionStorage.setItem(EXAM_END_DATE, JSON.stringify(state.endDate))
   state.endDate = date
+  sessionStorage.setItem(EXAM_END_DATE, JSON.stringify(state.endDate))
 }
 
 const setLevel = (level) => {
-  sessionStorage.setItem(EXAM_LEVEL, JSON.stringify(state.level))
   state.level = level
+  sessionStorage.setItem(EXAM_LEVEL, JSON.stringify(state.level))
 }
 
 const setDescription = (description) => {
-  sessionStorage.setItem(EXAM_DESCRIPTION, JSON.stringify(state.description))
   state.description = description
+  sessionStorage.setItem(EXAM_DESCRIPTION, JSON.stringify(state.description))
 }
 
 const setLessons = (lessons) => {
-  sessionStorage.setItem(EXAM_LESSONS, JSON.stringify(state.examLessons))
   state.examLessons = lessons
+  sessionStorage.setItem(EXAM_LESSONS, JSON.stringify(state.examLessons))
 }
 
 const setQuestions = (questions) => {
-  sessionStorage.setItem(EXAM_QUESTIONS, JSON.stringify(state.questions))
   state.questions = questions
+  sessionStorage.setItem(EXAM_QUESTIONS, JSON.stringify(state.questions))
 }
 
 const addQuestion = (question) => {
@@ -114,7 +114,7 @@ const type = computed(() => {
 })
 
 const title = computed(() => {
-  if (!state.title) { state.lesson = JSON.parse(sessionStorage.getItem(EXAM_TYPE)) }
+  if (!state.title) { state.title = JSON.parse(sessionStorage.getItem(EXAM_TITLE)) }
   return state.title
 })
 

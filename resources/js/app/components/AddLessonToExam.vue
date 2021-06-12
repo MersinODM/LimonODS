@@ -122,7 +122,7 @@ export default {
 
     const addLesson = handleSubmit(() => {
       // Daha önce eklenmiş ise geri dönelim
-      if (!examStore.getters.examLessons.some(l => l.id === selectedLesson.value)) {
+      if (!examStore.state.examLessons.some(l => l.id === selectedLesson.value)) {
         const lesson = lessonsLocal.value.filter(l => l.id === selectedLesson.value)[0]
         const data = { id: lesson.id, name: lesson.name, count: selectedCount.value }
         // examLessons.value.push(data)
