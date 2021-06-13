@@ -269,8 +269,8 @@ export default {
               data: '',
               width: '10%',
               render (data, type, row, meta) {
-                if (examStore.getters.examLessons.some(el => el.id === row.lesson_id)) {
-                  const qs = examStore.getters.questions
+                if (examStore.getters.examLessons.value.some(el => el.id === row.lesson_id)) {
+                  const qs = examStore.getters.questions.value
                   if (qs.some(q => q.id === row.id)) {
                     return '<button class="btn btn-xs btn-primary">Göster(Eklenmiş)</button>'
                   }

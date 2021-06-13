@@ -87,30 +87,37 @@ export default function (examBus) {
   // Burada sınıf seviyesi değişince otomatik o sınıf seviyesine ait dersler listelensin event emitter
   // nextTick ile komponent oluşur oluşmaz watch edilmesini engelliyoruz bu sayede komponent yüklenir yüklenmez
   // Messenger ın showPropmtu çalışmıyor
-  nextTick(() => {
-    watch(selectedLevel, async () => {
-      const promptResult = await Messenger.showPrompt('Sınıf seviyesini değiştirmeniz ders ve soru seçimlerinin sıfırlanmasına sebep olacak. Onaylıyor msunuz?')
-      if (promptResult.isConfirmed) {
-        examStore.actions.setLevel(selectedLevel.value)
-        examStore.actions.setLessons([])
-        examStore.actions.setQuestions([])
-        questions.value = []
-        examLessons.value = []
-        await examBus.emit(EVENT_LEVEL_CHANGED, selectedLevel.value)
-      }
-    })
+  // nextTick(() => {
+  watch(selectedLevel, () => {
+    if (selectedLevel.value === examStore.getters.level.value) return
+    Messenger.showPrompt('Sınıf seviyesini değiştirmeniz ders ve soru seçimlerinin sıfırlanmasına sebep olacak. Onaylıyor msunuz?')
+      .then(promptResult => {
+        if (promptResult.isConfirmed) {
+          examStore.actions.setLevel(selectedLevel.value)
+          examStore.actions.setLessons([])
+          examStore.actions.setQuestions([])
+          questions.value = []
+          examLessons.value = []
+          examBus.emit(EVENT_LEVEL_CHANGED, selectedLevel.value)
+        }
+      })
+  })
+  // })
 
-    watch(title, () => {
-      examStore.actions.setTitle(title.value)
-    })
+  watch(title, () => {
+    examStore.actions.setTitle(title.value)
+  })
 
-    watch(selectedType, () => {
-      examStore.actions.setType(selectedType.value)
-    })
+  watch(selectedType, () => {
+    examStore.actions.setType(selectedType.value)
+  })
 
-    watch(description, () => {
-      examStore.actions.setDescription(description.value)
-    })
+  watch(description, () => {
+    examStore.actions.setDescription(description.value)
+  })
+
+  watch(examStore.getters.examLessons, () => {
+    examLessons.value = examStore.getters.examLessons.value
   })
 
   const save = handleSubmit(values => {

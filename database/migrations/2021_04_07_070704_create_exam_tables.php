@@ -151,11 +151,11 @@ class CreateExamTables extends Migration
         Schema::create('curriculums', function (Blueprint $table) {
             $table->id()->startingValue(1000);
             $table->unsignedBigInteger("lesson_id");
-            $table->unsignedBigInteger("parent_id");
+            $table->unsignedBigInteger("parent_id")->nullable();
             $table->string('code', 50)->nullable();
-            $table->string('name', 1000);
+            $table->string('name', 1000)->nullable();
             $table->tinyInteger('level')->comment("Sınıf seviyesi");
-            $table->tinyInteger('type')->comment("Ünite:0, Konu:1, Kazanım, 2");
+            $table->tinyInteger('type')->comment("Ünite:0, Konu:1, Kazanım, 2")->nullable();
             $table->string('content', 4000);
             $table->timestamps();
             $table->softDeletes();

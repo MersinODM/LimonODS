@@ -22,7 +22,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-12">
-              {{ questionsGroupByLesson['100']?.length }}
+
             </div>
           </div>
           <div class="row">
@@ -39,18 +39,18 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="q in examLessons"
-                      :key="q.id"
+                      v-for="lt in lessonTable"
+                      :key="lt.id"
                     >
                       <td>
-                        {{ q.name }}
+                        {{ lt.name }}
                       </td>
-                      <td>{{ questionsGroupByLesson[q.id]?.length ?? 0 }}</td>
+                      <td>{{ lt.addedQuestions }}</td>
                       <td>
-                        {{ q.count - (questionsGroupByLesson[q.id]?.length ?? 0) }}
+                        {{ lt.remainingQuestions }}
                       </td>
                       <td>
-                        {{ q.count }}
+                        {{ lt.total }}
                       </td>
                     </tr>
                   </tbody>
@@ -72,20 +72,36 @@
 
 import examStore from '../store/examStore'
 import { groupBy } from '../utils/collections'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 export default {
   name: 'AbstractExam',
   setup () {
-    const questionsGroupByLesson = ref(groupBy(examStore.state.questions, 'lesson_id'))
+    const examLessons = examStore.getters.examLessons
+    const questions = examStore.getters.questions
+    const lessonTable = ref([])
+
+    // const questionsGroupByLesson = ref(groupBy(examStore.state.questions, 'lesson_id'))
     // const examLessons = examStore.getters.examLessons
-    watch(examStore.getters.questions, () => {
-      questionsGroupByLesson.value = groupBy(examStore.state.questions, 'lesson_id')
+    // watch(examStore.getters.questions, () => {
+    // questionsGroupByLesson.value = groupBy(examStore.state.questions, 'lesson_id')
+    // })
+
+    watch([examLessons, questions], () => {
+      const questionsGroupByLesson = groupBy(questions.value, 'lesson_id')
+      return examLessons.value.map((currentVal) => {
+        return {
+          id: currentVal.id,
+          name: currentVal.name,
+          addedQuestions: questionsGroupByLesson[currentVal.id]?.length ?? 0,
+          remainingQuestions: currentVal.count - (questionsGroupByLesson[currentVal.id]?.length ?? 0),
+          total: currentVal.count
+        }
+      })
     })
+
     return {
-      questionsGroupByLesson,
-      questions: examStore.getters.questions,
-      examLessons: examStore.getters.examLessons
+      lessonTable
     }
   }
 }

@@ -175,20 +175,13 @@
                       {{ descriptionEM }}
                     </div>
                   </div>
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <button
-                        class="btn btn-primary btn-block"
-                      >
-                        TASLAK KAYDET
-                      </button>
-                    </div>
+                  <div class="form-row justify-content-center">
                     <div class="form-group col-md-6">
                       <button
                         class="btn btn-success btn-block"
                         @click="save"
                       >
-                        SINAVI OLUŞTUR
+                        SINAVI KAYDET
                       </button>
                     </div>
                   </div>
@@ -247,8 +240,8 @@ export default {
     return {
       ...EM,
       ...models,
-      examTypes,
       ...methods,
+      examTypes,
       tr
     }
   }
