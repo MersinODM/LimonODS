@@ -139,14 +139,13 @@ const description = computed(() => {
 })
 
 const examLessons = computed(() => {
-  const el = JSON.parse(sessionStorage.getItem(EXAM_LESSONS))
-  if (el != null && el.length > 0) {
-    state.examLessons = []
-    el.forEach(q => state.examLessons.push(q))
+  if (!state.examLessons || state.examLessons.length <= 0) {
+    const el = JSON.parse(sessionStorage.getItem(EXAM_LESSONS))
+    if (el != null && el.length > 0) {
+      state.examLessons = []
+      el.forEach(q => state.examLessons.push(q))
+    }
   }
-  // if (!state.examLessons || state.examLessons.length <= 0) {
-  //   state.examLessons = JSON.parse(sessionStorage.getItem(EXAM_LESSONS))
-  // }
   return state.examLessons
 })
 

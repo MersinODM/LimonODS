@@ -21,9 +21,7 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <div class="col-md-12">
-
-            </div>
+            <div class="col-md-12" />
           </div>
           <div class="row">
             <div class="col-md-6">
@@ -87,9 +85,9 @@ export default {
     // questionsGroupByLesson.value = groupBy(examStore.state.questions, 'lesson_id')
     // })
 
-    watch([examLessons, questions], () => {
+    const loadExamLessons = () => {
       const questionsGroupByLesson = groupBy(questions.value, 'lesson_id')
-      return examLessons.value.map((currentVal) => {
+      lessonTable.value = examLessons.value.map((currentVal) => {
         return {
           id: currentVal.id,
           name: currentVal.name,
@@ -98,7 +96,13 @@ export default {
           total: currentVal.count
         }
       })
-    })
+    }
+
+    watch([examLessons, questions], () => {
+      loadExamLessons()
+    }, { deep: true })
+
+    loadExamLessons()
 
     return {
       lessonTable
