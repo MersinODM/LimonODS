@@ -148,7 +148,7 @@
                       </div>
                     </div>
                   </div>
-                  <add-lesson-to-exam v-show="selectedLevel"/>
+                  <add-lesson-to-exam v-show="selectedLevel" />
                   <selected-lesson-list-for-exam />
                   <div
                     v-if="examLessonsEM"
@@ -223,7 +223,18 @@ const examBus = new mitt()
 
 export default {
   name: 'NewExam',
-  components: { AbstractExam, SelectQuestions, SelectedLessonListForExam, CustomEditor, Page, Tab, Tabs, Multiselect, DatePicker, AddLessonToExam },
+  components: {
+    AbstractExam,
+    SelectQuestions,
+    SelectedLessonListForExam,
+    CustomEditor,
+    Page,
+    Tab,
+    Tabs,
+    Multiselect,
+    DatePicker,
+    AddLessonToExam
+  },
   provide: {
     examBus
   },

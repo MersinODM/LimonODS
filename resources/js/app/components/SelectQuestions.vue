@@ -68,7 +68,8 @@
                       <th>GİRİŞ</th>
                       <th>YAZAR</th>
                       <th>TELEFON</th>
-                      <th>BRANŞ</th>
+                      <th>Ö. BRANŞI</th>
+                      <th>SEVİYE</th>
                       <th>DERS</th>
                       <th>KULLANIM SAYISI</th>
                       <th>KAZANIM(LAR)</th>
@@ -128,7 +129,7 @@
 
 <script>
 
-import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
+import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
 import PreviewQuestion from './PreviewQuestion'
 import constants from '../utils/constants'
 import Multiselect from '@vueform/multiselect'
@@ -147,29 +148,35 @@ export default {
   name: 'SelectQuestions',
   components: { Multiselect, Modal, PreviewQuestion },
   setup () {
-    const { EVENT_OPEN_MODAL, MODAL_CURRICULUM, MODAL_QUESTION, EVENT_LEVEL_CHANGED } = constants()
+    const { EVENT_OPEN_MODAL, MODAL_CURRICULUM, MODAL_QUESTION } = constants()
 
     const eventBus = inject('eventBus')
-    const examBus = inject('examBus')
+    // const examBus = inject('examBus')
 
     const { years, selectedYear } = useYearFilter()
     const { selectedStatus, statuses } = useStatusFilter()
     const { selectedLesson, lessons } = useLessonFilter()
     const { getCurriculumsByQuestionId, curriculums } = useCurriculumShower()
     const { getQuestionById, question } = usePreviewQuestion()
-    let selectedLevel = ''
+    // let selectedLevel = ''
 
+    // examBus.on(EVENT_LEVEL_CHANGED, (level) => {
+    //   selectedLevel = level
+    //   table?.clear()
+    //   table?.ajax.reload(null, false)
+    // })
 
-    examBus.on(EVENT_LEVEL_CHANGED, (level) => {
-      selectedLevel = level
-      table?.ajax.reload(null, false)
-    })
     watch([selectedYear, selectedStatus, selectedLesson], () => {
       table?.ajax.reload(null, false)
       // eventBus.emit(EVENT_OPEN_MODAL)
     })
 
-    watch(examStore.state.examLessons, () => {
+    watch(examStore.getters.examLessons, () => {
+      table?.ajax.reload(null, false)
+      // eventBus.emit(EVENT_OPEN_MODAL)
+    }, { deep: true })
+
+    watch(examStore.getters.level, () => {
       table?.ajax.reload(null, false)
       // eventBus.emit(EVENT_OPEN_MODAL)
     })
@@ -179,7 +186,7 @@ export default {
         .on('preXhr.dt', (e, settings, data) => {
           // Bu event sunucuya datatable üzerinden veri gitmeden önce
           // yeni parametre eklemek için ateşleniyor
-          data.level = selectedLevel
+          data.level = examStore.getters.level.value ?? ''
           data.year = selectedYear.value
           data.lesson_id = selectedLesson.value
           data.status = selectedStatus.value
@@ -245,6 +252,10 @@ export default {
               orderable: false
             },
             {
+              data: 'level',
+              searchable: false
+            },
+            {
               data: 'lesson.name',
               name: 'lesson.name',
               searchable: true
@@ -279,7 +290,7 @@ export default {
                       '<button class="btn btn-xs btn-success">Ekle</button>' +
                       '</div>'
                 }
-                return '<button class="btn btn-xs btn-primary">Göster(Eklenemez)</button>'
+                return '<button class="btn btn-xs btn-primary">Göster</button>'
               },
               searchable: false,
               orderable: false

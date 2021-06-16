@@ -22,7 +22,6 @@ export default {
     eventBus
   },
   setup () {
-    lessonStore.actions.setLessons()
   }
 }
 </script>

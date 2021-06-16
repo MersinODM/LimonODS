@@ -38,12 +38,14 @@ import NHeader from './HeaderView'
 import NSidebar from './MainSidebar'
 import NFooter from './FooterView'
 import SkinHelper from '../../../commons/utils/SkinHelper'
+import { lessonStore } from '../../store/lessonStore'
 
 export default {
   name: 'DashBoard',
   components: { NFooter, NHeader, NSidebar },
   setup () {
     SkinHelper.MainSkin()
+    lessonStore.actions.setLessons()
   }
 }
 </script>

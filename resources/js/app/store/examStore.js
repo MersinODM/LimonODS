@@ -19,6 +19,7 @@ import { reactive, computed, readonly } from 'vue'
 // import now from '../helpers/dayjs'
 
 import constants from '../utils/constants'
+import notify from "../utils/notify";
 
 const {
   EXAM_TYPE,
@@ -84,6 +85,7 @@ const setQuestions = (questions) => {
 
 const addQuestion = (question) => {
   state.questions.push(question)
+  notify.success('Soru eklemesi başarılı.')
   setQuestions(state.questions)
 }
 
@@ -139,13 +141,14 @@ const description = computed(() => {
 })
 
 const examLessons = computed(() => {
-  if (!state.examLessons || state.examLessons.length <= 0) {
-    const el = JSON.parse(sessionStorage.getItem(EXAM_LESSONS))
-    if (el != null && el.length > 0) {
-      state.examLessons = []
-      el.forEach(q => state.examLessons.push(q))
-    }
+  const el = JSON.parse(sessionStorage.getItem(EXAM_LESSONS))
+  if (el != null && el.length > 0) {
+    state.examLessons = []
+    el.forEach(q => state.examLessons.push(q))
   }
+  // if (!state.examLessons || state.examLessons.length <= 0) {
+  //   state.examLessons = JSON.parse(sessionStorage.getItem(EXAM_LESSONS))
+  // }
   return state.examLessons
 })
 

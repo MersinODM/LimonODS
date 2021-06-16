@@ -65,6 +65,7 @@
         "katex": "^0.13.11",
         "maska": "^1.4.2",
         "mitt": "^2.1.0",
+        "notyf": "^3.10.0",
         "pace-progressbar": "^1.0.9",
         "pretty-checkbox": "^3.0.3",
         "rxjs": "^7.1.0",
