@@ -15,25 +15,43 @@
  *
  */
 
-const latex = {
-  updated (el, binding, vnode) {
-    // const argOptions = (binding.value && binding.value.options) || {}
-    // const allOptions = merge(globalOptions, argOptions)
+const renderFunction = (el, binding, vnode) => {
+  // const argOptions = (binding.value && binding.value.options) || {}
+  // const allOptions = merge(globalOptions, argOptions)
 
-    if (binding.arg && binding.arg === 'auto') {
-      // eslint-disable-next-line no-undef
-      renderMathInElement(el)
-    } else {
-      const expression = binding.value.expression || binding.value
-      const displayMode = {}
-      if (binding.arg === 'display') {
-        displayMode.displayMode = true
-      }
-      // const options = merge(allOptions, displayMode)
-
-      // eslint-disable-next-line no-undef
-      katex.render(expression, el)
+  if (binding.arg && binding.arg === 'auto') {
+    // eslint-disable-next-line no-undef
+    renderMathInElement(el, {
+      // customised options
+      // • auto-render specific keys, e.g.:
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      // • rendering keys, e.g.:
+      throwOnError: false
+    })
+  } else {
+    const expression = binding.value.expression || binding.value
+    const displayMode = {}
+    if (binding.arg === 'display') {
+      displayMode.displayMode = true
     }
+    // const options = merge(allOptions, displayMode)
+
+    // eslint-disable-next-line no-undef
+    katex.render(expression, el)
+  }
+}
+
+const latex = {
+  mounted (el, binding, vnode) {
+    renderFunction(el, binding, vnode)
+  },
+  updated (el, binding, vnode) {
+    renderFunction(el, binding, vnode)
   }
 }
 export default latex
