@@ -19,7 +19,7 @@ import { reactive, computed, readonly } from 'vue'
 // import now from '../helpers/dayjs'
 
 import constants from '../utils/constants'
-import notify from "../utils/notify";
+import notify from '../utils/notify'
 
 const {
   EXAM_TYPE,

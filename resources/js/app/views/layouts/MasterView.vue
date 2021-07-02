@@ -26,10 +26,22 @@
       <router-view />
     </div>
     <n-footer />
-    <!--    <div-->
-    <!--      id="sidebar-overlay"-->
-    <!--      @click="toggleSidebar"-->
-    <!--    />-->
+    <modal :name="curriculumModal">
+      <template #modal-title>
+        <h5>Kazanımlar</h5>
+      </template>
+      <template #modal-body>
+        <preview-curriculums />
+      </template>
+    </modal>
+    <modal :name="questionModal">
+      <template #modal-title>
+        <h5>Soru Önizleme</h5>
+      </template>
+      <template #modal-body>
+        <preview-question />
+      </template>
+    </modal>
   </div>
 </template>
 
@@ -39,13 +51,25 @@ import NSidebar from './MainSidebar'
 import NFooter from './FooterView'
 import SkinHelper from '../../../commons/utils/SkinHelper'
 import { lessonStore } from '../../store/lessonStore'
+import useCurriculumShower from '../../compositions/useCurriculumShower'
+import constants from '../../utils/constants'
+import Modal from '../../components/Modal'
+import PreviewQuestion from '../../components/PreviewQuestion'
+import PreviewCurriculums from '../../components/PreviewCurriculums'
 
 export default {
   name: 'DashBoard',
-  components: { NFooter, NHeader, NSidebar },
+  components: { NFooter, NHeader, NSidebar, Modal, PreviewQuestion, PreviewCurriculums },
   setup () {
     SkinHelper.MainSkin()
     lessonStore.actions.setLessons()
+    const { MODAL_CURRICULUM, MODAL_QUESTION } = constants()
+    const { curriculums } = useCurriculumShower()
+    return {
+      curriculums,
+      curriculumModal: MODAL_CURRICULUM,
+      questionModal: MODAL_QUESTION
+    }
   }
 }
 </script>

@@ -28,12 +28,15 @@ export default function () {
     EXAM_DESCRIPTION: 'store/examDescription',
     EXAM_LESSONS: 'store/examLessons',
     EXAM_QUESTIONS: 'store/examQuestions',
+    PREVIEW_QUESTION: 'store/previewQuestion',
+    PREVIEW_CURRICULUMS: 'store/previewCurriculums',
     EVENT_CLOSE_MODAL: 'closeModal',
     EVENT_MODAL_CLOSED: 'modalClosed',
     EVENT_OPEN_MODAL: 'openModal',
     EVENT_LESSON_ADDED_TO_EXAM: 'lessonAddedToExam',
     EVENT_LEVEL_CHANGED: 'levelChanged',
     EVENT_MODAL_OPENED: 'modalOpened',
+    EVENT_QUESTION_REMOVED_FROM_EXAM: 'questionRemovedFromExam',
     MODAL_CURRICULUM: 'curriculumModal',
     MODAL_QUESTION: 'questionModal'
   }

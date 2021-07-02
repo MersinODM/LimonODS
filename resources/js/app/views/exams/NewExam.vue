@@ -200,7 +200,6 @@
     </template>
   </page>
 </template>
-
 <script>
 
 import Page from '../../../commons/components/Page'

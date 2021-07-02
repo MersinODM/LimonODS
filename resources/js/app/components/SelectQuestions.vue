@@ -83,54 +83,12 @@
         </div>
       </div>
     </div>
-    <modal :name="curriculumModal">
-      <template #modal-title>
-        <h5>Kazanımlar</h5>
-      </template>
-      <template #modal-body>
-        <div
-          v-for="c in curriculums"
-          :key="c.id"
-          class="callout callout-info"
-        >
-          <table
-            style="width:100%"
-            class="table table-responsive table-sm  table-borderless"
-          >
-            <tbody>
-              <tr>
-                <th>Kod</th>
-                <td>{{ c.code }}</td>
-              </tr>
-              <tr>
-                <th>Sınıf Seviyesi</th>
-                <td>{{ c.level }}</td>
-              </tr>
-              <tr>
-                <th>İçerik</th>
-                <td>{{ c.content }}</td>
-              </tr>
-            </tbody>
-          </table>
-          <h5 />
-        </div>
-      </template>
-    </modal>
-    <modal :name="questionModal">
-      <template #modal-title>
-        <h5>Soru Önizleme</h5>
-      </template>
-      <template #modal-body>
-        <preview-question :question="question" />
-      </template>
-    </modal>
   </div>
 </template>
 
 <script>
 
-import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
-import PreviewQuestion from './PreviewQuestion'
+import { inject, onMounted, onUnmounted, watch } from 'vue'
 import constants from '../utils/constants'
 import Multiselect from '@vueform/multiselect'
 import useYearFilter from '../../commons/compositions/useYearFilter'
@@ -139,16 +97,15 @@ import useLessonFilter from '../compositions/useLessonFilter'
 import useCurriculumShower from '../compositions/useCurriculumShower'
 import tr from '../../commons/utils/dataTablesTurkish'
 import { formatDate } from '../../commons/utils/dayjs'
-import Modal from './Modal'
 import usePreviewQuestion from '../compositions/usePreviewQuestion'
 import examStore from '../store/examStore'
 
 let table = null
 export default {
   name: 'SelectQuestions',
-  components: { Multiselect, Modal, PreviewQuestion },
+  components: { Multiselect },
   setup () {
-    const { EVENT_OPEN_MODAL, MODAL_CURRICULUM, MODAL_QUESTION } = constants()
+    const { EVENT_OPEN_MODAL, MODAL_CURRICULUM, MODAL_QUESTION, EVENT_QUESTION_REMOVED_FROM_EXAM } = constants()
 
     const eventBus = inject('eventBus')
     // const examBus = inject('examBus')
@@ -156,15 +113,17 @@ export default {
     const { years, selectedYear } = useYearFilter()
     const { selectedStatus, statuses } = useStatusFilter()
     const { selectedLesson, lessons } = useLessonFilter()
-    const { getCurriculumsByQuestionId, curriculums } = useCurriculumShower()
-    const { getQuestionById, question } = usePreviewQuestion()
+    const { getCurriculumsByQuestionId } = useCurriculumShower()
+    const { getQuestionById } = usePreviewQuestion()
     // let selectedLevel = ''
 
-    // examBus.on(EVENT_LEVEL_CHANGED, (level) => {
-    //   selectedLevel = level
-    //   table?.clear()
+    // eventBus.on(EVENT_QUESTION_REMOVED_FROM_EXAM, () => {
     //   table?.ajax.reload(null, false)
     // })
+
+    watch(examStore.getters.questions, () => {
+      table?.ajax.reload(null, false)
+    }, { deep: true })
 
     watch([selectedYear, selectedStatus, selectedLesson], () => {
       table?.ajax.reload(null, false)
@@ -315,9 +274,7 @@ export default {
 
       table.on('click', '.btn-success', async (e) => {
         const data = table.row($(e.target).parents('tr')[0]).data()
-        // customerStore.actions.setCustomer({ id: data.customer_id, name: data.customer, identity: data.identity_no, phone: data.phone, address: data.address })
-        await getQuestionById(data.id)
-        await examStore.actions.addQuestion(question.value)
+        await examStore.actions.addQuestion(data)
         table.ajax.reload()
       })
     })
@@ -328,17 +285,13 @@ export default {
     })
 
     return {
-      question,
       selectedYear,
       selectedLesson,
       selectedStatus,
       lessons,
       statuses,
       years,
-      getCurriculumsByQuestionId,
-      curriculums,
-      curriculumModal: MODAL_CURRICULUM,
-      questionModal: MODAL_QUESTION
+      getCurriculumsByQuestionId
     }
   }
 }

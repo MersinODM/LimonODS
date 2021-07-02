@@ -7,6 +7,8 @@
 import { statusStore } from '../store/statusStore'
 import { lessonStore } from '../store/lessonStore'
 import examStore from '../store/examStore'
+import previewQuestionStore from '../store/previewQuestionStore'
+import previewCurriculumStore from '../store/previewCurriculumStore'
 
 import mitt from 'mitt'
 
@@ -19,6 +21,8 @@ export default {
     statusStore,
     lessonStore,
     examStore,
+    previewQuestionStore,
+    previewCurriculumStore,
     eventBus
   },
   setup () {

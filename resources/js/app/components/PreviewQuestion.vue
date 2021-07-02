@@ -26,14 +26,14 @@
           <div
             v-katex:auto
             class="ck-content"
-            v-html="question.body"
+            v-html="question?.body"
           />
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <div
-            v-for="(choice, index) in question.choices"
+            v-for="(choice, index) in question?.choices"
             :key="index"
             class="card"
           >
@@ -55,12 +55,14 @@
 </template>
 
 <script>
+import { inject } from 'vue'
+
 export default {
   name: 'Question',
-  props: {
-    question: {
-      required: true,
-      type: Object
+  setup () {
+    const previewQuestionStore = inject('previewQuestionStore')
+    return {
+      question: previewQuestionStore.getters.question
     }
   }
 }

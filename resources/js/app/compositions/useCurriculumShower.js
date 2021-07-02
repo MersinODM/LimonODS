@@ -17,15 +17,17 @@
 
 import { ref } from 'vue'
 import CurriculumService from '../services/CurriculumService'
+import previewCurriculumStore from '../store/previewCurriculumStore'
 
 export default function () {
   const curriculums = ref([])
   const getCurriculumsByQuestionId = async (id) => {
     curriculums.value = await CurriculumService.find({ questionId: id })
+    previewCurriculumStore.actions.setCurriculums(curriculums.value)
   }
 
   return {
-    curriculums,
+    curriculums: curriculums,
     getCurriculumsByQuestionId
   }
 }

@@ -12,7 +12,7 @@ $.fn.dataTable.ext.errMode = (settings, tn, msg) => {
   if (settings && settings.jqXHR && settings.jqXHR.status === 401) {
     router.push({ name: 'login' })
   }
-  if (settings.jqXHR.status === 419) {
+  if (settings.jqXHR?.status === 419) {
     location.reload()
   }
 }// Datatables için err mode kapatılıyor tüm hataları biz yakalayacağız

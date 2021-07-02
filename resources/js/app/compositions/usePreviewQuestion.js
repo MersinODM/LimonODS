@@ -17,11 +17,13 @@
 
 import { ref } from 'vue'
 import QuestionService from '../services/QuestionService'
+import previewQuestionStore from '../store/previewQuestionStore'
 
 export default function () {
   const question = ref()
   const getQuestionById = async (id) => {
     question.value = await QuestionService.findById(id)
+    previewQuestionStore.actions.setQuestion(question.value)
   }
 
   return {
