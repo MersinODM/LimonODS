@@ -183,6 +183,14 @@
                       >
                         SINAVI KAYDET
                       </button>
+                      <div
+                          v-if="questionEM"
+                          role="alert"
+                          class="invalid-feedback order-last"
+                          style="display: inline-block;"
+                      >
+                        {{ questionEM }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -191,8 +199,8 @@
             <tab title=" Soru Seçimi">
               <select-questions />
             </tab>
-            <tab title="Sınav Kontrolü">
-              <abstract-exam />
+            <tab title="Seçilen Sorular">
+              <selected-questions />
             </tab>
           </tabs>
         </div>
@@ -213,7 +221,7 @@ import tr from 'date-fns/locale/tr'
 import AddLessonToExam from '../../components/AddLessonToExam'
 import SelectedLessonListForExam from '../../components/SelectedLessonListForExam'
 import SelectQuestions from '../../components/SelectQuestions'
-import AbstractExam from '../../components/AbstractExam'
+import SelectedQuestions from '../../components/SelectedQuestions'
 import mitt from 'mitt'
 import { DatePicker } from 'v-calendar'
 
@@ -223,7 +231,7 @@ const examBus = new mitt()
 export default {
   name: 'NewExam',
   components: {
-    AbstractExam,
+    SelectedQuestions,
     SelectQuestions,
     SelectedLessonListForExam,
     CustomEditor,

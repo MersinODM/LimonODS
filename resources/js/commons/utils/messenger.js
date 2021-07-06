@@ -22,7 +22,7 @@ const Messenger = {
     return new Promise((resolve, reject) => {
       Swal.fire({
         title: 'Hata mesajı!',
-        text: message,
+        html: message,
         icon: 'error',
         confirmButtonText: 'Tamam'
       })
@@ -46,7 +46,7 @@ const Messenger = {
     return new Promise((resolve, reject) => {
       Swal.fire({
         title: 'Başarı mesajı!',
-        text: message,
+        html: message,
         icon: 'success',
         confirmButtonText: 'Tamam'
       }).then(value => resolve(value))
@@ -57,7 +57,7 @@ const Messenger = {
     return new Promise((resolve, reject) => {
       Swal.fire({
         title: 'Uyarı mesajı!',
-        text: message,
+        html: message,
         icon: 'warning',
         confirmButtonText: 'Tamam'
       })
@@ -90,7 +90,7 @@ const Messenger = {
     return new Promise((resolve, reject) => {
       Swal.fire({
         title: 'Dikkat!',
-        text: message,
+        html: message,
         icon: 'warning',
         showCancelButton: true,
         focusConfirm: false,

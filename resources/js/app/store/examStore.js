@@ -15,9 +15,8 @@
  *
  */
 
-import { reactive, computed, readonly } from 'vue'
+import {computed, reactive, readonly} from 'vue'
 // import now from '../helpers/dayjs'
-
 import constants from '../utils/constants'
 import notify from '../utils/notify'
 
@@ -93,6 +92,13 @@ const removeQuestion = (id) => {
   if (state.questions.some(q => q.id === id)) {
     const index = state.questions.map(l => l.id).indexOf(id)
     state.questions.splice(index, 1)
+    setQuestions(state.questions)
+  }
+}
+
+const removeQuestions = (lessonId) => {
+  if (state.questions.some(q => q.lesson_id === lessonId)) {
+    state.questions = state.questions.filter(q => q.lesson_id !== lessonId)
     setQuestions(state.questions)
   }
 }
@@ -173,6 +179,7 @@ export default {
     setLessons,
     addQuestion,
     removeQuestion,
+    removeQuestions,
     setQuestions,
     addExamLesson,
     removeExamLesson

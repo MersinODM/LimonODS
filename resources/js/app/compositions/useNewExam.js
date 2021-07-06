@@ -15,17 +15,19 @@
  *
  */
 
-import {  watch } from 'vue'
+import { watch } from 'vue'
 import examStore from '../store/examStore'
 import { array, date, number, object, string, ref as yupRef } from 'yup'
 import { useField, useForm } from 'vee-validate'
 import constants from '../utils/constants'
 import Messenger from '../../commons/utils/messenger'
+import { groupBy } from '../utils/collections'
 
 export default function (examBus) {
   const { EVENT_LEVEL_CHANGED } = constants()
 
   const SELECTED_LESSONS_MESSAGE = 'En az bir ders seçimi yapılmaldır!'
+  const QUESTION_SELECTION_MESSAGE = 'Hiç soru seçimi yapılmamış!'
   const levels = Array.from({ length: 9 }, (_, i) => i + 4)
   // levels.push("")
 
@@ -46,17 +48,17 @@ export default function (examBus) {
       .required(() => 'Sınav adı/başlığı gereklidir!'),
     level: number().typeError(() => 'Seviye seçimi yapılmaldır!')
       .required(() => 'Seviye seçimi yapılmaldır!'),
-    startDate: date().typeError(() => 'Sınav başlangıç tarihi seçilmelidir')
-      .required(() => 'Sınav başlangıç tarihi seçilmelidir!'),
-    endDate: date().typeError(() => 'Sınav bitiş tarihi seçilmelidir!')
-      .required(() => 'Sınav bitiş tarihi seçilmelidir!')
-      .min(yupRef('startDate'), () => 'Bitiş tarihi başlangıç tarihinden sonra olmalıdır'),
+    // startDate: date().typeError(() => 'Sınav başlangıç tarihi seçilmelidir')
+    //   .required(() => 'Sınav başlangıç tarihi seçilmelidir!'),
+    // endDate: date().typeError(() => 'Sınav bitiş tarihi seçilmelidir!')
+    //   .required(() => 'Sınav bitiş tarihi seçilmelidir!')
+    //   .min(yupRef('startDate'), () => 'Bitiş tarihi başlangıç tarihinden sonra olmalıdır'),
     description: string().typeError(() => 'Sınav yönergesi tanımlanmaldır!')
       .required(() => 'Sınav yönergesi mutlaka yazılmaldır!'),
     questions: array()
-      .typeError(() => 'En az bir kazanım seçimi yapılmalıdır!')
-      .required(() => 'En az bir kazanım seçimi yapılmalıdır!')
-      .min(1, () => 'En az bir kazanım seçimi yapılmaldır!')
+      .typeError(() => QUESTION_SELECTION_MESSAGE)
+      .required(() => QUESTION_SELECTION_MESSAGE)
+      .min(1, () => QUESTION_SELECTION_MESSAGE)
       .strict()
   })
 
@@ -120,7 +122,25 @@ export default function (examBus) {
     examLessons.value = examStore.getters.examLessons.value
   })
 
+  const checkQuestionCounts = () => {
+    const questionsGroupByLesson = groupBy(questions.value, 'lesson_id')
+    const errorObject = examLessons.value.map((currentVal) => {
+      const remainingQuestions = currentVal.count - (questionsGroupByLesson[currentVal.id]?.length ?? 0)
+      if (remainingQuestions > 0) {
+        return { hasError: true, message: `<b>${currentVal.name}</b> dersi için <b>${remainingQuestions}</b> adet soru seçilmelidir!` }
+      } else if (remainingQuestions < 0) {
+        return { hasError: true, message: `<b>${currentVal.name}</b> dersi için <b>${-1 * remainingQuestions}</b> adet çıkarılmaldır!` }
+      }
+      return { hasError: false, message: 'Herhangi bir sorun yok' }
+    }).reduce((acc, currentVal) => { return { hasError: acc.hasError && currentVal.hasError, message: `${acc.message}<li class="text-left">${currentVal.message}</li>` } }, { hasError: true, message: '' })
+    return errorObject
+  }
+
   const save = handleSubmit(values => {
+    const errorObject = checkQuestionCounts()
+    if (!errorObject.hasError) {
+      // Burada kayır işlemi yapılacak
+    }
     console.log(values)
   })
 
@@ -131,7 +151,8 @@ export default function (examBus) {
     examLessonsEM,
     typeEM,
     descriptionEM,
-    levelEM
+    levelEM,
+    questionEM
   }
 
   const models = {

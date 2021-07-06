@@ -24,43 +24,43 @@
             <div class="col-md-12" >
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div
-                v-if="lessonTable.length > 0"
-                class="card-body table-responsive p-0"
-              >
-                <table class="table table-striped table-valign-middle">
-                  <thead>
-                    <tr>
-                      <th>Ders</th>
-                      <th>Eklenen Soru</th>
-                      <th>Kalan Soru</th>
-                      <th>Toplam</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="lt in lessonTable"
-                      :key="lt.id"
-                    >
-                      <td>
-                        {{ lt.name }}
-                      </td>
-                      <td>{{ lt.addedQuestions }}</td>
-                      <td>
-                        {{ lt.remainingQuestions }}
-                      </td>
-                      <td>
-                        {{ lt.total }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="col-md-6" />
-          </div>
+<!--          <div class="row">-->
+<!--            <div class="col-md-6">-->
+<!--              <div-->
+<!--                v-if="lessonTable.length > 0"-->
+<!--                class="card-body table-responsive p-0"-->
+<!--              >-->
+<!--                <table class="table table-striped table-valign-middle">-->
+<!--                  <thead>-->
+<!--                    <tr>-->
+<!--                      <th>Ders</th>-->
+<!--                      <th>Eklenen Soru</th>-->
+<!--                      <th>Kalan Soru</th>-->
+<!--                      <th>Toplam</th>-->
+<!--                    </tr>-->
+<!--                  </thead>-->
+<!--                  <tbody>-->
+<!--                    <tr-->
+<!--                      v-for="lt in lessonTable"-->
+<!--                      :key="lt.id"-->
+<!--                    >-->
+<!--                      <td>-->
+<!--                        {{ lt.name }}-->
+<!--                      </td>-->
+<!--                      <td>{{ lt.addedQuestions }}</td>-->
+<!--                      <td>-->
+<!--                        {{ lt.remainingQuestions }}-->
+<!--                      </td>-->
+<!--                      <td>-->
+<!--                        {{ lt.total }}-->
+<!--                      </td>-->
+<!--                    </tr>-->
+<!--                  </tbody>-->
+<!--                </table>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-6" />-->
+<!--          </div>-->
           <div class="row mt-2">
             <div class="col-md-12">
               <h4 class="text-center">
@@ -107,7 +107,7 @@
 <script>
 
 import examStore from '../store/examStore'
-import { groupBy } from '../utils/collections'
+// import { groupBy } from '../utils/collections'
 import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
 import tr from '../../commons/utils/dataTablesTurkish'
 import { formatDate } from '../../commons/utils/dayjs'
@@ -125,33 +125,33 @@ export default {
     const { getCurriculumsByQuestionId, curriculums } = useCurriculumShower()
     const { getQuestionById, question } = usePreviewQuestion()
 
-    const examLessons = examStore.getters.examLessons
+    // const examLessons = examStore.getters.examLessons
     const questions = examStore.getters.questions
     const lessonTable = ref([])
     let table = null
 
-    const loadExamLessons = () => {
-      const questionsGroupByLesson = groupBy(questions.value, 'lesson_id')
-      lessonTable.value = examLessons.value.map((currentVal) => {
-        return {
-          id: currentVal.id,
-          name: currentVal.name,
-          addedQuestions: questionsGroupByLesson[currentVal.id]?.length ?? 0,
-          remainingQuestions: currentVal.count - (questionsGroupByLesson[currentVal.id]?.length ?? 0),
-          total: currentVal.count
-        }
-      })
-    }
+    // const loadExamLessons = () => {
+    //   const questionsGroupByLesson = groupBy(questions.value, 'lesson_id')
+    //   lessonTable.value = examLessons.value.map((currentVal) => {
+    //     return {
+    //       id: currentVal.id,
+    //       name: currentVal.name,
+    //       addedQuestions: questionsGroupByLesson[currentVal.id]?.length ?? 0,
+    //       remainingQuestions: currentVal.count - (questionsGroupByLesson[currentVal.id]?.length ?? 0),
+    //       total: currentVal.count
+    //     }
+    //   })
+    // }
 
-    watch([examLessons, questions], () => {
-      loadExamLessons()
-    }, { deep: true })
+    // watch([examLessons, questions], () => {
+    //   loadExamLessons()
+    // }, { deep: true })
 
     watch(questions, () => {
       table.clear().rows.add(questions.value).draw()
     }, { deep: true })
 
-    loadExamLessons()
+    // loadExamLessons()
 
     onMounted(() => {
       table = $('#questionsAbstractTable')
