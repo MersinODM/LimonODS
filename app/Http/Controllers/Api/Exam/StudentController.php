@@ -20,8 +20,87 @@ namespace App\Http\Controllers\Api\Exam;
 
 
 use App\Http\Controllers\ApiController;
+use App\Models\Student;
+use App\Models\MultiChoiceAnswer;
+use App\Http\Controllers\Utils\ResponseCodes;
+use App\Http\Controllers\Utils\ResponseKeys;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends ApiController
 {
+    public function get($id){
+        $student=Student::find($id)
+            ->first();
+        return response()->json($student);
+    }
 
+    public function save(Request $request) {
+        $validationResult = $this->apiValidator($request, [
+            'student_id' => 'required',
+            'choice_id' => 'required',
+            'exam_id' => 'required',
+            'question_id' => 'required|integer'
+        ]);
+
+        if ($validationResult) {
+            return response()->json($validationResult, 422);
+        }
+
+        try {
+            DB::beginTransaction();
+            $answer = new MultiChoiceAnswer($request->all(["student_id", "choice_id", "exam_id","question_id"]));
+            $answer->save();
+            DB::commit();
+            return response()->json([
+                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+                ResponseKeys::MESSAGE => "Cevap ekleme başarılı."
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->apiException($e);
+        }
+    }
+
+    public function update(Request $request) {
+        $validationResult = $this->apiValidator($request, [
+            'student_id' => 'required',
+            'choice_id' => 'required',
+            'exam_id' => 'required',
+            'question_id' => 'required|integer'
+        ]);
+
+        if ($validationResult) {
+            return response()->json($validationResult, 422);
+        }
+        try {
+            DB::beginTransaction();
+            $answer=MultiChoiceAnswer::find($request->all(["student_id", "exam_id","question_id"]));
+            $answer = $answer -> fill($request->all(["student_id", "choice_id", "exam_id","question_id"]));
+            $answer->save();
+            DB::commit();
+            return response()->json([
+                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+                ResponseKeys::MESSAGE => "Cevap güncelleme başarılı."
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->apiException($e);
+        }
+    }
+
+    public function delete($id) {
+        try {
+            DB::beginTransaction();
+            MultiChoiceAnswer::destroy($id);
+            DB::commit();
+            return response()->json([
+                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+                ResponseKeys::MESSAGE => "Sınav silme başarılı"
+            ]);
+        }catch (\Exception $e) {
+            DB::rollBack();
+            return $this->apiException($e);
+        }
+    }
 }

@@ -49,6 +49,7 @@
           <div
             id="prevButton"
             class="card-body col-md-2 text-center unclickable"
+            :class="{'card-body col-md-2 text-center clickable':qn>0, 'card-body col-md-2 text-center unclickable':qn===0}"
             @click="prevQuestion"
           >
             <div class="card-body">
@@ -62,6 +63,8 @@
               v-for="(answer1, index) in answer"
               :id="index"
               :title="answer1"
+              class="p-1"
+              :class="{'text-green p-2 bg-orange rounded':qn===index}"
               @click="questionDirection(index)"
             >
               {{ (index + 1) + ')' + answer1 }}
@@ -69,7 +72,8 @@
           </div>
           <div
             id="nextButton"
-            class="card-body col-md-2 text-center clickable"
+            class="card-body col-md-2 text-center unclickable"
+            :class="{'card-body col-md-2 text-center clickable':qn<answer.length-1, 'card-body col-md-2 text-center unclickable':qn===answer.length-1}"
             @click="nextQuestion"
           >
             <div class="card-body">
@@ -103,6 +107,7 @@
                   :id="choice.id"
                   :key="index"
                   :content="choice.content"
+                  :class="{'bg-green':abc[index]===answer[qn]}"
                   @click="selectChoice(index, choice.id)"
                 >
                   {{ abc[index] + ") " + choice.content }}
@@ -131,7 +136,7 @@ export default {
   components: { Page, Tab, Tabs, Answers, Choices, TimeBox },
 
   setup (props) {
-    localStorage.clear()
+    // localStorage.clear()
     const state = inject('TabsProvider')
     const lessons = [
       {
@@ -279,6 +284,7 @@ export default {
         } else answer.value[i] = ' '
       }
     }
+    // seçenek tıklandığında
     const selectChoice = (index, id) => {
       if (answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex === index) {
         answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex = -1
@@ -290,12 +296,6 @@ export default {
     const questionDirection = (index) => {
       qn.value = index
       question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value]
-
-      if (qn.value > 0) $('#prevButton').attr('class', 'card-body col-md-2 text-center clickable')
-      else $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
-
-      if (qn.value < lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
-      else $('#nextButton').attr('class', 'card-body col-md-2 text-center unclickable')
     }
     const changeTab = () => {
       tabIndex = Number(localStorage.getItem('tabIndex'))
@@ -304,8 +304,6 @@ export default {
         qn.value = 0
         question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value]
         oldtabIndex = tabIndex
-        $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
-        $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
       }
       answerWriteLast(lessons.filter(l => l.id === tabIndex)[0].questions.length)
     }
@@ -316,20 +314,12 @@ export default {
       if (qn.value < lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) {
         qn.value++
         question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value]
-        $('#prevButton').attr('class', 'card-body col-md-2 text-center clickable')
-        if (qn.value === lessons.filter(l => l.id === tabIndex)[0].questions.length - 1) {
-          $('#nextButton').attr('class', 'card-body col-md-2 text-center unclickable')
-        }
       }
     }
     const prevQuestion = () => {
       if (qn.value > 0) {
         qn.value--
         question.value = lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value]
-        $('#nextButton').attr('class', 'card-body col-md-2 text-center clickable')
-        if (qn.value === 0) {
-          $('#prevButton').attr('class', 'card-body col-md-2 text-center unclickable')
-        }
       }
     }
     return {

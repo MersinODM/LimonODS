@@ -22,6 +22,7 @@ import Start from '../views/home/Start'
 import UnderConstruction from '../../commons/views/utils/UnderConstruction'
 import NotFound from '../../commons/views/utils/NotFound'
 import ShowExam from '../views/exams/ShowExam'
+import StudentExams from '../views/exams/StudentExams'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -44,6 +45,11 @@ const router = createRouter({
           path: 'show-exam',
           name: 'showExam',
           component: ShowExam
+        },
+        {
+          path: 'student-exam',
+          name: 'studentExam',
+          component: StudentExams
         },
         {
           path: 'under-construction',

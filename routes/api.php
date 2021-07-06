@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\App\AuthController as AppApiAuthController;
 use App\Http\Controllers\Api\Exam\ExamController as ExamApiController;
+use App\Http\Controllers\Api\Exam\StudentController as StudentController;
 use App\Http\Controllers\Api\App\CurriculumController;
 use App\Http\Controllers\Api\App\ExamController;
 use App\Http\Controllers\Api\App\ImageController;
@@ -74,6 +75,8 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'exam/v1'], static fun
     //Öğrenci Sınavları rota tanımlaması
     Route::get("exams/{id}", [ExamApiController::class, "get"]);
     Route::get("exams", [ExamApiController::class, "getTable"]);
+    //öğrenci cevap rota tanımlaması
+    Route::get("studentanswers/{id}", [StudentController::class, "get"]);
 });
 
 

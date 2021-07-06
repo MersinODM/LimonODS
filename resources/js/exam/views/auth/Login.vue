@@ -92,6 +92,7 @@
 import LicenceInfo from '../../../commons/components/LicenceInfo'
 import SkinHelper from '../../utils/SkinHelper'
 import { ref } from 'vue'
+import router from '../../../app/router'
 // import AuthService from '../../services/AuthService'
 // import router from "../../router";
 
@@ -103,7 +104,7 @@ export default {
     const email = ref()
     const password = ref()
     const loginToSys = async () => {
-      // await AuthService.login({ email: email.value, password: password.value })
+      // await router.push({ name: 'student-exam' })
     }
 
     // const getCsrfToken = async () => {
