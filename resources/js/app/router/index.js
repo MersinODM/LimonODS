@@ -25,6 +25,7 @@ import NewQuestion from '../views/questions/NewQuestion'
 import NewCurriculum from '../views/curriculums/NewCurriculum'
 import QuestionList from '../views/questions/QuestionList'
 import NewExam from '../views/exams/NewExam'
+import institutionsRoutes from './institutionsRoutes'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -67,7 +68,8 @@ const router = createRouter({
           path: 'under-construction',
           name: 'underConstruction',
           component: UnderConstruction
-        }
+        },
+        ...institutionsRoutes
       ]
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound }

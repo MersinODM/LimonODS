@@ -19,7 +19,7 @@
   <page>
     <template #header>
       <h4>
-        <span class="text-bold text-blue"> Yeni</span> Grup<span class="text-bold text-green"></span>
+        <span class="text-bold text-blue"> Toplu</span> Kurum Ekleme<span class="text-bold text-green" />
       </h4>
     </template>
     <template #content>
@@ -33,11 +33,8 @@
 <script>
 import Page from '../../../commons/components/Page'
 export default {
-  name: 'NewGroup',
-  components: { Page },
-  setup () {
-
-  }
+  name: 'ImportInstitutions',
+  components: { Page }
 }
 </script>
 

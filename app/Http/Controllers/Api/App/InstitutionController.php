@@ -104,4 +104,8 @@ class InstitutionController extends ApiController
             ResponseKeys::MESSAGE => "Kurum silme başarılı"
         ]);
     }
+
+    public function bulkInsert(Request $request) {
+
+    }
 }

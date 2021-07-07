@@ -127,6 +127,64 @@
               class="nav-link"
             >
               <i class="mdi mdi-account-question" />
+              <p>Kurum İşlemleri
+                <i class="right fas fa-angle-left" />
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link
+                  :to="{name: 'underConstruction' }"
+                  class="nav-link"
+                >
+                  <i class="mdi mdi-book-multiple" />
+                  <p>Kurumları Listele</p>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link
+                  :to="{name: 'underConstruction' }"
+                  class="nav-link"
+                >
+                  <i class="mdi mdi-book-plus" />
+                  <p>Kurum Ekle</p>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link
+                    :to="{name: 'importInstitutions' }"
+                    class="nav-link"
+                >
+                  <i class="mdi mdi-book-plus" />
+                  <p>Kurum Ekle(Toplu)</p>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link
+                    :to="{name: 'underConstruction' }"
+                    class="nav-link"
+                >
+                  <i class="mdi mdi-book-plus" />
+                  <p>Grup Listesi</p>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link
+                    :to="{name: 'underConstruction' }"
+                    class="nav-link"
+                >
+                  <i class="mdi mdi-book-plus" />
+                  <p>Grup Oluştur</p>
+                </router-link>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a
+              href="#"
+              class="nav-link"
+            >
+              <i class="mdi mdi-account-question" />
               <p>Kazanım İşlemleri
                 <i class="right fas fa-angle-left" />
               </p>

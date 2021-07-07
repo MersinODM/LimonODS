@@ -15,7 +15,7 @@
  *
  */
 
-import {computed, reactive, readonly} from 'vue'
+import { computed, reactive, readonly } from 'vue'
 // import now from '../helpers/dayjs'
 import constants from '../utils/constants'
 import notify from '../utils/notify'
@@ -116,6 +116,29 @@ const removeExamLesson = (id) => {
   }
 }
 
+const clearCache = () => {
+  state.type = 0
+  state.questions = []
+  state.level = null
+  state.title = ''
+  state.startDate = null
+  state.endDate = null
+  state.level = null
+  state.description = null
+  state.examLessons = []
+  state.questions = []
+  const keys = [
+    EXAM_TYPE,
+    EXAM_TITLE,
+    EXAM_START_DATE,
+    EXAM_END_DATE,
+    EXAM_LEVEL,
+    EXAM_DESCRIPTION,
+    EXAM_LESSONS,
+    EXAM_QUESTIONS]
+  keys.forEach(key => sessionStorage.removeItem(key))
+}
+
 const type = computed(() => {
   if (!state.type) { state.type = JSON.parse(sessionStorage.getItem(EXAM_TYPE)) }
   return state.type
@@ -182,7 +205,8 @@ export default {
     removeQuestions,
     setQuestions,
     addExamLesson,
-    removeExamLesson
+    removeExamLesson,
+    clearCache
   },
   getters: {
     type,

@@ -17,7 +17,7 @@
 
 import { watch } from 'vue'
 import examStore from '../store/examStore'
-import { array, date, number, object, string, ref as yupRef } from 'yup'
+import { array, number, object, string } from 'yup'
 import { useField, useForm } from 'vee-validate'
 import constants from '../utils/constants'
 import Messenger from '../../commons/utils/messenger'
@@ -122,26 +122,39 @@ export default function (examBus) {
     examLessons.value = examStore.getters.examLessons.value
   })
 
+  // Bu fonk. ile seçilen derslerden soru sayılarından hepsine ulaşılıp ulaşılmadığı kontrol ediliyor
   const checkQuestionCounts = () => {
     const questionsGroupByLesson = groupBy(questions.value, 'lesson_id')
-    const errorObject = examLessons.value.map((currentVal) => {
+    return examLessons.value.map((currentVal) => {
       const remainingQuestions = currentVal.count - (questionsGroupByLesson[currentVal.id]?.length ?? 0)
       if (remainingQuestions > 0) {
-        return { hasError: true, message: `<b>${currentVal.name}</b> dersi için <b>${remainingQuestions}</b> adet soru seçilmelidir!` }
+        return {
+          hasError: true,
+          message: `<b>${currentVal.name}</b> dersi için <b>${remainingQuestions}</b> adet soru seçilmelidir!`
+        }
       } else if (remainingQuestions < 0) {
-        return { hasError: true, message: `<b>${currentVal.name}</b> dersi için <b>${-1 * remainingQuestions}</b> adet çıkarılmaldır!` }
+        return {
+          hasError: true,
+          message: `<b>${currentVal.name}</b> dersi için <b>${-1 * remainingQuestions}</b> adet çıkarılmaldır!`
+        }
       }
       return { hasError: false, message: 'Herhangi bir sorun yok' }
-    }).reduce((acc, currentVal) => { return { hasError: acc.hasError && currentVal.hasError, message: `${acc.message}<li class="text-left">${currentVal.message}</li>` } }, { hasError: true, message: '' })
-    return errorObject
+    }).reduce((acc, currentVal) => {
+      return {
+        hasError: acc.hasError && currentVal.hasError,
+        message: `${acc.message}<li class="text-left">${currentVal.message}</li>`
+      }
+    }, { hasError: true, message: '' })
   }
 
   const save = handleSubmit(values => {
     const errorObject = checkQuestionCounts()
     if (!errorObject.hasError) {
       // Burada kayır işlemi yapılacak
+      console.log(values)
+    } else {
+      Messenger.showWarning(errorObject.message)
     }
-    console.log(values)
   })
 
   const EM = {
