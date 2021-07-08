@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'app/v1'], static func
     // Kurumlar ile ilgili rota tanımlamaları
     Route::get("institutions/{id}", [InstitutionController::class, "get"]);
     Route::post("institutions", [InstitutionController::class, "save"]);
+    Route::post("institutions/bulk-insert", [InstitutionController::class, "bulkInsert"]);
     Route::put("institutions/{id}", [InstitutionController::class, "update"]);
     Route::delete("institutions/{id}", [InstitutionController::class, "delete"]);
 

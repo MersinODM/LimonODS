@@ -15,7 +15,7 @@ class AlterQuestions extends Migration
     {
         Schema::table('questions', function (Blueprint $table) {
             $table->unsignedInteger("status")->nullable()
-            ->after('body')->comment("");
+                ->after('body')->comment("");
             $table->softDeletes();
         });
     }

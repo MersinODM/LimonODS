@@ -23,8 +23,37 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Utils\ResponseCodes;
 use App\Http\Controllers\Utils\ResponseKeys;
 use App\Models\Institution;
+use App\Models\Province;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Facades\Excel;
+
+//class ProvinceImport implements ToModel
+//{
+//
+//    public function model(array $row)
+//    {
+//        return new Province([
+//            'id' => $row[0],
+//            'code' => $row[0],
+//            'name'     => $row[1]
+//        ]);
+//    }
+//}
+
+class InstitutionImport implements ToCollection, WithHeadingRow {
+
+    public function collection(Collection $collection)
+    {
+//        $collection->groupBy("kt")->keys()->dump();
+        DB::table("district")->insert($collection->groupBy("ilce")->keys());
+    }
+}
 
 class InstitutionController extends ApiController
 {
@@ -106,6 +135,9 @@ class InstitutionController extends ApiController
     }
 
     public function bulkInsert(Request $request) {
-
+        if ($request->hasFile("kurumlar")) {
+            $file = $request->file("kurumlar");
+            Excel::import(new InstitutionImport, $file);
+        }
     }
 }
