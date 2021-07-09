@@ -22,7 +22,9 @@ namespace App\Http\Controllers\Api\App;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Utils\ResponseCodes;
 use App\Http\Controllers\Utils\ResponseKeys;
+use App\Models\District;
 use App\Models\Institution;
+use App\Models\InstitutionTemp;
 use App\Models\Province;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -31,6 +33,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Facades\Excel;
 
 //class ProvinceImport implements ToModel
@@ -46,12 +49,23 @@ use Maatwebsite\Excel\Facades\Excel;
 //    }
 //}
 
-class InstitutionImport implements ToCollection, WithHeadingRow {
+class InstitutionsTempImport implements ToModel, WithHeadingRow, WithUpserts {
 
-    public function collection(Collection $collection)
+    public function model(array $row)
     {
-//        $collection->groupBy("kt")->keys()->dump();
-        DB::table("district")->insert($collection->groupBy("ilce")->keys());
+        return new InstitutionTemp([
+            'id' => $row['kk'],
+            'code' => $row['kk'],
+            'name' => $row['ka'],
+            'province' => $row['il'],
+            'district' => $row['ilce'],
+            'type' => $row['kt']
+        ]);
+    }
+
+    public function uniqueBy()
+    {
+        return 'id';
     }
 }
 
@@ -134,10 +148,38 @@ class InstitutionController extends ApiController
         ]);
     }
 
-    public function bulkInsert(Request $request) {
+    public function bulkInsert(Request $request)
+    {
         if ($request->hasFile("kurumlar")) {
             $file = $request->file("kurumlar");
-            Excel::import(new InstitutionImport, $file);
+            Excel::import(new InstitutionsTempImport, $file);
+
+            $this->createDistricts();
+
+            $types = InstitutionTemp::groupBy('type')->select('type')->get();
+
+            return response()->json($types);
+        }
+    }
+
+    private function createDistricts(): void
+    {
+        $savedProvince = InstitutionTemp::groupBy('province')
+            ->orderBy('province')
+            ->get('province');
+
+        $provinces = Province::whereIn('name', $savedProvince)
+            ->select('id', 'name')->get();
+        foreach ($provinces as $province) {
+            $districts = InstitutionTemp::where('province', $province['name'])
+                ->groupBy('district')
+                ->orderBy('district')
+                ->select('province', 'district')
+                ->get();
+            foreach ($districts as $district) {
+                District::updateOrCreate(['name' => $district['district'], 'province_id' => $province['id']], ['name' => $district['district'], 'province_id' => $province['id']]);
+            }
+            // return response()->json($districts);
         }
     }
 }
