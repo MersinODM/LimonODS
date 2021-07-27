@@ -76,9 +76,12 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'exam/v1'], static fun
     Route::get("exams/{id}", [ExamApiController::class, "get"]);
     Route::get("exams", [ExamApiController::class, "getTable"]);
     //öğrenci cevap rota tanımlaması
-    Route::get("studentanswers/{id}", [StudentController::class, "get"]);
-});
 
+});
+Route::get("studentanswers/{id}", [StudentController::class, "get"]);
+Route::post("studentanswers", [StudentController::class, "save"]);
+Route::put("studentanswers", [StudentController::class, "update"]);
+Route::delete("studentanswers", [StudentController::class, "delete"]);
 
 
 //exam

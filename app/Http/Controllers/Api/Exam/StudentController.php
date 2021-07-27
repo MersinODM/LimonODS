@@ -24,8 +24,10 @@ use App\Models\Student;
 use App\Models\MultiChoiceAnswer;
 use App\Http\Controllers\Utils\ResponseCodes;
 use App\Http\Controllers\Utils\ResponseKeys;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function React\Promise\all;
 
 class StudentController extends ApiController
 {
@@ -65,7 +67,38 @@ class StudentController extends ApiController
     public function update(Request $request) {
         $validationResult = $this->apiValidator($request, [
             'student_id' => 'required',
-            'choice_id' => 'required',
+            'exam_id' => 'required',
+            'question_id' => 'required|integer',
+            'choice_id' => 'required'
+        ]);
+
+        if ($validationResult) {
+            return response()->json($validationResult, 422);
+        }
+
+        try {
+            DB::beginTransaction();
+            MultiChoiceAnswer::where($request->all(["student_id", "exam_id", "question_id"]))
+                ->delete();
+            if ($request["choice_id"] != '-1') {
+                $answer = new MultiChoiceAnswer($request->all(["student_id", "choice_id", "exam_id","question_id"]));
+                $answer->save();
+            }
+
+            DB::commit();
+            return response()->json([
+                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
+                ResponseKeys::MESSAGE => "Cevap güncelleme başarılı."
+            ]);
+        } catch (\Exception $e) {
+            return $this->apiException($e);
+        }
+    }
+
+    public function delete(Request $request) {
+
+        $validationResult = $this->apiValidator($request, [
+            'student_id' => 'required',
             'exam_id' => 'required',
             'question_id' => 'required|integer'
         ]);
@@ -75,28 +108,12 @@ class StudentController extends ApiController
         }
         try {
             DB::beginTransaction();
-            $answer=MultiChoiceAnswer::find($request->all(["student_id", "exam_id","question_id"]));
-            $answer = $answer -> fill($request->all(["student_id", "choice_id", "exam_id","question_id"]));
-            $answer->save();
+            MultiChoiceAnswer::where($request->all(["student_id", "exam_id", "question_id"]))
+                ->delete();
             DB::commit();
             return response()->json([
                 ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
-                ResponseKeys::MESSAGE => "Cevap güncelleme başarılı."
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->apiException($e);
-        }
-    }
-
-    public function delete($id) {
-        try {
-            DB::beginTransaction();
-            MultiChoiceAnswer::destroy($id);
-            DB::commit();
-            return response()->json([
-                ResponseKeys::CODE => ResponseCodes::CODE_SUCCESS,
-                ResponseKeys::MESSAGE => "Sınav silme başarılı"
+                ResponseKeys::MESSAGE => "Cevap silme başarılı"
             ]);
         }catch (\Exception $e) {
             DB::rollBack();

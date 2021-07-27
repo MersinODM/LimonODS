@@ -130,6 +130,11 @@ import Choices from '../../ccomponents/Choices'
 import TimeBox from '../../ccomponents/TimeBox'
 import { inject, provide, reactive, ref } from 'vue'
 import * as Json from 'postcss'
+import QuestionService from '../../../app/services/QuestionService'
+import Messenger from '../../../commons/utils/messenger'
+import router from '../../../app/router'
+import AnswerService from '../../services/AnswerService'
+import * as gc from 'collect.js'
 
 export default {
   name: 'ShowExam',
@@ -137,6 +142,8 @@ export default {
 
   setup (props) {
     // localStorage.clear()
+    const studentid = 10001
+    const examid = 12
     const state = inject('TabsProvider')
     const lessons = [
       {
@@ -177,7 +184,7 @@ export default {
         name: 'Türkçe',
         id: 5,
         questions: [{
-          id: 12,
+          id: 22,
           body: 'TTT111',
           choices: [
             { id: 62, content: 'T1aaa' },
@@ -187,7 +194,7 @@ export default {
           ]
         },
         {
-          id: 13,
+          id: 23,
           body: 'TTT222',
           choices: [
             { id: 72, content: 'T2aaa' },
@@ -197,7 +204,7 @@ export default {
           ]
         },
         {
-          id: 14,
+          id: 24,
           body: 'TTT333',
           choices: [
             { id: 82, content: 'T3aaa' },
@@ -211,7 +218,7 @@ export default {
         name: 'FEN',
         id: 6,
         questions: [{
-          id: 12,
+          id: 32,
           body: 'FFF111',
           choices: [
             { id: 62, content: 'F1aaa' },
@@ -221,7 +228,7 @@ export default {
           ]
         },
         {
-          id: 13,
+          id: 33,
           body: 'FFF222',
           choices: [
             { id: 72, content: 'F2aaa' },
@@ -231,7 +238,7 @@ export default {
           ]
         },
         {
-          id: 14,
+          id: 34,
           body: 'FFF333',
           choices: [
             { id: 82, content: 'F3aaa' },
@@ -285,10 +292,53 @@ export default {
       }
     }
     // seçenek tıklandığında
-    const selectChoice = (index, id) => {
-      if (answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex === index) {
+    const selectChoice = async (index, id) => {
+      if (answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex === -1) {
+        // Cevabı yaz ...
+        const answerData = {
+          student_id: studentid,
+          exam_id: examid,
+          question_id: lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value].id,
+          choice_id: lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value].choices[index]?.id
+        }
+        // await console.log(answerData)
+
+        try {
+          const response = await AnswerService.save(answerData)
+          // await Messenger.showSuccess(response.message)
+        } catch (e) {
+        }
+        answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex = index
+      } else if (answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex === index) {
+        // Cevabı sil ...
+        try {
+          const answerData = {
+            student_id: studentid,
+            exam_id: examid,
+            question_id: lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value].id,
+            choice_id: '-1'
+          }
+          const response = await AnswerService.update(answerData)
+          // await Messenger.showSuccess(response.message)
+        } catch (e) {
+        }
         answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex = -1
-      } else answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex = index
+      } else {
+        // Cevabı değiştir ...
+        const answerData = {
+          student_id: studentid,
+          exam_id: examid,
+          question_id: lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value].id,
+          choice_id: lessons.filter(l => l.id === tabIndex)[0]?.questions[qn.value].choices[index]?.id
+        }
+        // await console.log(answerData)
+        try {
+          const response = await AnswerService.update(answerData)
+          // await Messenger.showSuccess(response.message)
+        } catch (e) {
+        }
+        answerObject.value.filter(l => l.tabIndex === tabIndex && l.questionIndex === qn.value)[0].answerIndex = index
+      }
       localStorage.setItem('answerObject', JSON.stringify(answerObject))
       answerWriteLast(lessons.filter(l => l.id === tabIndex)[0].questions.length)
     }

@@ -18,8 +18,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 
-class MultiChoiceAnswer
+class MultiChoiceAnswer extends Model
 {
     protected $fillable = [
         'student_id',

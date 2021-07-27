@@ -21,7 +21,6 @@
       <ExamList
         v-for="(exam, index) in exams"
         :id="exam.Id"
-        :key="index"
         :title="exam.Name"
         :time1="exam.StartTime"
         :time2="exam.EndTime"
@@ -40,14 +39,14 @@ export default {
       {
         Id: 1,
         Name: '8. Sınıf 1. Deneme',
-        StartTime: '',
-        EndTime: ''
+        StartTime: '2021-02-12',
+        EndTime: '2021-12-12'
       },
       {
         Id: 2,
         Name: '9. Sınıf 2. Deneme',
-        StartTime: '',
-        EndTime: ''
+        StartTime: '2021-03-12',
+        EndTime: '2021-12-12'
       }
     ]
     return { exams }
